@@ -1,0 +1,117 @@
+/* Page Component Styles */
+.page {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: var(--newsprint);
+}
+
+.pageContent {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* Newsprint texture overlay */
+.newsprintTexture {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  opacity: 0.04;
+  mix-blend-mode: multiply;
+  z-index: 1;
+}
+
+/* Page Variants */
+.cover {
+  background: linear-gradient(
+    180deg,
+    var(--comic-red) 0%,
+    var(--comic-red) 12%,
+    var(--newsprint) 12%
+  );
+}
+
+/* Cover page content has no extra padding - layout handled by inner wrapper */
+
+.inner {
+  background: var(--newsprint);
+}
+
+.back {
+  background: var(--newsprint);
+}
+
+/* Page Numbers */
+.pageNumber {
+  position: absolute;
+  bottom: var(--spacing-sm);
+  font-family: var(--font-caption);
+  font-size: var(--text-xs);
+  color: var(--text-caption);
+  z-index: 2;
+}
+
+.pageNumberLeft {
+  left: var(--spacing-md);
+}
+
+.pageNumberRight {
+  right: var(--spacing-md);
+}
+
+/* Page edge effect (simulates paper stack) */
+.inner::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 8px;
+  background: linear-gradient(
+    to right,
+    rgba(0, 0, 0, 0.1),
+    transparent
+  );
+  pointer-events: none;
+  z-index: 3;
+}
+
+.inner:nth-child(even)::before {
+  left: 0;
+}
+
+.inner:nth-child(odd)::before {
+  right: 0;
+  background: linear-gradient(
+    to left,
+    rgba(0, 0, 0, 0.1),
+    transparent
+  );
+}
+
+/* Aged corners effect */
+.page::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse at 0% 0%, rgba(139, 69, 19, 0.08) 0%, transparent 40%),
+    radial-gradient(ellipse at 100% 0%, rgba(139, 69, 19, 0.06) 0%, transparent 35%),
+    radial-gradient(ellipse at 0% 100%, rgba(139, 69, 19, 0.06) 0%, transparent 35%),
+    radial-gradient(ellipse at 100% 100%, rgba(139, 69, 19, 0.08) 0%, transparent 40%);
+  z-index: 2;
+}
+
+/* Cover doesn't get aged corners the same way */
+.cover::after {
+  display: none;
+}

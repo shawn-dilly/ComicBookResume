@@ -1,0 +1,52 @@
+.flipBook {
+  transform: translateX(0) !important;
+}
+
+.stf__parent {
+  left: 0 !important;
+  transform: none !important;
+}
+
+.flipBook {
+  transform: none !important;
+}
+
+/* Prevent animation repositioning by setting fixed dimensions */
+.flipBook :global(.stf__parent) {
+  position: relative !important;
+  min-height: 814px !important;
+  height: 814px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.flipBook :global(.stf__wrapper) {
+  position: relative !important;
+  width: 100% !important;
+  height: auto !important;
+  display: block !important;
+  align-items: unset !important;
+  justify-content: unset !important;
+}
+
+.flipBook :global(.stf__block) {
+  position: relative !important;
+  width: 100% !important;
+  height: auto !important;
+}
+
+/* Constrain the block to clip content that extends outside */
+.stf__block {
+  overflow: visible !important;
+}
+
+/* Ensure the wrapper clips any content that extends above */
+.stf__wrapper {
+  overflow: hidden !important;
+}
+
+/* Or more specifically, constrain the parent */
+.stf__parent {
+  overflow: hidden !important;
+}

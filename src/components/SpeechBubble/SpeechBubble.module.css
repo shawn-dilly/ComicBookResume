@@ -1,0 +1,264 @@
+/* Speech Bubble Component Styles */
+.bubble {
+  position: relative;
+  padding: var(--spacing-sm) var(--spacing-md);
+  border: 3px solid var(--comic-black);
+  z-index: var(--z-bubble);
+}
+
+.content {
+  position: relative;
+  z-index: 1;
+}
+
+/* Speech Bubble (standard dialog) */
+.speech {
+  background: var(--comic-white);
+  border-radius: 20px;
+}
+
+/* Tail positions for speech bubble */
+.speech.bottom-left::after {
+  content: '';
+  position: absolute;
+  bottom: -15px;
+  left: 20px;
+  width: 0;
+  height: 0;
+  border-left: 15px solid transparent;
+  border-right: 15px solid transparent;
+  border-top: 18px solid var(--comic-black);
+}
+
+.speech.bottom-left::before {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 22px;
+  width: 0;
+  height: 0;
+  border-left: 12px solid transparent;
+  border-right: 12px solid transparent;
+  border-top: 14px solid var(--comic-white);
+  z-index: 2;
+}
+
+.speech.bottom-right::after {
+  content: '';
+  position: absolute;
+  bottom: -15px;
+  right: 20px;
+  width: 0;
+  height: 0;
+  border-left: 15px solid transparent;
+  border-right: 15px solid transparent;
+  border-top: 18px solid var(--comic-black);
+}
+
+.speech.bottom-right::before {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  right: 22px;
+  width: 0;
+  height: 0;
+  border-left: 12px solid transparent;
+  border-right: 12px solid transparent;
+  border-top: 14px solid var(--comic-white);
+  z-index: 2;
+}
+
+.speech.left::after {
+  content: '';
+  position: absolute;
+  left: -15px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 0;
+  height: 0;
+  border-top: 12px solid transparent;
+  border-bottom: 12px solid transparent;
+  border-right: 18px solid var(--comic-black);
+}
+
+.speech.left::before {
+  content: '';
+  position: absolute;
+  left: -9px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 0;
+  height: 0;
+  border-top: 9px solid transparent;
+  border-bottom: 9px solid transparent;
+  border-right: 12px solid var(--comic-white);
+  z-index: 2;
+}
+
+.speech.right::after {
+  content: '';
+  position: absolute;
+  right: -15px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 0;
+  height: 0;
+  border-top: 12px solid transparent;
+  border-bottom: 12px solid transparent;
+  border-left: 18px solid var(--comic-black);
+}
+
+.speech.right::before {
+  content: '';
+  position: absolute;
+  right: -9px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 0;
+  height: 0;
+  border-top: 9px solid transparent;
+  border-bottom: 9px solid transparent;
+  border-left: 12px solid var(--comic-white);
+  z-index: 2;
+}
+
+/* Thought Bubble (cloud-like) */
+.thought {
+  background: var(--comic-white);
+  border-radius: 50%;
+  padding: var(--spacing-md);
+  border-width: 2px;
+}
+
+.thought::before,
+.thought::after {
+  content: '';
+  position: absolute;
+  background: var(--comic-white);
+  border: 2px solid var(--comic-black);
+  border-radius: 50%;
+}
+
+.thought.bottom-left::before {
+  width: 15px;
+  height: 15px;
+  bottom: -12px;
+  left: 25px;
+}
+
+.thought.bottom-left::after {
+  width: 10px;
+  height: 10px;
+  bottom: -22px;
+  left: 18px;
+}
+
+.thought.bottom-right::before {
+  width: 15px;
+  height: 15px;
+  bottom: -12px;
+  right: 25px;
+}
+
+.thought.bottom-right::after {
+  width: 10px;
+  height: 10px;
+  bottom: -22px;
+  right: 18px;
+}
+
+/* Shout/Explosion Bubble */
+.shout {
+  background: var(--comic-yellow);
+  border-radius: 0;
+  border: none;
+  clip-path: polygon(
+    0% 20%,
+    8% 0%,
+    22% 15%,
+    35% 0%,
+    50% 12%,
+    65% 0%,
+    78% 15%,
+    92% 0%,
+    100% 20%,
+    88% 35%,
+    100% 50%,
+    88% 65%,
+    100% 80%,
+    92% 100%,
+    78% 85%,
+    65% 100%,
+    50% 88%,
+    35% 100%,
+    22% 85%,
+    8% 100%,
+    0% 80%,
+    12% 65%,
+    0% 50%,
+    12% 35%
+  );
+  padding: var(--spacing-lg);
+}
+
+.shout .content {
+  color: var(--comic-red);
+  text-shadow: 2px 2px 0 var(--comic-black);
+}
+
+/* Remove tails from shout variant */
+.shout::before,
+.shout::after {
+  display: none;
+}
+
+/* Top tail directions */
+.speech.top-left::after {
+  content: '';
+  position: absolute;
+  top: -15px;
+  left: 20px;
+  width: 0;
+  height: 0;
+  border-left: 15px solid transparent;
+  border-right: 15px solid transparent;
+  border-bottom: 18px solid var(--comic-black);
+}
+
+.speech.top-left::before {
+  content: '';
+  position: absolute;
+  top: -10px;
+  left: 22px;
+  width: 0;
+  height: 0;
+  border-left: 12px solid transparent;
+  border-right: 12px solid transparent;
+  border-bottom: 14px solid var(--comic-white);
+  z-index: 2;
+}
+
+.speech.top-right::after {
+  content: '';
+  position: absolute;
+  top: -15px;
+  right: 20px;
+  width: 0;
+  height: 0;
+  border-left: 15px solid transparent;
+  border-right: 15px solid transparent;
+  border-bottom: 18px solid var(--comic-black);
+}
+
+.speech.top-right::before {
+  content: '';
+  position: absolute;
+  top: -10px;
+  right: 22px;
+  width: 0;
+  height: 0;
+  border-left: 12px solid transparent;
+  border-right: 12px solid transparent;
+  border-bottom: 14px solid var(--comic-white);
+  z-index: 2;
+}

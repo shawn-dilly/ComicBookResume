@@ -1,0 +1,80 @@
+/* Silver Age Marvel Comic Color Palette (64-color CMYK inspired) */
+:root {
+  /* Primary Colors */
+  --comic-red: #ED1C24;
+  --comic-blue: #0072BC;
+  --comic-yellow: #FFF200;
+  --comic-green: #00A651;
+  --comic-orange: #F7941D;
+  --comic-purple: #662D91;
+  --comic-black: #231F20;
+  --comic-white: #FFFFFF;
+
+  /* Paper & Texture */
+  --newsprint: #F5F0E1;
+  --newsprint-dark: #E8E0C8;
+  --aged-paper: #FDF8E8;
+
+  /* Secondary/Accent Colors */
+  --comic-pink: #EC008C;
+  --comic-cyan: #00AEEF;
+  --comic-lime: #8DC63F;
+  --comic-brown: #8B4513;
+  --comic-cream: #FFFDD0;
+
+  /* Panel & Border Colors */
+  --panel-border: #231F20;
+  --panel-border-width: 3px;
+  --panel-gap: 8px;
+
+  /* Shadow Colors */
+  --shadow-color: rgba(35, 31, 32, 0.3);
+  --shadow-dark: rgba(35, 31, 32, 0.6);
+
+  /* Typography Colors */
+  --text-primary: #231F20;
+  --text-caption: #4A4A4A;
+
+  /* Halftone/Ben-Day */
+  --halftone-size: 4px;
+  --halftone-opacity: 0.15;
+
+  /* Page Dimensions */
+  --page-width: 400px;
+  --page-height: 600px;
+  --page-aspect-ratio: 2 / 3;
+
+  /* Spacing */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+
+  /* Border Radius */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 16px;
+  --radius-round: 50%;
+
+  /* Transitions */
+  --transition-fast: 150ms ease;
+  --transition-normal: 300ms ease;
+  --transition-slow: 500ms ease;
+
+  /* Z-index layers */
+  --z-page: 1;
+  --z-panel: 10;
+  --z-bubble: 20;
+  --z-action-word: 30;
+  --z-navigation: 100;
+  --z-overlay: 200;
+}
+
+/* Dark mode overrides (optional) */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --newsprint: #2A2520;
+    --newsprint-dark: #1A1510;
+  }
+}
