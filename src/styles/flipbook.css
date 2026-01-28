@@ -1,52 +1,69 @@
-.flipBook {
-  transform: translateX(0) !important;
-}
+/* Flipbook CSS - Minimal overrides for page-flip library */
+/* IMPORTANT: Don't override position, display, or dimensions - let the library handle those */
 
+/* Allow 3D page flip animation to render properly */
+/* We use mask overlays in ComicBook.module.css to hide overflow outside the book */
 .stf__parent {
-  left: 0 !important;
-  transform: none !important;
+  /* Allow overflow so page curl animation is visible */
+  overflow: visible !important;
+  /* Preserve 3D transforms for realistic page curl effect */
+  transform-style: preserve-3d !important;
+  /* Isolate the stacking context */
+  isolation: isolate !important;
 }
 
-.flipBook {
-  transform: none !important;
+.stf__wrapper {
+  overflow: visible !important;
+  transform-style: preserve-3d !important;
 }
 
-/* Prevent animation repositioning by setting fixed dimensions */
-.flipBook :global(.stf__parent) {
-  position: relative !important;
-  min-height: 814px !important;
-  height: 814px !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-}
-
-.flipBook :global(.stf__wrapper) {
-  position: relative !important;
-  width: 100% !important;
-  height: auto !important;
-  display: block !important;
-  align-items: unset !important;
-  justify-content: unset !important;
-}
-
-.flipBook :global(.stf__block) {
-  position: relative !important;
-  width: 100% !important;
-  height: auto !important;
-}
-
-/* Constrain the block to clip content that extends outside */
 .stf__block {
   overflow: visible !important;
+  transform-style: preserve-3d !important;
 }
 
-/* Ensure the wrapper clips any content that extends above */
-.stf__wrapper {
-  overflow: hidden !important;
+/*
+ * CRITICAL FIX: Ensure left page content is always visible during animations
+ * The library manages z-index dynamically, but we need to ensure visibility
+ */
+
+/* All page items should have visible backfaces for 3D transforms */
+.stf__item {
+  backface-visibility: visible !important;
+  -webkit-backface-visibility: visible !important;
 }
 
-/* Or more specifically, constrain the parent */
-.stf__parent {
-  overflow: hidden !important;
+/* Ensure left-side pages are visible during the flip animation */
+.stf__item.--left {
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+/* When the parent is in flipping state, all items must be visible */
+.stf__parent.--flipping .stf__item {
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+/* Active pages (being displayed or animated) should always be visible */
+.stf__item.--active {
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+/* Pages with inline z-index (set during animation) should be visible */
+.stf__item[style*="z-index"] {
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+/*
+ * Only hide the "ghost" left page when:
+ * - Book is NOT flipping
+ * - Page is NOT active
+ * - Page has no inline z-index (not part of animation)
+ * This targets the empty left placeholder when book is on page 0 (cover)
+ */
+.stf__parent:not(.--flipping) .stf__item.--left:not(.--active):not([style*="z-index"]):first-child {
+  opacity: 0;
 }

@@ -1,0 +1,415 @@
+/* ComicBookGSAP - Custom GSAP Page Flip Prototype
+ * A Silver Age Marvel-inspired comic book with custom page turn animations
+ */
+
+/* ============================================
+   BOOK CONTAINER & SCENE
+   ============================================ */
+
+.scene {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+  perspective: 2500px;
+  overflow: hidden;
+}
+
+.book {
+  position: relative;
+  width: calc(var(--page-width, 350px) * 2);
+  height: var(--page-height, 525px);
+  transform-style: preserve-3d;
+  /* Critical: contain paint prevents children from rendering outside */
+  contain: paint;
+}
+
+/* Book spine shadow - adds depth */
+.book::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 20px;
+  transform: translateX(-50%);
+  background: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0.3) 0%,
+    rgba(0, 0, 0, 0.1) 30%,
+    rgba(0, 0, 0, 0.1) 70%,
+    rgba(0, 0, 0, 0.3) 100%
+  );
+  z-index: 100;
+  pointer-events: none;
+}
+
+/* ============================================
+   PAGE STYLES
+   ============================================ */
+
+.page {
+  position: absolute;
+  width: 50%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: z-index 0s;
+  cursor: pointer;
+}
+
+/* Left pages anchor to the left spine edge */
+.pageLeft {
+  left: 0;
+  transform-origin: right center;
+}
+
+/* Right pages anchor to the right spine edge */
+.pageRight {
+  right: 0;
+  transform-origin: left center;
+}
+
+/* Page face (front and back) */
+.pageFace {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  overflow: hidden;
+  border: 3px solid var(--comic-black, #231F20);
+  box-sizing: border-box;
+}
+
+/* Front face of pages */
+.pageFront {
+  background: var(--newsprint, #F5F0E1);
+  z-index: 2;
+}
+
+/* Back face of pages (flipped 180deg) */
+.pageBack {
+  background: var(--newsprint-dark, #E8E0C8);
+  transform: rotateY(180deg);
+  z-index: 1;
+}
+
+/* Page content wrapper */
+.pageContent {
+  width: 100%;
+  height: 100%;
+  padding: var(--spacing-md, 16px);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Comic Neue', cursive, sans-serif;
+  color: var(--comic-black, #231F20);
+  overflow: hidden;
+}
+
+/* ============================================
+   SHADOW OVERLAY (Dynamic during flip)
+   ============================================ */
+
+.pageShadow {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 10;
+  opacity: 0;
+}
+
+/* Shadow on left side of right page (appears when flipping forward) */
+.shadowLeft {
+  left: 0;
+  background: linear-gradient(
+    to right,
+    rgba(0, 0, 0, 0.4) 0%,
+    rgba(0, 0, 0, 0.15) 30%,
+    transparent 100%
+  );
+}
+
+/* Shadow on right side of left page (appears when flipping backward) */
+.shadowRight {
+  right: 0;
+  background: linear-gradient(
+    to left,
+    rgba(0, 0, 0, 0.4) 0%,
+    rgba(0, 0, 0, 0.15) 30%,
+    transparent 100%
+  );
+}
+
+/* Shadow on the back of a flipping page */
+.shadowBack {
+  background: linear-gradient(
+    to right,
+    transparent 0%,
+    rgba(0, 0, 0, 0.2) 80%,
+    rgba(0, 0, 0, 0.35) 100%
+  );
+}
+
+/* ============================================
+   COVER PAGE SPECIAL STYLES
+   ============================================ */
+
+.coverPage .pageFront {
+  background: var(--comic-red, #ED1C24);
+  box-shadow:
+    inset 0 0 40px rgba(0, 0, 0, 0.2),
+    0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.coverPage .pageBack {
+  background: linear-gradient(135deg, #8B0000 0%, #5C0000 100%);
+}
+
+.backCover .pageFront {
+  background: linear-gradient(135deg, #5C0000 0%, #8B0000 100%);
+}
+
+.backCover .pageBack {
+  background: var(--comic-red, #ED1C24);
+  box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.2);
+}
+
+/* ============================================
+   PAGE CONTENT STYLES (Placeholder Content)
+   ============================================ */
+
+.coverContent {
+  text-align: center;
+  color: var(--comic-yellow, #FFF200);
+}
+
+.coverTitle {
+  font-family: 'Bangers', cursive, sans-serif;
+  font-size: 2.5rem;
+  text-shadow:
+    3px 3px 0 var(--comic-black, #231F20),
+    -1px -1px 0 var(--comic-black, #231F20),
+    1px -1px 0 var(--comic-black, #231F20),
+    -1px 1px 0 var(--comic-black, #231F20);
+  margin-bottom: var(--spacing-md, 16px);
+  letter-spacing: 2px;
+}
+
+.coverSubtitle {
+  font-family: 'Comic Neue', cursive, sans-serif;
+  font-size: 1rem;
+  color: var(--comic-white, #FFFFFF);
+  text-shadow: 1px 1px 0 var(--comic-black, #231F20);
+}
+
+.pageTitle {
+  font-family: 'Bangers', cursive, sans-serif;
+  font-size: 1.8rem;
+  color: var(--comic-red, #ED1C24);
+  text-shadow:
+    2px 2px 0 var(--comic-black, #231F20);
+  margin-bottom: var(--spacing-md, 16px);
+  text-align: center;
+}
+
+.pageNumber {
+  position: absolute;
+  bottom: var(--spacing-sm, 8px);
+  font-family: 'Courier Prime', monospace;
+  font-size: 0.75rem;
+  color: var(--text-caption, #4A4A4A);
+}
+
+.pageNumberLeft {
+  left: var(--spacing-md, 16px);
+}
+
+.pageNumberRight {
+  right: var(--spacing-md, 16px);
+}
+
+.placeholderText {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  text-align: center;
+  max-width: 90%;
+  color: var(--text-primary, #231F20);
+}
+
+/* ============================================
+   PAGE GRADIENTS (Depth/Shadow on edges)
+   ============================================ */
+
+.pageGradient {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 3;
+  background: linear-gradient(
+    to right,
+    rgba(0, 0, 0, 0.08) 0%,
+    transparent 8%,
+    transparent 100%
+  );
+}
+
+.pageGradientBack {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 3;
+  background: linear-gradient(
+    to left,
+    rgba(0, 0, 0, 0.08) 0%,
+    transparent 8%,
+    transparent 100%
+  );
+}
+
+/* ============================================
+   HALFTONE EFFECT (Comic Book Aesthetic)
+   ============================================ */
+
+.halftone::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: radial-gradient(
+    circle,
+    rgba(0, 0, 0, 0.08) 1px,
+    transparent 1px
+  );
+  background-size: 4px 4px;
+  pointer-events: none;
+  z-index: 5;
+}
+
+/* ============================================
+   NAVIGATION HINTS
+   ============================================ */
+
+.navHint {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: 'Comic Neue', cursive, sans-serif;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.7);
+  text-align: center;
+}
+
+.navHint kbd {
+  display: inline-block;
+  padding: 2px 8px;
+  margin: 0 4px;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  font-family: inherit;
+}
+
+/* ============================================
+   CLICK ZONES (Visual feedback)
+   ============================================ */
+
+.clickZone {
+  position: absolute;
+  top: 0;
+  width: 50%;
+  height: 100%;
+  z-index: 50;
+  cursor: pointer;
+}
+
+.clickZone:hover {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.clickZoneLeft {
+  left: 0;
+}
+
+.clickZoneRight {
+  right: 0;
+}
+
+/* ============================================
+   PAGE INDICATOR
+   ============================================ */
+
+.pageIndicator {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: 'Bangers', cursive, sans-serif;
+  font-size: 1rem;
+  color: var(--comic-yellow, #FFF200);
+  text-shadow: 1px 1px 0 var(--comic-black, #231F20);
+  background: rgba(0, 0, 0, 0.5);
+  padding: 4px 16px;
+  border-radius: 20px;
+  z-index: 200;
+}
+
+/* ============================================
+   ANIMATION STATE CLASSES
+   ============================================ */
+
+.flipping {
+  /* Applied during animation - boost z-index */
+  z-index: 100 !important;
+}
+
+.hidden {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* ============================================
+   RESPONSIVE ADJUSTMENTS
+   ============================================ */
+
+@media (max-width: 900px) {
+  .coverTitle {
+    font-size: 2rem;
+  }
+
+  .pageTitle {
+    font-size: 1.4rem;
+  }
+
+  .placeholderText {
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .coverTitle {
+    font-size: 1.5rem;
+  }
+
+  .pageTitle {
+    font-size: 1.2rem;
+  }
+
+  .navHint {
+    font-size: 0.75rem;
+  }
+}

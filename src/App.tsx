@@ -1,6 +1,6 @@
-import { useState, useRef, useCallback } from 'react';
-import { ComicBook, Navigation } from './components';
-import type { ComicBookRef } from './components';
+import { useCallback, useState, useRef } from 'react';
+
+import { ComicBookGSAP, type ComicBookGSAPRef } from './components/ComicBook';
 import {
   CoverPage,
   InsideFrontCoverPage,
@@ -14,18 +14,25 @@ import {
   TestimonialsPage,
   BackCoverPage,
 } from './pages';
-import { resumeData } from './data/resume';
 import { useSoundEffects, usePageNavigation } from './hooks';
+import { resumeData } from './data/resume';
+
 import './styles/global.css';
 
 function App() {
   const [currentPage, setCurrentPage] = useState(0);
   const [isBookOpen, setIsBookOpen] = useState(false);
-  const comicBookRef = useRef<ComicBookRef>(null);
+  const comicBookRef = useRef<ComicBookGSAPRef>(null);
   const soundEffects = useSoundEffects(true);
 
-  // Total pages: Cover + InsideFrontCover + InsideCover + Origin(2) + Skills(2) + Exp(dynamic) + Edu + Testimonials + BackCover
-  const totalPages = 3 + 2 + 2 + resumeData.experience.length + 1 + 1 + 1;
+  // Split testimonials: first 2 on one page, middle ones individual, last 2 on one page
+  const firstTwoTestimonials = resumeData.testimonials.slice(0, 2);
+  const middleTestimonials = resumeData.testimonials.slice(2, -2);
+  const lastTwoTestimonials = resumeData.testimonials.slice(-2);
+
+  // Total pages: Cover + InsideFrontCover + InsideCover + Origin(2) + Skills(2) + Exp(dynamic) + Edu + Testimonials(1 + middle + 1) + BackCover
+  const testimonialPageCount = 1 + middleTestimonials.length + 1;
+  const totalPages = 3 + 2 + 2 + resumeData.experience.length + 1 + testimonialPageCount + 1;
 
   const handlePageChange = useCallback((pageIndex: number) => {
     setCurrentPage(pageIndex);
@@ -71,7 +78,7 @@ function App() {
   return (
     <div className="app-container">
       <div className={`comic-wrapper ${isBookOpen ? 'open' : 'closed'}`}>
-        <ComicBook
+        <ComicBookGSAP
           ref={comicBookRef}
           onPageChange={handlePageChange}
           onPageFlip={handlePageFlip}
@@ -79,59 +86,55 @@ function App() {
           onBookClose={handleBookClose}
           showCover={true}
         >
-          {/* Page 0: Front Cover (hard, right side when closed) */}
           <CoverPage />
-
-          {/* Page 1: Inside Front Cover - Decorative (hard, left side when opened) */}
           <InsideFrontCoverPage />
-
-          {/* Page 2: Inside Cover - Contact/Dossier (right side of first spread) */}
           <InsideCoverPage />
-
-          {/* Pages 3-4: Origin Story (spread) */}
           <OriginStoryPage1 />
           <OriginStoryPage2 />
-
-          {/* Pages 5-6: Skills (spread) */}
           <SkillsPage1 />
           <SkillsPage2 />
-
-          {/* Pages 7+: Experience (each takes a full page, shown as spreads) */}
           {experiencePages}
-
-          {/* Education Page */}
           <EducationPage pageNumber={7 + resumeData.experience.length} />
-
-          {/* Testimonials Page */}
-          <TestimonialsPage pageNumber={8 + resumeData.experience.length} />
-
-          {/* Back Cover (hard) */}
+          {/* First page with 2 testimonials */}
+          <TestimonialsPage
+            key="testimonials-first"
+            pageNumber={8 + resumeData.experience.length}
+            testimonials={firstTwoTestimonials}
+            showHeader={true}
+          />
+          {/* Middle testimonials on individual pages */}
+          {middleTestimonials.map((testimonial, index) => (
+            <TestimonialsPage
+              key={`testimonial-${index + 2}`}
+              pageNumber={9 + resumeData.experience.length + index}
+              testimonials={[testimonial]}
+              showHeader={false}
+            />
+          ))}
+          {/* Last page with 2 testimonials */}
+          <TestimonialsPage
+            key="testimonials-last"
+            pageNumber={9 + resumeData.experience.length + middleTestimonials.length}
+            testimonials={lastTwoTestimonials}
+            showHeader={false}
+          />
           <BackCoverPage />
-        </ComicBook>
+        </ComicBookGSAP>
       </div>
 
-      {/* Click hint when book is closed */}
       {!isBookOpen && currentPage === 0 && (
         <div className="click-hint">
           ← CLICK TO OPEN
         </div>
       )}
 
-      <Navigation
-        currentPage={currentPage}
-        totalPages={totalPages}
-        onPrevious={handlePrevious}
-        onNext={handleNext}
-        hidden={!isBookOpen}
-      />
-
       {isBookOpen && (
         <div className="keyboard-hints">
-          <span className="keyboard-hint">
-            <kbd>←</kbd> <kbd>→</kbd> Navigate pages
+          <span className="keyboard-hint keyboard-hint-large">
+            <kbd>←</kbd> <kbd>→</kbd> Navigate Pages
           </span>
-          <span className="keyboard-hint">
-            <kbd>Space</kbd> Next page
+          <span className="page-indicator">
+            {currentPage + 1} / {totalPages}
           </span>
         </div>
       )}

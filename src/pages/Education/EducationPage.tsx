@@ -45,7 +45,7 @@ const EducationPage = forwardRef<HTMLDivElement, EducationPageProps>(
             color: 'var(--text-caption)',
             padding: '12px'
           }}>
-            "Knowledge is the ultimate superpower" - Ancient Developer Proverb
+            "True leaders build more leaders" - Ancient Architect Proverb
           </div>
         </div>
       </Page>

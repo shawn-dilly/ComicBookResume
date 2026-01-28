@@ -16,9 +16,9 @@ const InsideFrontCoverPage = forwardRef<HTMLDivElement>((_, ref) => {
                 <span className={styles.adSubhead}>What's Inside!</span>
                 <div className={styles.adDivider} />
                 <span className={styles.adTagline}>
-                  THE INCREDIBLE STORY OF A
+                  THE INCREDIBLE STORY OF AN
                 </span>
-                <span className={styles.adHero}>SOFTWARE DEVELOPER</span>
+                <span className={styles.adHero}>ENGINEERING LEADER</span>
                 <div className={styles.adStarburst}>
                   <span>WOW!</span>
                 </div>
@@ -30,7 +30,7 @@ const InsideFrontCoverPage = forwardRef<HTMLDivElement>((_, ref) => {
             <p>RESUME COMICS GROUP</p>
             <p className={styles.smallText}>
               All characters and events in this publication are entirely fictional
-              and any resemblance to actual developers is purely intentional.
+              and any resemblance to actual leaders is purely intentional.
             </p>
           </div>
         </div>

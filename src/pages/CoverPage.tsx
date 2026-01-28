@@ -6,12 +6,15 @@ import styles from './pages.module.css';
 
 const CoverPage = forwardRef<HTMLDivElement>((_, ref) => {
   const titleRef = useRef<HTMLDivElement>(null);
-  const subtitleRef = useRef<HTMLDivElement>(null);
   const heroNameRef = useRef<HTMLDivElement>(null);
+  const maskRef = useRef<HTMLDivElement>(null);
+  const hireBadgeRef = useRef<HTMLDivElement>(null);
+  const headlineRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const tl = gsap.timeline({ delay: 0.3 });
 
+    // Title animation
     if (titleRef.current) {
       tl.fromTo(
         titleRef.current,
@@ -20,20 +23,48 @@ const CoverPage = forwardRef<HTMLDivElement>((_, ref) => {
       );
     }
 
+    // Hero name with dramatic entrance
     if (heroNameRef.current) {
       tl.fromTo(
         heroNameRef.current,
-        { opacity: 0, scale: 0.8, rotation: -10 },
-        { opacity: 1, scale: 1, rotation: -3, duration: 0.4, ease: 'elastic.out(1, 0.5)' },
+        { opacity: 0, scale: 0.5, rotation: -15 },
+        { opacity: 1, scale: 1, rotation: 0, duration: 0.6, ease: 'elastic.out(1, 0.4)' },
         '-=0.2'
       );
     }
 
-    if (subtitleRef.current) {
+    // Mask frame PUNCHES through with breakthrough effect
+    if (maskRef.current) {
       tl.fromTo(
-        subtitleRef.current,
-        { opacity: 0, y: 20 },
-        { opacity: 1, y: 0, duration: 0.3 },
+        maskRef.current,
+        { opacity: 0, scale: 0.3, rotation: -10 },
+        {
+          opacity: 1,
+          scale: 1,
+          rotation: 0,
+          duration: 0.6,
+          ease: 'back.out(1.4)'
+        },
+        '-=0.3'
+      );
+    }
+
+    // Hire badge pops in with bounce
+    if (hireBadgeRef.current) {
+      tl.fromTo(
+        hireBadgeRef.current,
+        { opacity: 0, scale: 0, rotation: -30 },
+        { opacity: 1, scale: 1, rotation: 8, duration: 0.4, ease: 'back.out(2)' },
+        '-=0.2'
+      );
+    }
+
+    // Headline slides up
+    if (headlineRef.current) {
+      tl.fromTo(
+        headlineRef.current,
+        { opacity: 0, y: 30 },
+        { opacity: 1, y: 0, duration: 0.3, ease: 'power2.out' },
         '-=0.1'
       );
     }
@@ -41,62 +72,79 @@ const CoverPage = forwardRef<HTMLDivElement>((_, ref) => {
 
   return (
     <Page ref={ref} density="hard" variant="cover" showPageNumber={false}>
-      <div className={styles.coverPage}>
-        {/* Top Banner */}
-        <div className={styles.coverBanner}>
-          <span className={styles.publisherLogo}>RESUME COMICS</span>
+      <div className={styles.coverPageSpider}>
+        {/* Spider Web Background Pattern */}
+        <div className={styles.spiderWebBg} />
+
+        {/* Top Banner - Marvel Comics Group style */}
+        <div className={styles.topBanner}>
+          <span className={styles.bannerText}>RESUME COMICS GROUP</span>
+          <span className={styles.tmMark}>TM</span>
         </div>
 
-        {/* Issue Box */}
-        <div className={styles.issueBoxWrapper}>
-          <IssueNumber number={1} month="JAN" price="12¢" />
-        </div>
-
-        {/* CCA Stamp */}
-        <div className={styles.ccaWrapper}>
-          <CCAStamp size="medium" />
-        </div>
-
-        {/* Main Title */}
-        <div ref={titleRef} className={styles.coverTitle}>
-          <span className={styles.theText}>THE</span>
-          <span className={styles.incredibleText}>INCREDIBLE</span>
-        </div>
-
-        {/* Hero Name */}
-        <div ref={heroNameRef} className={styles.heroName}>
-          {resumeData.personal.heroName || resumeData.personal.name}
-        </div>
-
-        {/* Hero Portrait Area */}
-        <div className={styles.heroPortraitArea}>
-          <div className={styles.heroSilhouette}>
-            <span className={styles.heroInitial}>
+        {/* Issue Box - Top Left Corner */}
+        <div className={styles.cornerBox}>
+          <div className={styles.cornerBoxIcon}>
+            <span className={styles.cornerInitial}>
               {resumeData.personal.name.charAt(0)}
             </span>
           </div>
-          {/* Action burst background */}
-          <div className={styles.actionBurst} />
+          <IssueNumber number={1} month="JAN" price="12¢" />
         </div>
 
-        {/* Subtitle/Tagline */}
-        <div ref={subtitleRef} className={styles.coverTagline}>
-          <span className={styles.taglineText}>
-            {resumeData.personal.tagline || `The Amazing Adventures of ${resumeData.personal.title}`}
+        {/* CCA Stamp - Top Right */}
+        <div className={styles.ccaPosition}>
+          <CCAStamp size="small" />
+        </div>
+
+        {/* Diagonal Black Banner with Full Title */}
+        <div ref={titleRef} className={styles.titleTreatment}>
+          <span className={styles.theSmall}>THE</span>
+          <span className={styles.incredibleItalic}>INCREDIBLE</span>
+          <div ref={heroNameRef} className={styles.heroNameSpider}>
+            {resumeData.personal.heroName || resumeData.personal.name}
+          </div>
+        </div>
+
+        {/* Spider Mask Frame - BREAKTHROUGH EFFECT */}
+        <div ref={maskRef} className={styles.spiderMaskFrame}>
+          {/* Glow layer behind everything */}
+          <div className={styles.breakthroughGlow} />
+
+          {/* Jagged starburst - paper tearing effect */}
+          <div className={styles.breakthroughBurst} />
+
+          {/* Mask Outline Frame - just the border shape */}
+          <div className={styles.maskOutline}>
+            {/* Photo fills inside the mask - visible THROUGH the cutout */}
+            <div className={styles.photoPlaceholder}>
+              <div className={styles.photoPlaceholderInner}>
+                <span className={styles.placeholderIcon}>📷</span>
+                <span className={styles.placeholderText}>YOUR PHOTO</span>
+                <span className={styles.placeholderSubtext}>LinkedIn Profile</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Green Circular "HIRE ME" Badge */}
+        <div ref={hireBadgeRef} className={styles.hireBadge}>
+          <span className={styles.hireBadgeText}>HIRE</span>
+          <span className={styles.hireBadgeText}>ME!</span>
+        </div>
+
+        {/* Bottom Newspaper Headline Strip */}
+        <div ref={headlineRef} className={styles.headlineStrip}>
+          <span className={styles.headlineText}>
+            EXCLUSIVE: {resumeData.personal.title.toUpperCase()} SEEKS NEW ADVENTURES!
           </span>
         </div>
 
-        {/* Issue Callout */}
-        <div className={styles.issueCallout}>
-          <span>FIRST ISSUE!</span>
-          <span className={styles.calloutSub}>COLLECTOR'S EDITION</span>
-        </div>
-
-        {/* Bottom Info */}
-        <div className={styles.coverFooter}>
+        {/* Bottom Footer */}
+        <div className={styles.coverFooterSpider}>
           <span>{resumeData.personal.name}</span>
-          <span>•</span>
-          <span>{resumeData.personal.title}</span>
+          <span className={styles.footerDot}>•</span>
+          <span>{resumeData.contact?.location || 'Available Worldwide'}</span>
         </div>
       </div>
     </Page>

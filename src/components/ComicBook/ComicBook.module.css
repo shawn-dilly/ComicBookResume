@@ -6,7 +6,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  clip-path: inset(-500px -50px -500px 0); /* top right bottom left - adjust as needed */
+  /* Combine multiple clipping strategies for 3D transforms */
+  contain: paint;
+  overflow: hidden;
 }
 
 .flipBook {

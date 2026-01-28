@@ -1,43 +1,48 @@
 import type { ResumeData } from '../types';
+import { loadRecommendationsFromCSV } from '../utils/linkedinRecommendations';
+import recommendationsCSV from '../../Recommendations_Received.csv?raw';
+
+// Load LinkedIn recommendations
+const linkedInTestimonials = loadRecommendationsFromCSV(recommendationsCSV);
 
 export const resumeData: ResumeData = {
   personal: {
     name: 'Your Name',
-    title: 'Software Developer',
-    heroName: 'THE CODE CRUSADER',
-    tagline: 'Defender of Clean Code & Vanquisher of Bugs!',
+    title: 'Engineering Leader',
+    heroName: 'IRON ARCHITECT',
+    tagline: 'Forging Teams & Building the Future of Technology!',
   },
 
-  summary: `A fearless developer who emerged from the depths of debugging dungeons,
-    wielding the power of clean architecture and test-driven development.
-    With great power comes great responsibility... to ship features on time!`,
+  summary: `A visionary leader who rose from the trenches of engineering
+    to architect solutions that scale teams and transform organizations.
+    With great vision comes great responsibility... to build what matters!`,
 
   skills: [
     {
-      category: 'Languages',
+      category: 'Leadership',
       skills: [
-        { name: 'TypeScript', level: 9, color: 'var(--comic-blue)' },
-        { name: 'JavaScript', level: 9, color: 'var(--comic-yellow)' },
-        { name: 'Python', level: 7, color: 'var(--comic-green)' },
-        { name: 'Go', level: 6, color: 'var(--comic-cyan)' },
+        { name: 'Team Building', level: 9, color: 'var(--comic-blue)' },
+        { name: 'Strategic Vision', level: 9, color: 'var(--comic-red)' },
+        { name: 'Mentorship', level: 8, color: 'var(--comic-green)' },
+        { name: 'Stakeholder Mgmt', level: 8, color: 'var(--comic-purple)' },
       ],
     },
     {
-      category: 'Frameworks',
+      category: 'Architecture',
       skills: [
-        { name: 'React', level: 9, color: 'var(--comic-cyan)' },
-        { name: 'Node.js', level: 8, color: 'var(--comic-green)' },
-        { name: 'Next.js', level: 8, color: 'var(--comic-black)' },
-        { name: 'Express', level: 7, color: 'var(--comic-yellow)' },
+        { name: 'System Design', level: 9, color: 'var(--comic-cyan)' },
+        { name: 'Cloud (AWS/GCP)', level: 8, color: 'var(--comic-orange)' },
+        { name: 'Microservices', level: 8, color: 'var(--comic-green)' },
+        { name: 'Data Architecture', level: 7, color: 'var(--comic-yellow)' },
       ],
     },
     {
-      category: 'Tools & Practices',
+      category: 'Execution',
       skills: [
-        { name: 'Git', level: 9, color: 'var(--comic-orange)' },
-        { name: 'Docker', level: 7, color: 'var(--comic-blue)' },
-        { name: 'CI/CD', level: 8, color: 'var(--comic-green)' },
-        { name: 'Testing', level: 8, color: 'var(--comic-red)' },
+        { name: 'Agile/Scrum', level: 9, color: 'var(--comic-blue)' },
+        { name: 'Roadmap Planning', level: 8, color: 'var(--comic-red)' },
+        { name: 'Tech Due Diligence', level: 8, color: 'var(--comic-purple)' },
+        { name: 'Budget Management', level: 7, color: 'var(--comic-green)' },
       ],
     },
   ],
@@ -45,42 +50,42 @@ export const resumeData: ResumeData = {
   experience: [
     {
       company: 'Tech Corp Industries',
-      role: 'Senior Software Engineer',
+      role: 'Director of Engineering',
       period: '2022 - Present',
       achievements: [
-        'Led the charge against legacy code, refactoring 50,000+ lines',
-        'Reduced deployment time from hours to minutes using CI/CD',
-        'Mentored junior developers in the ways of clean code',
-        'Saved the day by resolving critical production incidents',
+        'Architected the technical vision for a 50-person engineering org',
+        'Built and scaled 3 high-performing teams from the ground up',
+        'Drove platform modernization saving $2M annually in tech debt',
+        'Established engineering culture that reduced attrition by 40%',
       ],
-      villain: 'THE LEGACY MONOLITH',
-      powers: ['React', 'Node.js', 'AWS', 'PostgreSQL'],
+      villain: 'THE CHAOS OF SCALE',
+      powers: ['Strategy', 'Team Building', 'Architecture', 'Culture'],
     },
     {
       company: 'Startup Ventures',
-      role: 'Full Stack Developer',
+      role: 'Engineering Manager',
       period: '2020 - 2022',
       achievements: [
-        'Built real-time collaboration features from scratch',
-        'Scaled the platform to handle 100K+ concurrent users',
-        'Implemented secure authentication & authorization',
-        'Reduced page load times by 60% through optimization',
+        'Grew engineering team from 5 to 25 while maintaining velocity',
+        'Designed systems architecture supporting 10x user growth',
+        'Implemented agile practices that doubled team output',
+        'Mentored 8 engineers into senior and lead roles',
       ],
       villain: 'THE SCALING CRISIS',
-      powers: ['TypeScript', 'React', 'Redis', 'MongoDB'],
+      powers: ['Leadership', 'System Design', 'Mentorship', 'Agile'],
     },
     {
       company: 'Digital Agency',
-      role: 'Junior Developer',
+      role: 'Tech Lead',
       period: '2018 - 2020',
       achievements: [
-        'Delivered 20+ client projects on time and under budget',
-        'Developed responsive, accessible web applications',
-        'Learned the ancient arts of debugging and coffee brewing',
-        'Graduated from bug-fixing sidekick to feature-building hero',
+        'Led a team of 6 engineers delivering 20+ client projects',
+        'Established code review and quality standards for the org',
+        'Architected reusable component library cutting dev time 50%',
+        'Rose from individual contributor to trusted technical leader',
       ],
       villain: 'DEADLINE DOOM',
-      powers: ['JavaScript', 'HTML/CSS', 'PHP', 'MySQL'],
+      powers: ['Technical Leadership', 'Architecture', 'Delivery', 'Standards'],
     },
   ],
 
@@ -91,42 +96,24 @@ export const resumeData: ResumeData = {
       year: '2018',
       highlights: [
         'Graduated with honors',
-        'Lead developer on capstone project',
-        'Teaching assistant for Algorithms course',
+        'Led 12-person capstone team to victory',
+        'Founded campus tech mentorship program',
       ],
     },
     {
-      institution: 'Online Learning Academy',
-      degree: 'Various Certifications',
-      year: '2018 - Present',
+      institution: 'Leadership Development',
+      degree: 'Executive Education',
+      year: '2020 - Present',
       highlights: [
-        'AWS Solutions Architect',
-        'Advanced React Patterns',
-        'System Design Fundamentals',
+        'AWS Solutions Architect Professional',
+        'Engineering Leadership (Stanford Online)',
+        'Strategic Decision Making (MIT Sloan)',
       ],
     },
   ],
 
-  testimonials: [
-    {
-      name: 'Jane Smith',
-      role: 'Engineering Manager',
-      quote: 'A true hero in our darkest hours of debugging. Always ready to jump in and save the sprint!',
-      heroAlias: 'The Debugging Wizard',
-    },
-    {
-      name: 'John Doe',
-      role: 'Product Manager',
-      quote: 'Delivers features faster than a speeding bullet. Our most reliable developer!',
-      heroAlias: 'Captain Reliable',
-    },
-    {
-      name: 'Alex Johnson',
-      role: 'Senior Developer',
-      quote: 'The best pair programming partner. Together we defeated countless bugs!',
-      heroAlias: 'The Code Companion',
-    },
-  ],
+  // Testimonials loaded from LinkedIn Recommendations
+  testimonials: linkedInTestimonials,
 
   contact: {
     email: 'hero@example.com',

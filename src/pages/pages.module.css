@@ -210,6 +210,565 @@
   color: var(--text-caption);
 }
 
+/* ========== SPIDER-MAN MASK BREAKTHROUGH COVER ========== */
+.coverPageSpider {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--comic-red); /* Spider-Man red background */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+}
+
+/* Halftone Overlay for Authentic Print Feel - darker for red bg */
+.coverPageSpider::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background:
+    radial-gradient(circle, rgba(0, 0, 0, 0.06) 1px, transparent 1px);
+  background-size: 3px 3px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Spider Web Background Pattern - Darker lines for red background */
+.spiderWebBg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background:
+    /* Radial web lines from center-top - darker for visibility on red */
+    repeating-conic-gradient(
+      from 0deg at 50% 50%,
+      transparent 0deg,
+      transparent 8deg,
+      rgba(0, 0, 0, 0.15) 8deg,
+      rgba(0, 0, 0, 0.15) 10deg
+    ),
+    /* Concentric web rings - darker and tighter */
+    repeating-radial-gradient(
+      circle at 50% 50%,
+      transparent 0px,
+      transparent 35px,
+      rgba(0, 0, 0, 0.12) 35px,
+      rgba(0, 0, 0, 0.12) 38px
+    );
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Top Banner - Marvel Comics Group Style */
+.topBanner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: var(--comic-black);
+  padding: var(--spacing-xs) var(--spacing-md);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2px;
+  z-index: 10;
+}
+
+.bannerText {
+  font-family: var(--font-display);
+  font-size: var(--text-sm);
+  color: var(--comic-yellow);
+  letter-spacing: var(--tracking-wider);
+  text-transform: uppercase;
+}
+
+.tmMark {
+  font-family: var(--font-caption);
+  font-size: 6px;
+  color: var(--comic-yellow);
+  vertical-align: super;
+  margin-left: 1px;
+}
+
+/* Corner Box - Top Left */
+.cornerBox {
+  position: absolute;
+  top: 28px;
+  left: var(--spacing-sm);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  z-index: 20; /* Above the banner */
+}
+
+.cornerBoxIcon {
+  width: 40px;
+  height: 40px;
+  background: linear-gradient(135deg, var(--comic-yellow) 0%, #E6D800 100%);
+  border: 3px solid var(--comic-black);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cornerInitial {
+  font-family: var(--font-display);
+  font-size: var(--text-2xl);
+  color: var(--comic-black);
+  text-shadow: none;
+}
+
+/* CCA Position */
+.ccaPosition {
+  position: absolute;
+  top: 28px;
+  right: var(--spacing-sm);
+  z-index: 20; /* Above the banner */
+}
+
+/* Title Treatment - DIAGONAL BLACK BANNER */
+.titleTreatment {
+  position: absolute;
+  top: 70px; /* Lowered to make room for issue box and CCA */
+  left: -20px;
+  right: -20px;
+  background: var(--comic-black);
+  padding: var(--spacing-sm) var(--spacing-xl);
+  transform: rotate(-3deg);
+  z-index: 10; /* Lower than corner box and CCA */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  /* Strong shadow for depth */
+  box-shadow:
+    0 4px 0 rgba(0, 0, 0, 0.5),
+    0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+.theSmall {
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  color: var(--comic-yellow);
+  letter-spacing: var(--tracking-widest);
+  margin-bottom: -4px;
+  text-shadow:
+    1px 1px 0 rgba(0, 0, 0, 0.5),
+    2px 2px 0 rgba(0, 0, 0, 0.3);
+}
+
+.incredibleItalic {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 6vw, 2rem);
+  color: var(--comic-yellow);
+  letter-spacing: var(--tracking-wide);
+  font-style: italic;
+  margin-bottom: -2px;
+  text-shadow:
+    1px 1px 0 rgba(0, 0, 0, 0.5),
+    2px 2px 0 rgba(0, 0, 0, 0.3),
+    3px 3px 0 rgba(0, 0, 0, 0.2);
+}
+
+/* Hero Name - HUGE Text in Banner - Matching IRON ARCHITECT style */
+.heroNameSpider {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 10vw, 3rem);
+  color: var(--comic-yellow);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+  line-height: 0.9;
+  text-align: center;
+  /* Bold 3D shadow effect matching IRON ARCHITECT */
+  text-shadow:
+    2px 2px 0 var(--comic-red),
+    3px 3px 0 var(--comic-red),
+    4px 4px 0 rgba(0, 0, 0, 0.6),
+    5px 5px 0 rgba(0, 0, 0, 0.4);
+}
+
+/* ========== BREAKTHROUGH MASK FRAME - CENTERED ========== */
+
+/* Container for the entire mask + breakthrough effect */
+.spiderMaskFrame {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -45%); /* Slightly higher than center for balance */
+  width: 75%;
+  max-width: 320px;
+  aspect-ratio: 1 / 1.15;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* BREAKTHROUGH BURST EFFECT - Jagged white starburst behind mask */
+.breakthroughBurst {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 115%;
+  height: 115%;
+  background: var(--comic-white);
+  /* Jagged starburst/explosion shape - like paper tearing */
+  clip-path: polygon(
+    50% 0%,
+    55% 8%,
+    62% 2%,
+    65% 12%,
+    75% 5%,
+    77% 15%,
+    88% 12%,
+    85% 22%,
+    95% 25%,
+    90% 33%,
+    100% 40%,
+    92% 45%,
+    98% 55%,
+    90% 58%,
+    95% 68%,
+    85% 68%,
+    88% 80%,
+    78% 77%,
+    75% 88%,
+    67% 82%,
+    60% 92%,
+    55% 85%,
+    50% 95%,
+    45% 85%,
+    40% 92%,
+    33% 82%,
+    25% 88%,
+    22% 77%,
+    12% 80%,
+    15% 68%,
+    5% 68%,
+    10% 58%,
+    2% 55%,
+    8% 45%,
+    0% 40%,
+    10% 33%,
+    5% 25%,
+    15% 22%,
+    12% 12%,
+    23% 15%,
+    25% 5%,
+    35% 12%,
+    38% 2%,
+    45% 8%
+  );
+  z-index: 1;
+  /* Subtle shadow to enhance 3D pop */
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+}
+
+/* Secondary glow layer for depth */
+.breakthroughGlow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 105%;
+  height: 105%;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(255, 255, 255, 0.9) 0%,
+    rgba(255, 255, 255, 0.6) 40%,
+    rgba(255, 242, 0, 0.3) 70%,
+    transparent 100%
+  );
+  z-index: 0;
+  filter: blur(8px);
+}
+
+/* The mask outline frame itself - JUST THE OUTLINE */
+.maskOutline {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  z-index: 3;
+  /* Spider-Man face shape - oval with pointed chin */
+  background: transparent;
+  /* Thick black border defining the mask shape */
+  border: 10px solid var(--comic-black);
+  border-radius: 50% 50% 45% 45% / 55% 55% 45% 45%;
+  /* 3D depth with shadows */
+  box-shadow:
+    inset 0 0 0 4px var(--comic-black),
+    5px 8px 0 rgba(0, 0, 0, 0.4),
+    0 0 0 3px rgba(255, 255, 255, 0.3);
+  overflow: hidden;
+}
+
+/* Photo fills the inside of the mask - like looking THROUGH */
+.photoPlaceholder {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background:
+    /* Halftone dot pattern for newspaper feel */
+    radial-gradient(circle, rgba(0, 0, 0, 0.08) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--newsprint) 0%, var(--aged-paper) 100%);
+  background-size: 4px 4px, 100% 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  overflow: hidden;
+}
+
+.photoPlaceholderInner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-sm);
+  text-align: center;
+  padding: var(--spacing-md);
+}
+
+.placeholderIcon {
+  font-size: var(--text-3xl);
+  opacity: 0.5;
+}
+
+.placeholderText {
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  color: var(--comic-black);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+}
+
+.placeholderSubtext {
+  font-family: var(--font-caption);
+  font-size: var(--text-sm);
+  color: var(--text-caption);
+}
+
+/* Spider-Man BLUE Circular "HIRE ME" Badge - Bottom Right */
+.hireBadge {
+  position: absolute;
+  bottom: 70px; /* Above the headline strip */
+  right: var(--spacing-md);
+  width: 75px;
+  height: 75px;
+  background:
+    radial-gradient(circle at 30% 30%, #00A0E9 0%, var(--comic-blue) 50%, #004A7C 100%);
+  border: 5px solid var(--comic-black);
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transform: rotate(12deg);
+  box-shadow:
+    4px 4px 0 var(--comic-black),
+    inset 0 -4px 0 rgba(0, 0, 0, 0.3);
+  z-index: 20;
+  /* Subtle pulse animation */
+  animation: badgePulse 2s ease-in-out infinite;
+}
+
+@keyframes badgePulse {
+  0%, 100% {
+    transform: rotate(8deg) scale(1);
+  }
+  50% {
+    transform: rotate(8deg) scale(1.05);
+  }
+}
+
+.hireBadgeText {
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  color: var(--comic-white);
+  text-shadow:
+    1px 1px 0 var(--comic-black),
+    2px 2px 0 rgba(0, 0, 0, 0.3);
+  line-height: 1;
+  letter-spacing: var(--tracking-wide);
+}
+
+/* Bottom Newspaper Headline Strip */
+.headlineStrip {
+  position: absolute;
+  bottom: 38px;
+  left: 0;
+  right: 0;
+  background:
+    /* Newspaper texture */
+    repeating-linear-gradient(
+      0deg,
+      transparent 0px,
+      transparent 2px,
+      rgba(0, 0, 0, 0.02) 2px,
+      rgba(0, 0, 0, 0.02) 4px
+    ),
+    var(--comic-white);
+  border-top: 4px solid var(--comic-black);
+  border-bottom: 4px solid var(--comic-black);
+  padding: var(--spacing-sm) var(--spacing-md);
+  text-align: center;
+  z-index: 10;
+  /* Slight paper shadow */
+  box-shadow:
+    inset 0 2px 4px rgba(0, 0, 0, 0.1),
+    0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.headlineText {
+  font-family: var(--font-caption);
+  font-size: var(--text-sm);
+  color: var(--comic-black);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wider);
+  font-weight: 700;
+  /* Newspaper headline style */
+  text-shadow: 0.5px 0.5px 0 rgba(0, 0, 0, 0.1);
+}
+
+/* Footer - Adjusted for red background */
+.coverFooterSpider {
+  position: absolute;
+  bottom: var(--spacing-sm);
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--spacing-sm);
+  font-family: var(--font-caption);
+  font-size: var(--text-xs);
+  color: var(--comic-white);
+  text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.5);
+  z-index: 5;
+}
+
+.footerDot {
+  color: var(--comic-yellow);
+}
+
+/* ========== RESPONSIVE - Spider Cover (Breakthrough Design) ========== */
+@media (max-width: 480px) {
+  .heroNameSpider {
+    font-size: clamp(1.8rem, 10vw, 2.8rem);
+  }
+
+  .titleTreatment {
+    margin-top: 48px;
+  }
+
+  .theSmall {
+    font-size: var(--text-lg);
+  }
+
+  .incredibleItalic {
+    font-size: var(--text-xl);
+  }
+
+  .spiderMaskFrame {
+    width: 70%;
+    max-width: 240px;
+  }
+
+  .maskOutline {
+    border-width: 7px;
+  }
+
+  .placeholderIcon {
+    font-size: var(--text-2xl);
+  }
+
+  .placeholderText {
+    font-size: var(--text-sm);
+  }
+
+  .placeholderSubtext {
+    font-size: var(--text-xs);
+  }
+
+  .hireBadge {
+    width: 60px;
+    height: 60px;
+    bottom: 60px;
+    right: var(--spacing-sm);
+    border-width: 4px;
+  }
+
+  .hireBadgeText {
+    font-size: var(--text-sm);
+  }
+
+  .headlineStrip {
+    bottom: 32px;
+    padding: var(--spacing-xs) var(--spacing-sm);
+  }
+
+  .headlineText {
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wide);
+  }
+
+  .cornerBox {
+    top: 26px;
+    left: var(--spacing-xs);
+  }
+
+  .cornerBoxIcon {
+    width: 32px;
+    height: 32px;
+  }
+
+  .cornerInitial {
+    font-size: var(--text-xl);
+  }
+}
+
+@media (max-width: 360px) {
+  .heroNameSpider {
+    font-size: clamp(1.5rem, 9vw, 2.2rem);
+  }
+
+  .spiderMaskFrame {
+    width: 65%;
+    max-width: 200px;
+  }
+
+  .maskOutline {
+    border-width: 6px;
+  }
+
+  .breakthroughBurst {
+    width: 110%;
+    height: 110%;
+  }
+
+  .hireBadge {
+    width: 50px;
+    height: 50px;
+    bottom: 55px;
+  }
+
+  .hireBadgeText {
+    font-size: var(--text-xs);
+  }
+}
+
 /* ========== INSIDE FRONT COVER (Decorative Left Page) ========== */
 .insideFrontCover {
   position: absolute;
@@ -727,9 +1286,10 @@
   flex-direction: column;
   gap: var(--spacing-sm);
   padding: var(--spacing-md);
+  overflow: hidden;
 }
 
-/* Testimonial panels grow to fill available space */
+/* Testimonial panel fills available space */
 .testimonialsPage > *:not(.pageHeader) {
   flex: 1;
   min-height: 0;
@@ -737,50 +1297,77 @@
 
 .testimonialPanel {
   display: flex;
-  gap: var(--spacing-sm);
-  align-items: flex-start;
+  flex-direction: column;
   height: 100%;
-}
-
-.testimonialAvatar {
-  width: 50px;
-  height: 50px;
-  background: var(--comic-purple);
-  border: 3px solid var(--comic-black);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: var(--font-display);
-  font-size: var(--text-xl);
-  color: var(--comic-white);
-  flex-shrink: 0;
 }
 
 .testimonialContent {
   flex: 1;
   display: flex;
   flex-direction: column;
-  height: 100%;
+  overflow: hidden;
 }
 
 .testimonialQuote {
   font-family: var(--font-body);
-  font-size: var(--text-sm);
+  font-size: var(--text-lg);
+  line-height: 1.55;
   font-style: italic;
   margin-bottom: var(--spacing-xs);
+  overflow-y: auto;
+  flex: 1;
+}
+
+.testimonialAttribution {
+  margin-top: var(--spacing-sm);
+  padding-left: var(--spacing-md);
 }
 
 .testimonialAuthor {
   font-family: var(--font-display);
-  font-size: var(--text-xs);
+  font-size: var(--text-xl);
   color: var(--comic-blue);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+}
+
+.heroAlias {
+  font-family: var(--font-caption);
+  font-size: var(--text-sm);
+  margin-left: var(--spacing-sm);
+  opacity: 0.7;
+  text-transform: none;
+  letter-spacing: normal;
 }
 
 .testimonialRole {
-  font-family: var(--font-caption);
-  font-size: var(--text-xs);
+  font-family: var(--font-body);
+  font-size: var(--text-base);
   color: var(--text-caption);
+  margin-top: 2px;
+}
+
+/* Compact styles for multiple testimonials on one page */
+.testimonialsPageMultiple {
+  gap: var(--spacing-xs);
+  padding: var(--spacing-sm);
+}
+
+.testimonialPanelCompact {
+  /* Panels share space equally */
+}
+
+.testimonialQuoteCompact {
+  font-size: var(--text-base);
+  line-height: 1.45;
+}
+
+.testimonialAuthorCompact {
+  font-size: var(--text-lg);
+}
+
+.testimonialRoleCompact {
+  font-size: var(--text-sm);
 }
 
 /* ========== BACK COVER ========== */

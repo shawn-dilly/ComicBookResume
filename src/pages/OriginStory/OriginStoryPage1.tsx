@@ -24,7 +24,7 @@ const OriginStoryPage1 = forwardRef<HTMLDivElement>((_, ref) => {
           <Panel variant="angled" animate animationDelay={0.2}>
             <SpeechBubble variant="thought" tailDirection="bottom-left" maxWidth="100%">
               <span style={{ fontSize: '11px' }}>
-                With great code comes great responsibility!
+                With great teams comes great impact!
               </span>
             </SpeechBubble>
           </Panel>
@@ -38,7 +38,7 @@ const OriginStoryPage1 = forwardRef<HTMLDivElement>((_, ref) => {
           <Panel variant="standard" animate animationDelay={0.4}>
             <SpeechBubble variant="speech" tailDirection="top-right" maxWidth="100%">
               <span style={{ fontSize: '11px' }}>
-                I shall defend the codebase!
+                I shall forge the future!
               </span>
             </SpeechBubble>
             <Caption variant="location">

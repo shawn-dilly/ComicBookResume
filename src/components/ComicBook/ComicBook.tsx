@@ -174,6 +174,7 @@ const ComicBook = forwardRef<ComicBookRef, ComicBookProps>(
         swipeDistance={30}
         clickEventForward={true}
         useMouseEvents={true}
+        style={{}}
       >
         {children}
       </HTMLFlipBook>

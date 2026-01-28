@@ -1,0 +1,253 @@
+/**
+ * ComicBookGSAP - CSS Module
+ * Silver Age Marvel-inspired comic book with custom GSAP page turn animations
+ */
+
+/* ============================================
+   SCENE CONTAINER
+   ============================================ */
+
+.scene {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  perspective: 2500px;
+  overflow: hidden;
+}
+
+/* ============================================
+   BOOK CONTAINER
+   ============================================ */
+
+.book {
+  position: relative;
+  width: calc(var(--page-width, 350px) * 2);
+  height: var(--page-height, 525px);
+  transform-style: preserve-3d;
+  /* Critical: contain paint prevents children from rendering outside bounds */
+  contain: paint;
+  /* Book shadow */
+  box-shadow:
+    0 0 30px rgba(0, 0, 0, 0.4),
+    0 0 60px rgba(0, 0, 0, 0.15);
+}
+
+/* Book spine shadow - adds depth */
+.book::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 20px;
+  transform: translateX(-50%);
+  background: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0.3) 0%,
+    rgba(0, 0, 0, 0.1) 30%,
+    rgba(0, 0, 0, 0.1) 70%,
+    rgba(0, 0, 0, 0.3) 100%
+  );
+  z-index: 100;
+  pointer-events: none;
+}
+
+/* ============================================
+   PAGE STYLES
+   ============================================ */
+
+.page {
+  position: absolute;
+  width: 50%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: z-index 0s;
+  cursor: pointer;
+}
+
+/* Right pages anchor to the spine (left edge of right half) */
+.pageRight {
+  right: 0;
+  transform-origin: left center;
+}
+
+/* ============================================
+   PAGE FACES (Front and Back)
+   ============================================ */
+
+.pageFace {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+/* Front face */
+.pageFront {
+  background: var(--newsprint, #F5F0E1);
+  z-index: 2;
+}
+
+/* Back face (rotated 180deg to show when page flips) */
+.pageBack {
+  background: var(--newsprint-dark, #E8E0C8);
+  transform: rotateY(180deg);
+  z-index: 1;
+}
+
+/* ============================================
+   PAGE CONTENT WRAPPER
+   ============================================ */
+
+.pageWrapper {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Ensure child pages fill the wrapper */
+.pageWrapper > * {
+  width: 100%;
+  height: 100%;
+}
+
+/* Blank page placeholder */
+.blankPage {
+  width: 100%;
+  height: 100%;
+  background: var(--newsprint-dark, #E8E0C8);
+}
+
+/* Back face content - paper texture */
+.pageBackContent {
+  width: 100%;
+  height: 100%;
+  background: var(--newsprint-dark, #E8E0C8);
+  /* Subtle paper texture */
+  background-image:
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0, 0, 0, 0.02) 2px,
+      rgba(0, 0, 0, 0.02) 4px
+    );
+}
+
+/* ============================================
+   COVER PAGE STYLES
+   ============================================ */
+
+.coverPage .pageFront {
+  /* Cover styling is handled by the CoverPage component */
+}
+
+.coverPage .pageBack {
+  background: linear-gradient(135deg, #8B0000 0%, #5C0000 100%);
+}
+
+.backCover .pageFront {
+  /* Back cover styling handled by BackCoverPage component */
+}
+
+.backCover .pageBack {
+  background: var(--comic-red, #ED1C24);
+  box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.2);
+}
+
+/* ============================================
+   PAGE EDGE GRADIENTS (Depth effect)
+   ============================================ */
+
+.pageGradient {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 3;
+  background: linear-gradient(
+    to right,
+    rgba(0, 0, 0, 0.06) 0%,
+    transparent 5%,
+    transparent 100%
+  );
+}
+
+.pageGradientBack {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 3;
+  background: linear-gradient(
+    to left,
+    rgba(0, 0, 0, 0.06) 0%,
+    transparent 5%,
+    transparent 100%
+  );
+}
+
+/* ============================================
+   CLICK ZONES (Navigation)
+   ============================================ */
+
+.clickZone {
+  position: absolute;
+  top: 0;
+  width: 50%;
+  height: 100%;
+  z-index: 50;
+  cursor: pointer;
+  /* Visual feedback on hover */
+  transition: background 0.2s ease;
+}
+
+.clickZone:hover {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.clickZone:focus {
+  outline: none;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.clickZoneLeft {
+  left: 0;
+}
+
+.clickZoneRight {
+  right: 0;
+}
+
+/* ============================================
+   ANIMATION STATE CLASSES
+   ============================================ */
+
+.flipping {
+  z-index: 100 !important;
+}
+
+/* ============================================
+   RESPONSIVE ADJUSTMENTS
+   ============================================ */
+
+@media (max-width: 900px) {
+  .book::before {
+    width: 15px;
+  }
+}
+
+@media (max-width: 600px) {
+  .book::before {
+    width: 10px;
+  }
+}

@@ -27,7 +27,7 @@ const OriginStoryPage2 = forwardRef<HTMLDivElement>((_, ref) => {
               <div style={{ flex: 1 }}>
                 <SpeechBubble variant="shout" maxWidth="180px">
                   <span style={{ fontSize: '14px' }}>
-                    And so our hero rises!
+                    And so a leader is forged!
                   </span>
                 </SpeechBubble>
               </div>
@@ -41,7 +41,7 @@ const OriginStoryPage2 = forwardRef<HTMLDivElement>((_, ref) => {
             </div>
             <SpeechBubble variant="speech" tailDirection="bottom-right" maxWidth="100%">
               <span style={{ fontSize: '10px' }}>
-                Every bug shall be squashed!
+                Every team shall be empowered!
               </span>
             </SpeechBubble>
           </Panel>
@@ -63,7 +63,7 @@ const OriginStoryPage2 = forwardRef<HTMLDivElement>((_, ref) => {
                 MISSION:
               </span>
               <span style={{ fontSize: '11px', fontFamily: 'var(--font-body)' }}>
-                Build amazing things. Ship features. Mentor others.
+                Build great teams. Shape the vision. Forge the future.
               </span>
             </div>
           </Panel>
