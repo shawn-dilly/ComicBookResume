@@ -32,10 +32,9 @@ function App() {
   const middleTestimonials = resumeData.testimonials.slice(2, -2);
   const lastTwoTestimonials = resumeData.testimonials.slice(-2);
 
-  // Total pages: Cover + InsideFrontCover + InsideCover + Origin(2) + Skills(2) + Exp(3: PeopleReady + Ezlinks + EarlyCareer) + SpecialProjects + Testimonials(1 + middle + 1) + BackCover
-  const experiencePageCount = 3; // PeopleReady, Ezlinks, EarlyCareer (Geneca+Healthation combined)
-  const testimonialPageCount = 1 + middleTestimonials.length + 1;
-  const totalPages = 3 + 2 + 2 + experiencePageCount + 1 + testimonialPageCount + 1;
+  // Total child pages in the book
+  const totalPages = 14 + middleTestimonials.length;
+
 
   const handlePageChange = useCallback((pageIndex: number) => {
     setCurrentPage(pageIndex);

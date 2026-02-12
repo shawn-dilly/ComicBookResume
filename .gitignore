@@ -33,3 +33,4 @@ dist-ssr
 /.vs/slnx.sqlite-journal
 /.vs/VSWorkspaceState.json
 *.pdf
+/*.png

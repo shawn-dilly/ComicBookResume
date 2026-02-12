@@ -19,9 +19,6 @@ const InsideFrontCoverPage = forwardRef<HTMLDivElement>((_, ref) => {
                   THE INCREDIBLE STORY OF AN
                 </span>
                 <span className={styles.adHero}>ENGINEERING LEADER</span>
-                <div className={styles.adStarburst}>
-                  <span>WOW!</span>
-                </div>
               </div>
             </div>
           </div>

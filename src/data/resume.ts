@@ -21,7 +21,7 @@ export const resumeData: ResumeData = {
     {
       category: 'Leadership',
       skills: [
-        { name: 'Team Building', level: 9, color: 'var(--comic-blue)' },
+        { name: 'Team Building', level: 10, color: 'var(--comic-blue)' },
         { name: 'Management', level: 9, color: 'var(--comic-red)' },
         { name: 'Product Mgmt', level: 8, color: 'var(--comic-green)' },
         { name: 'Agile / Scrum', level: 9, color: 'var(--comic-purple)' },
@@ -31,7 +31,7 @@ export const resumeData: ResumeData = {
       category: 'Architecture',
       skills: [
         { name: 'AWS', level: 9, color: 'var(--comic-cyan)' },
-        { name: 'Microsoft Azure', level: 9, color: 'var(--comic-blue)' },
+        { name: 'Azure', level: 8, color: 'var(--comic-blue)' },
         { name: 'Microservices', level: 9, color: 'var(--comic-orange)' },
         { name: 'Event-Driven', level: 8, color: 'var(--comic-green)' },
       ],
@@ -41,7 +41,7 @@ export const resumeData: ResumeData = {
       skills: [
         { name: 'CI/CD Pipelines', level: 9, color: 'var(--comic-blue)' },
         { name: 'Terraform / IaC', level: 9, color: 'var(--comic-yellow)' },
-        { name: 'Observability', level: 8, color: 'var(--comic-green)' },
+        { name: 'Observability', level: 9, color: 'var(--comic-green)' },
         { name: 'SRE / Reliability', level: 9, color: 'var(--comic-red)' },
       ],
     },
@@ -50,7 +50,7 @@ export const resumeData: ResumeData = {
       skills: [
         { name: 'C# / .NET', level: 9, color: 'var(--comic-purple)' },
         { name: 'TypeScript / React', level: 8, color: 'var(--comic-cyan)' },
-        { name: 'SQL / Postgres', level: 9, color: 'var(--comic-green)' },
+        { name: 'SQL / Postgres', level: 10, color: 'var(--comic-green)' },
         { name: 'REST APIs', level: 8, color: 'var(--comic-orange)' },
       ],
     },

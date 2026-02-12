@@ -69,6 +69,7 @@ const TestimonialsPage = forwardRef<HTMLDivElement, TestimonialsPageProps>(
               className={`${shared.flexPanel} ${isMultiple ? styles.testimonialPanelCompact : ''}`}
               style={{
                 padding: isMultiple ? '10px' : '16px',
+                overflow: 'visible',
                 ...comicStyle,
               }}
             >

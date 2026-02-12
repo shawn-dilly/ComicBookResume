@@ -222,11 +222,31 @@ const ComicBookGSAP = forwardRef<ComicBookGSAPRef, ComicBookGSAPProps>(
       flipNext: () => flipSheet('forward'),
       flipPrev: () => flipSheet('backward'),
       flipTo: (page: number) => {
+        if (isAnimating) return;
         const targetSheet = Math.floor(page / 2);
-        if (targetSheet > currentSheet) {
-          flipSheet('forward');
-        } else if (targetSheet < currentSheet) {
-          flipSheet('backward');
+        if (targetSheet === currentSheet) return;
+
+        // Instantly jump all sheets to their correct positions
+        for (let i = 0; i < totalSheets; i++) {
+          const sheetEl = sheetRefs.current[i];
+          if (!sheetEl) continue;
+          const shouldBeFlipped = i < targetSheet;
+          gsap.set(sheetEl, {
+            rotateY: shouldBeFlipped ? -180 : 0,
+            zIndex: getSheetZIndex(i, shouldBeFlipped),
+          });
+        }
+
+        setCurrentSheet(targetSheet);
+        const pageIndex = targetSheet * 2;
+        onPageChange?.(pageIndex);
+
+        if (targetSheet > 0 && !isOpen) {
+          setIsOpen(true);
+          onBookOpen?.();
+        } else if (targetSheet === 0 && isOpen) {
+          setIsOpen(false);
+          onBookClose?.();
         }
       },
       getCurrentPage: () => currentSheet * 2,
