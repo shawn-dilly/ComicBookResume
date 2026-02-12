@@ -9,3 +9,6 @@ export { CCAStamp } from './CCAStamp';
 
 // Common Components
 export { Caption, PowerMeter, IssueNumber } from './common';
+
+// Layout Components
+export { ContactSidebar } from './ContactSidebar';

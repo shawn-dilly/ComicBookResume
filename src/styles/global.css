@@ -64,21 +64,10 @@ body {
   overflow: hidden;
 }
 
-.comic-wrapper.closed .stf__parent {
-  margin-left: -50%;
-  position: relative;
-  left: 25%;
-}
-
 /* When book is open, show full book centered */
 .comic-wrapper.open {
   justify-content: center;
   overflow: visible;
-}
-
-.comic-wrapper.open .stf__parent {
-  margin-left: 0;
-  left: 0;
 }
 
 /* Page content base styles */
@@ -225,19 +214,11 @@ body {
   html {
     font-size: 14px;
   }
-
-  .comic-wrapper.closed {
-    padding-right: 8%;
-  }
 }
 
 @media (max-width: 900px) {
   html {
     font-size: 12px;
-  }
-
-  .comic-wrapper.closed {
-    padding-right: 5%;
   }
 }
 
@@ -254,10 +235,6 @@ body {
     font-size: var(--text-lg);
   }
 
-  .comic-wrapper.closed {
-    justify-content: center;
-    padding-right: 0;
-  }
 }
 
 /* Accessibility - Reduce motion */

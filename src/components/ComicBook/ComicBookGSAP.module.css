@@ -52,6 +52,16 @@
   );
   z-index: 100;
   pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+/* When book is closed, hide spine and shadow from the invisible left half */
+.bookClosed {
+  box-shadow: none;
+}
+
+.bookClosed::before {
+  opacity: 0;
 }
 
 /* ============================================
@@ -229,6 +239,7 @@
 
 .clickZone:disabled {
   cursor: default;
+  pointer-events: none;
 }
 
 .clickZoneLeft {

@@ -20,6 +20,7 @@ import {
   useImperativeHandle,
   useState,
   useEffect,
+  useLayoutEffect,
   Children,
   cloneElement,
   isValidElement,
@@ -32,6 +33,8 @@ import styles from './ComicBookGSAP.module.css';
 // Animation configuration
 const FLIP_DURATION = 0.8; // seconds
 const FLIP_EASE = 'power2.inOut';
+const BOOK_SHADOW = '0 0 30px rgba(0,0,0,0.4), 0 0 60px rgba(0,0,0,0.15)';
+const BOOK_SHADOW_HIDDEN = '0 0 30px rgba(0,0,0,0), 0 0 60px rgba(0,0,0,0)';
 
 interface ComicBookGSAPProps {
   children: ReactNode;
@@ -94,6 +97,13 @@ const ComicBookGSAP = forwardRef<ComicBookGSAPRef, ComicBookGSAPProps>(
     // Refs for sheet elements
     const bookRef = useRef<HTMLDivElement>(null);
     const sheetRefs = useRef<(HTMLDivElement | null)[]>([]);
+
+    // Position book for cover-centered mode before first paint
+    useLayoutEffect(() => {
+      if (bookRef.current && Math.floor(startPage / 2) === 0) {
+        gsap.set(bookRef.current, { x: '-25%' });
+      }
+    }, [startPage]);
 
     // Calculate dimensions based on viewport - maximize screen usage
     useEffect(() => {
@@ -188,19 +198,41 @@ const ComicBookGSAP = forwardRef<ComicBookGSAPRef, ComicBookGSAPProps>(
 
         if (direction === 'forward') {
           gsap.set(sheetEl, { zIndex: totalSheets + 10 });
+
+          // Opening from cover: slide book and fade in shadow
+          if (currentSheet === 0 && bookRef.current) {
+            tl.to(bookRef.current, {
+              x: 0,
+              boxShadow: BOOK_SHADOW,
+              duration: FLIP_DURATION,
+              ease: FLIP_EASE,
+            }, 0);
+          }
+
           tl.to(sheetEl, {
             rotateY: -180,
             duration: FLIP_DURATION,
             ease: FLIP_EASE,
-          });
+          }, 0);
           tl.set(sheetEl, { zIndex: getSheetZIndex(sheetToFlip, true) });
         } else {
           gsap.set(sheetEl, { zIndex: totalSheets + 10 });
+
+          // Closing to cover: slide book back and fade out shadow
+          if (newCurrentSheet === 0 && bookRef.current) {
+            tl.to(bookRef.current, {
+              x: '-25%',
+              boxShadow: BOOK_SHADOW_HIDDEN,
+              duration: FLIP_DURATION,
+              ease: FLIP_EASE,
+            }, 0);
+          }
+
           tl.to(sheetEl, {
             rotateY: 0,
             duration: FLIP_DURATION,
             ease: FLIP_EASE,
-          });
+          }, 0);
           tl.set(sheetEl, { zIndex: getSheetZIndex(sheetToFlip, false) });
         }
       },
@@ -234,6 +266,14 @@ const ComicBookGSAP = forwardRef<ComicBookGSAPRef, ComicBookGSAPProps>(
           gsap.set(sheetEl, {
             rotateY: shouldBeFlipped ? -180 : 0,
             zIndex: getSheetZIndex(i, shouldBeFlipped),
+          });
+        }
+
+        // Set book position and shadow: cover-centered or spread
+        if (bookRef.current) {
+          gsap.set(bookRef.current, {
+            x: targetSheet === 0 ? '-25%' : 0,
+            boxShadow: targetSheet === 0 ? BOOK_SHADOW_HIDDEN : BOOK_SHADOW,
           });
         }
 
@@ -321,7 +361,7 @@ const ComicBookGSAP = forwardRef<ComicBookGSAPRef, ComicBookGSAPProps>(
       <div className={styles.scene}>
         <div
           ref={bookRef}
-          className={styles.book}
+          className={`${styles.book} ${currentSheet === 0 ? styles.bookClosed : ''}`}
           style={{
             '--page-width': `${dimensions.width}px`,
             '--page-height': `${dimensions.height}px`,

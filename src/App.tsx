@@ -1,6 +1,7 @@
 import { useCallback, useState, useRef } from 'react';
 
 import { ComicBookGSAP, type ComicBookGSAPRef } from './components/ComicBook';
+import { ContactSidebar } from './components/ContactSidebar';
 import {
   CoverPage,
   InsideFrontCoverPage,
@@ -77,6 +78,7 @@ function App() {
 
   return (
     <div className="app-container">
+      <ContactSidebar />
       <div className={`comic-wrapper ${isBookOpen ? 'open' : 'closed'}`}>
         <ComicBookGSAP
           ref={comicBookRef}

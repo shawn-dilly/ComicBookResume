@@ -1,0 +1,1 @@
+export { ContactSidebar } from './ContactSidebar';

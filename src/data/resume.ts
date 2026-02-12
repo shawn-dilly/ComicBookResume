@@ -218,7 +218,7 @@ export const resumeData: ResumeData = {
     email: 'shawndillenbeck@gmail.com',
     phone: '(331) 454-0486',
     linkedin: 'https://www.linkedin.com/in/shawn-dillenbeck/',
-    github: 'github.com/shawndillenbeck',
+    github: 'https://github.com/shawn-dilly',
     website: '',
     location: 'Bartlett, IL',
   },
