@@ -1,4 +1,4 @@
-import { useRef, useEffect } from 'react';
+import { memo, useRef, useEffect } from 'react';
 import { gsap } from 'gsap';
 import styles from './common.module.css';
 
@@ -20,12 +20,13 @@ const PowerMeter = ({
   className = '',
 }: PowerMeterProps) => {
   const fillRef = useRef<HTMLDivElement>(null);
+  const hasAnimated = useRef(false);
   const clampedLevel = Math.min(10, Math.max(0, level));
   const percentage = (clampedLevel / 10) * 100;
 
   useEffect(() => {
-    if (animate && fillRef.current) {
-      gsap.fromTo(
+    if (animate && !hasAnimated.current && fillRef.current) {
+      const tween = gsap.fromTo(
         fillRef.current,
         { width: '0%' },
         {
@@ -35,6 +36,8 @@ const PowerMeter = ({
           ease: 'power2.out',
         }
       );
+      hasAnimated.current = true;
+      return () => { tween.kill(); };
     }
   }, [animate, animationDelay, percentage]);
 
@@ -50,7 +53,7 @@ const PowerMeter = ({
           className={styles.powerFill}
           style={{
             backgroundColor: color,
-            width: animate ? '0%' : `${percentage}%`,
+            width: '0%',
           }}
         />
         {/* Segment markers */}
@@ -66,4 +69,4 @@ const PowerMeter = ({
   );
 };
 
-export default PowerMeter;
+export default memo(PowerMeter);

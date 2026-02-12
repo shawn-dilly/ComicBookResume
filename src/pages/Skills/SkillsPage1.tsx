@@ -1,49 +1,56 @@
 import { forwardRef } from 'react';
 import { Page, Panel, PowerMeter } from '../../components';
 import { resumeData } from '../../data/resume';
-import styles from '../pages.module.css';
+import shared from '../pages.module.css';
+import styles from '../Skills.module.css';
 
-const SkillsPage1 = forwardRef<HTMLDivElement>((_, ref) => {
-  // Get first two skill categories
-  const skillCategories = resumeData.skills.slice(0, 2);
+interface SkillsPage1Props {
+  isVisible?: boolean;
+}
 
-  return (
-    <Page ref={ref} pageNumber={5} variant="inner">
-      <div className={styles.skillsPage}>
-        <h2 className={styles.pageHeader}>Powers & Abilities</h2>
+const SkillsPage1 = forwardRef<HTMLDivElement, SkillsPage1Props>(
+  ({ isVisible = false }, ref) => {
+    // Get first two skill categories
+    const skillCategories = resumeData.skills.slice(0, 2);
 
-        {skillCategories.map((category, catIndex) => (
-          <Panel
-            key={category.category}
-            variant="standard"
-            animate
-            animationDelay={catIndex * 0.2}
-            className={styles.flexPanel}
-            style={{ padding: '12px' }}
-          >
-            <div className={styles.skillCategory}>
-              <h3 className={styles.skillCategoryHeader}>
-                {category.category}
-              </h3>
-              <div className={styles.skillsList}>
-                {category.skills.map((skill, skillIndex) => (
-                  <PowerMeter
-                    key={skill.name}
-                    label={skill.name}
-                    level={skill.level}
-                    color={skill.color}
-                    animate
-                    animationDelay={catIndex * 0.2 + skillIndex * 0.1 + 0.3}
-                  />
-                ))}
+    return (
+      <Page ref={ref} pageNumber={6} variant="inner">
+        <div className={styles.skillsPage}>
+          <h2 className={shared.pageHeader}>Powers & Abilities</h2>
+
+          {skillCategories.map((category, catIndex) => (
+            <Panel
+              key={category.category}
+              variant="standard"
+              animate
+              animationDelay={catIndex * 0.2}
+              className={shared.flexPanel}
+              style={{ padding: '12px' }}
+            >
+              <div className={styles.skillCategory}>
+                <h3 className={styles.skillCategoryHeader}>
+                  {category.category}
+                </h3>
+                <div className={styles.skillsList}>
+                  {category.skills.map((skill, skillIndex) => (
+                    <PowerMeter
+                      key={skill.name}
+                      label={skill.name}
+                      level={skill.level}
+                      color={skill.color}
+                      animate={isVisible}
+                      animationDelay={catIndex * 0.2 + skillIndex * 0.1 + 0.3}
+                    />
+                  ))}
+                </div>
               </div>
-            </div>
-          </Panel>
-        ))}
-      </div>
-    </Page>
-  );
-});
+            </Panel>
+          ))}
+        </div>
+      </Page>
+    );
+  }
+);
 
 SkillsPage1.displayName = 'SkillsPage1';
 

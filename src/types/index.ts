@@ -6,6 +6,7 @@ export interface ResumeData {
   skills: SkillCategory[];
   experience: Experience[];
   education: Education[];
+  specialProjects?: SpecialProject[];
   testimonials: Testimonial[];
   contact: ContactInfo;
 }
@@ -28,13 +29,21 @@ export interface Skill {
   color?: string;
 }
 
+export interface ExperienceRole {
+  title: string;
+  period: string;
+  highlights: string[];
+}
+
 export interface Experience {
   company: string;
   role: string;
   period: string;
+  location?: string;
   achievements: string[];
   villain?: string; // The "challenge" overcome
   powers?: string[]; // Technologies/skills used
+  roles?: ExperienceRole[]; // For companies with multiple roles (timeline display)
 }
 
 export interface Education {
@@ -42,6 +51,14 @@ export interface Education {
   degree: string;
   year: string;
   highlights?: string[];
+}
+
+export interface SpecialProject {
+  codename: string;
+  title: string;
+  description: string;
+  impact: string;
+  tech: string[];
 }
 
 export interface Testimonial {

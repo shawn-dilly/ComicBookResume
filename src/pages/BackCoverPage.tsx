@@ -2,7 +2,7 @@ import { forwardRef, useRef, useEffect } from 'react';
 import { gsap } from 'gsap';
 import { Page } from '../components';
 import { resumeData } from '../data/resume';
-import styles from './pages.module.css';
+import styles from './BackCover.module.css';
 
 const BackCoverPage = forwardRef<HTMLDivElement>((_, ref) => {
   const ctaRef = useRef<HTMLDivElement>(null);

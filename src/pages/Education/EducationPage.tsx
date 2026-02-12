@@ -1,7 +1,8 @@
 import { forwardRef } from 'react';
 import { Page, Panel } from '../../components';
 import { resumeData } from '../../data/resume';
-import styles from '../pages.module.css';
+import shared from '../pages.module.css';
+import styles from '../Education.module.css';
 
 interface EducationPageProps {
   pageNumber: number;
@@ -12,7 +13,7 @@ const EducationPage = forwardRef<HTMLDivElement, EducationPageProps>(
     return (
       <Page ref={ref} pageNumber={pageNumber} variant="inner">
         <div className={styles.educationPage}>
-          <h2 className={styles.pageHeader}>Training Grounds</h2>
+          <h2 className={shared.pageHeader}>Training Grounds</h2>
 
           {resumeData.education.map((edu, index) => (
             <Panel
@@ -20,7 +21,7 @@ const EducationPage = forwardRef<HTMLDivElement, EducationPageProps>(
               variant="standard"
               animate
               animationDelay={index * 0.2}
-              className={`${styles.flexPanel} ${styles.academyPanel}`}
+              className={`${shared.flexPanel} ${styles.academyPanel}`}
             >
               <h3 className={styles.academyName}>{edu.institution}</h3>
               <p className={styles.academyDegree}>{edu.degree}</p>

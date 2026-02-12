@@ -25,3 +25,11 @@ dist-ssr
 /.playwright-mcp
 /.vs/resume-page/FileContentIndex
 /nul
+/.vs/resume-page/v17/.wsuo
+/.vs/resume-page/v17/DocumentLayout.json
+/.vs/resume-page/v17/TestStore/0/000.testlog
+/.vs/resume-page/v17/TestStore/0/testlog.manifest
+/.vs/slnx.sqlite
+/.vs/slnx.sqlite-journal
+/.vs/VSWorkspaceState.json
+*.pdf

@@ -1,4 +1,4 @@
-import { useRef, useEffect, type ReactNode } from 'react';
+import { memo, useRef, useEffect, type ReactNode } from 'react';
 import { gsap } from 'gsap';
 import type { PanelVariant } from '../../types';
 import styles from './Panel.module.css';
@@ -30,7 +30,7 @@ const Panel = ({
 
   useEffect(() => {
     if (animate && panelRef.current) {
-      gsap.fromTo(
+      const tween = gsap.fromTo(
         panelRef.current,
         {
           opacity: 0,
@@ -44,6 +44,7 @@ const Panel = ({
           ease: 'back.out(1.2)',
         }
       );
+      return () => { tween.kill(); };
     }
   }, [animate, animationDelay]);
 
@@ -67,4 +68,4 @@ const Panel = ({
   );
 };
 
-export default Panel;
+export default memo(Panel);

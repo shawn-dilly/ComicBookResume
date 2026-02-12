@@ -60,6 +60,11 @@
   z-index: 2;
 }
 
+/* Reserve space at bottom for page number on inner pages */
+.inner .pageContent {
+  bottom: 24px;
+}
+
 .pageNumberLeft {
   left: var(--spacing-md);
 }

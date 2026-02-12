@@ -9,8 +9,10 @@ import {
   OriginStoryPage2,
   SkillsPage1,
   SkillsPage2,
-  ExperiencePage,
-  EducationPage,
+  ExperiencePeopleReady,
+  ExperienceEzlinks,
+  ExperienceEarlyCareer,
+  SpecialProjectsPage,
   TestimonialsPage,
   BackCoverPage,
 } from './pages';
@@ -30,9 +32,10 @@ function App() {
   const middleTestimonials = resumeData.testimonials.slice(2, -2);
   const lastTwoTestimonials = resumeData.testimonials.slice(-2);
 
-  // Total pages: Cover + InsideFrontCover + InsideCover + Origin(2) + Skills(2) + Exp(dynamic) + Edu + Testimonials(1 + middle + 1) + BackCover
+  // Total pages: Cover + InsideFrontCover + InsideCover + Origin(2) + Skills(2) + Exp(3: PeopleReady + Ezlinks + EarlyCareer) + SpecialProjects + Testimonials(1 + middle + 1) + BackCover
+  const experiencePageCount = 3; // PeopleReady, Ezlinks, EarlyCareer (Geneca+Healthation combined)
   const testimonialPageCount = 1 + middleTestimonials.length + 1;
-  const totalPages = 3 + 2 + 2 + resumeData.experience.length + 1 + testimonialPageCount + 1;
+  const totalPages = 3 + 2 + 2 + experiencePageCount + 1 + testimonialPageCount + 1;
 
   const handlePageChange = useCallback((pageIndex: number) => {
     setCurrentPage(pageIndex);
@@ -65,15 +68,13 @@ function App() {
     enabled: true,
   });
 
-  // Generate experience pages dynamically
-  const experiencePages = resumeData.experience.map((exp, index) => (
-    <ExperiencePage
-      key={`exp-${index}`}
-      experience={exp}
-      pageNumber={8 + index}
-      isFirst={index === 0}
-    />
-  ));
+  // Experience data references - lookup by company name for resilience to reordering
+  const findExperience = (company: string) =>
+    resumeData.experience.find(e => e.company === company)!;
+  const peopleReady = findExperience('PeopleReady');
+  const ezlinks = findExperience('Ezlinks Golf');
+  const geneca = findExperience('Geneca');
+  const healthation = findExperience('Healthation');
 
   return (
     <div className="app-container">
@@ -91,14 +92,29 @@ function App() {
           <InsideCoverPage />
           <OriginStoryPage1 />
           <OriginStoryPage2 />
-          <SkillsPage1 />
-          <SkillsPage2 />
-          {experiencePages}
-          <EducationPage pageNumber={7 + resumeData.experience.length} />
+          <SkillsPage1 isVisible={currentPage === 6} />
+          <SkillsPage2 isVisible={currentPage === 6} />
+          <ExperiencePeopleReady
+            key="exp-peopleready"
+            experience={peopleReady}
+            pageNumber={8}
+          />
+          <ExperienceEzlinks
+            key="exp-ezlinks"
+            experience={ezlinks}
+            pageNumber={9}
+          />
+          <ExperienceEarlyCareer
+            key="exp-early-career"
+            geneca={geneca}
+            healthation={healthation}
+            pageNumber={10}
+          />
+          <SpecialProjectsPage pageNumber={11} />
           {/* First page with 2 testimonials */}
           <TestimonialsPage
             key="testimonials-first"
-            pageNumber={8 + resumeData.experience.length}
+            pageNumber={12}
             testimonials={firstTwoTestimonials}
             showHeader={true}
           />
@@ -106,7 +122,7 @@ function App() {
           {middleTestimonials.map((testimonial, index) => (
             <TestimonialsPage
               key={`testimonial-${index + 2}`}
-              pageNumber={9 + resumeData.experience.length + index}
+              pageNumber={13 + index}
               testimonials={[testimonial]}
               showHeader={false}
             />
@@ -114,7 +130,7 @@ function App() {
           {/* Last page with 2 testimonials */}
           <TestimonialsPage
             key="testimonials-last"
-            pageNumber={9 + resumeData.experience.length + middleTestimonials.length}
+            pageNumber={13 + middleTestimonials.length}
             testimonials={lastTwoTestimonials}
             showHeader={false}
           />
@@ -124,7 +140,7 @@ function App() {
 
       {!isBookOpen && currentPage === 0 && (
         <div className="click-hint">
-          ← CLICK TO OPEN
+          ↑ CLICK COVER TO OPEN ↑
         </div>
       )}
 

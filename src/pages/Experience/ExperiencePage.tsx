@@ -1,7 +1,8 @@
 import { forwardRef } from 'react';
 import { Page, Panel, ActionWord } from '../../components';
 import type { Experience } from '../../types';
-import styles from '../pages.module.css';
+import shared from '../pages.module.css';
+import styles from '../Experience.module.css';
 
 interface ExperiencePageProps {
   experience: Experience;
@@ -14,13 +15,13 @@ const ExperiencePage = forwardRef<HTMLDivElement, ExperiencePageProps>(
     return (
       <Page ref={ref} pageNumber={pageNumber} variant="inner">
         <div className={styles.experiencePage}>
-          {isFirst && <h2 className={styles.pageHeader}>Epic Battles</h2>}
+          {isFirst && <h2 className={shared.pageHeader}>Epic Battles</h2>}
 
           <Panel
             variant="splash"
             animate
             animationDelay={0.1}
-            className={styles.flexPanel}
+            className={shared.flexPanel}
             style={{ flex: 1 }}
           >
             <div className={styles.battlePanel}>
@@ -33,7 +34,7 @@ const ExperiencePage = forwardRef<HTMLDivElement, ExperiencePageProps>(
               </div>
 
               {experience.villain && (
-                <div className={styles.villainBadge}>
+                <div className={shared.villainBadge}>
                   VS. {experience.villain}
                 </div>
               )}
@@ -49,7 +50,7 @@ const ExperiencePage = forwardRef<HTMLDivElement, ExperiencePageProps>(
               {experience.powers && experience.powers.length > 0 && (
                 <div className={styles.techPowers}>
                   {experience.powers.map((power) => (
-                    <span key={power} className={styles.techBadge}>
+                    <span key={power} className={shared.techBadge}>
                       {power}
                     </span>
                   ))}

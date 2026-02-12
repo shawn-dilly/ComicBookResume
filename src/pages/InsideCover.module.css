@@ -1,0 +1,179 @@
+/* ========== INSIDE FRONT COVER (Decorative Left Page) ========== */
+.insideFrontCover {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--newsprint-dark);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-lg);
+}
+
+.adPattern {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.vintageAd {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.adBorder {
+  border: 4px solid var(--comic-black);
+  background: var(--comic-cream);
+  padding: var(--spacing-md);
+  width: 90%;
+  max-width: 280px;
+}
+
+.adContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--spacing-xs);
+}
+
+.adHeadline {
+  font-family: var(--font-display);
+  font-size: var(--text-3xl);
+  color: var(--comic-red);
+  text-shadow: 2px 2px 0 var(--comic-black);
+  letter-spacing: var(--tracking-wide);
+}
+
+.adSubhead {
+  font-family: var(--font-body);
+  font-size: var(--text-lg);
+  font-weight: 700;
+  color: var(--comic-black);
+}
+
+.adDivider {
+  width: 60%;
+  height: 3px;
+  background: var(--comic-black);
+  margin: var(--spacing-sm) 0;
+}
+
+.adTagline {
+  font-family: var(--font-caption);
+  font-size: var(--text-sm);
+  color: var(--text-caption);
+  text-transform: uppercase;
+}
+
+.adHero {
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  color: var(--comic-blue);
+  text-shadow: 1px 1px 0 var(--comic-black);
+}
+
+.adStarburst {
+  position: absolute;
+  top: 15%;
+  right: 10%;
+  width: 60px;
+  height: 60px;
+  background: var(--comic-yellow);
+  clip-path: polygon(
+    50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%
+  );
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: rotate(15deg);
+}
+
+.adStarburst span {
+  font-family: var(--font-display);
+  font-size: var(--text-sm);
+  color: var(--comic-red);
+  transform: rotate(-15deg);
+}
+
+.comicInfo {
+  text-align: center;
+  padding: var(--spacing-md);
+  font-family: var(--font-caption);
+  font-size: var(--text-xs);
+  color: var(--text-caption);
+  border-top: 1px dashed var(--comic-black);
+  width: 100%;
+}
+
+.comicInfo p {
+  margin-bottom: var(--spacing-xs);
+}
+
+.smallText {
+  font-size: 8px;
+  line-height: 1.4;
+  opacity: 0.7;
+}
+
+/* ========== INSIDE COVER / CONTACT PAGE ========== */
+.insideCoverPage {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--newsprint);
+  padding: var(--spacing-md);
+  display: flex;
+  flex-direction: column;
+}
+
+.dossierHeader {
+  background: var(--comic-blue);
+  color: var(--comic-white);
+  padding: var(--spacing-sm) var(--spacing-md);
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  text-align: center;
+  border: 3px solid var(--comic-black);
+  margin-bottom: var(--spacing-md);
+}
+
+.dossierContent {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.dossierField {
+  display: flex;
+  border-bottom: 1px dashed var(--comic-black);
+  padding: var(--spacing-xs) 0;
+}
+
+.dossierLabel {
+  font-family: var(--font-caption);
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+  color: var(--text-caption);
+  width: 80px;
+  flex-shrink: 0;
+}
+
+.dossierValue {
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  color: var(--comic-black);
+  font-weight: 700;
+}

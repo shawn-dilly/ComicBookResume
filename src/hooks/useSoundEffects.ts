@@ -19,7 +19,11 @@ const useSoundEffects = (enabled: boolean = true): SoundEffects => {
   useEffect(() => {
     const initAudio = () => {
       if (!audioContextRef.current) {
-        audioContextRef.current = new (window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext)();
+        try {
+          audioContextRef.current = new (window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext)();
+        } catch {
+          // AudioContext not supported — sound effects will be silently disabled
+        }
       }
     };
 

@@ -2,7 +2,7 @@ import { forwardRef, useRef, useEffect } from 'react';
 import { gsap } from 'gsap';
 import { Page, CCAStamp, IssueNumber } from '../components';
 import { resumeData } from '../data/resume';
-import styles from './pages.module.css';
+import styles from './CoverPage.module.css';
 
 const CoverPage = forwardRef<HTMLDivElement>((_, ref) => {
   const titleRef = useRef<HTMLDivElement>(null);
@@ -118,11 +118,11 @@ const CoverPage = forwardRef<HTMLDivElement>((_, ref) => {
           <div className={styles.maskOutline}>
             {/* Photo fills inside the mask - visible THROUGH the cutout */}
             <div className={styles.photoPlaceholder}>
-              <div className={styles.photoPlaceholderInner}>
-                <span className={styles.placeholderIcon}>📷</span>
-                <span className={styles.placeholderText}>YOUR PHOTO</span>
-                <span className={styles.placeholderSubtext}>LinkedIn Profile</span>
-              </div>
+              <img
+                src={`${import.meta.env.BASE_URL}images/profile.jpg`}
+                alt={resumeData.personal.name}
+                className={styles.profilePhoto}
+              />
             </div>
           </div>
         </div>

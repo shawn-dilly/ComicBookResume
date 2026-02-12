@@ -1,6 +1,6 @@
 import { forwardRef } from 'react';
 import { Page } from '../components';
-import styles from './pages.module.css';
+import styles from './InsideCover.module.css';
 
 const InsideFrontCoverPage = forwardRef<HTMLDivElement>((_, ref) => {
   return (

@@ -25,7 +25,7 @@ html, body, #root {
 }
 
 body {
-  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+  background: linear-gradient(135deg, var(--bg-dark-start) 0%, var(--bg-dark-mid) 50%, var(--bg-dark-end) 100%);
 }
 
 /* App Container - Full screen */
@@ -132,67 +132,12 @@ body {
   right: var(--spacing-md);
 }
 
-/* Navigation Controls - Fixed at bottom */
-.nav-controls {
-  position: fixed;
-  bottom: var(--spacing-lg);
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  gap: var(--spacing-md);
-  align-items: center;
-  z-index: var(--z-navigation);
-  background: rgba(0, 0, 0, 0.6);
-  padding: var(--spacing-sm) var(--spacing-lg);
-  border-radius: var(--radius-lg);
-  backdrop-filter: blur(10px);
-}
-
-.nav-button {
-  font-family: var(--font-display);
-  font-size: var(--text-lg);
-  padding: var(--spacing-sm) var(--spacing-lg);
-  background: var(--comic-yellow);
-  border: 3px solid var(--comic-black);
-  color: var(--comic-black);
-  cursor: pointer;
-  text-transform: uppercase;
-  transition: all var(--transition-fast);
-  box-shadow: 3px 3px 0 var(--comic-black);
-}
-
-.nav-button:hover:not(:disabled) {
-  background: var(--comic-orange);
-  transform: translate(-2px, -2px);
-  box-shadow: 5px 5px 0 var(--comic-black);
-}
-
-.nav-button:active:not(:disabled) {
-  transform: translate(1px, 1px);
-  box-shadow: 2px 2px 0 var(--comic-black);
-}
-
-.nav-button:disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
-  background: #cccccc;
-}
-
-.page-indicator {
-  font-family: var(--font-display);
-  font-size: var(--text-xl);
-  color: var(--comic-white);
-  text-shadow: 2px 2px 0 var(--comic-black);
-  min-width: 80px;
-  text-align: center;
-}
-
 /* Click hint for cover */
 .click-hint {
   position: fixed;
-  top: 50%;
-  right: 15%;
-  transform: translateY(-50%);
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
   font-family: var(--font-display);
   font-size: var(--text-xl);
   color: var(--comic-yellow);
@@ -200,16 +145,17 @@ body {
   animation: pulse-hint 1.5s ease-in-out infinite;
   pointer-events: none;
   z-index: var(--z-navigation);
+  white-space: nowrap;
 }
 
 @keyframes pulse-hint {
   0%, 100% {
     opacity: 1;
-    transform: translateY(-50%) translateX(0);
+    transform: translateX(-50%) translateY(0);
   }
   50% {
     opacity: 0.7;
-    transform: translateY(-50%) translateX(-10px);
+    transform: translateX(-50%) translateY(-6px);
   }
 }
 
@@ -290,15 +236,6 @@ body {
     font-size: 12px;
   }
 
-  .nav-controls {
-    padding: var(--spacing-xs) var(--spacing-md);
-  }
-
-  .nav-button {
-    padding: var(--spacing-xs) var(--spacing-md);
-    font-size: var(--text-base);
-  }
-
   .comic-wrapper.closed {
     padding-right: 5%;
   }
@@ -315,7 +252,6 @@ body {
 
   .click-hint {
     font-size: var(--text-lg);
-    right: 5%;
   }
 
   .comic-wrapper.closed {
@@ -342,14 +278,9 @@ body {
     padding: 0;
   }
 
-  .nav-controls,
   .keyboard-hints,
   .click-hint {
     display: none;
   }
 }
 
-/* Navigation controls should always be above the flipbook */
-.nav-controls {
-  z-index: 1000;
-}

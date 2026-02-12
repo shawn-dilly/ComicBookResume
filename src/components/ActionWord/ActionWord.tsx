@@ -1,4 +1,4 @@
-import { useRef, useEffect } from 'react';
+import { memo, useRef, useEffect } from 'react';
 import { gsap } from 'gsap';
 import type { ActionWordType } from '../../types';
 import styles from './ActionWord.module.css';
@@ -77,6 +77,8 @@ const ActionWord = ({
         yoyo: true,
         repeat: 1,
       });
+
+      return () => { tl.kill(); };
     }
   }, [animate, animationDelay, rotation, onAnimationComplete]);
 
@@ -98,4 +100,4 @@ const ActionWord = ({
   );
 };
 
-export default ActionWord;
+export default memo(ActionWord);

@@ -1,0 +1,867 @@
+/* ========== EXPERIENCE PAGE ========== */
+.experiencePage {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  padding: var(--spacing-md);
+  gap: var(--spacing-sm);
+}
+
+/* Experience panels should grow to fill available space */
+.experiencePage > *:not(h2) {
+  flex: 1;
+  min-height: 0;
+}
+
+.battlePanel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: var(--spacing-sm);
+  min-height: 0;
+}
+
+/* Make achievements list fill available space in battle panel */
+.battlePanel .achievementsList {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.battleHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: var(--spacing-sm);
+}
+
+.battleTitle {
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  color: var(--comic-red);
+  text-transform: uppercase;
+}
+
+.battlePeriod {
+  font-family: var(--font-caption);
+  font-size: var(--text-xs);
+  color: var(--text-caption);
+  background: var(--comic-yellow);
+  padding: 2px var(--spacing-xs);
+  border: 1px solid var(--comic-black);
+}
+
+.battleRole {
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  font-weight: 700;
+  color: var(--comic-black);
+  margin-bottom: var(--spacing-xs);
+}
+
+.achievementsList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.achievementItem {
+  font-family: var(--font-body);
+  font-size: var(--text-xs);
+  padding: var(--spacing-xs) 0;
+  padding-left: var(--spacing-md);
+  position: relative;
+}
+
+.achievementItem::before {
+  content: '\2605';
+  position: absolute;
+  left: 0;
+  color: var(--comic-yellow);
+}
+
+.techPowers {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: auto;
+  padding-top: var(--spacing-xs);
+}
+
+/* ========== MISSION CONTROL EXPERIENCE (PeopleReady) ========== */
+.missionControlPage {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  padding: var(--spacing-md);
+  gap: var(--spacing-sm);
+}
+
+/* Mission control main panel - splash with restrained shadow */
+.missionControlPanel {
+  flex: 1;
+  margin-top: 0;
+  position: relative;
+  z-index: 1;
+  box-shadow:
+    3px 3px 0 var(--comic-black),
+    inset 0 0 20px rgba(0, 0, 0, 0.03);
+}
+
+.missionBriefingContainer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  height: 100%;
+}
+
+.missionBriefingHeader {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  background: #0a1628;
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-bottom: 3px solid var(--comic-blue);
+  border-top: 2px solid var(--comic-blue);
+}
+
+.missionClassifiedLabel {
+  font-family: var(--font-display);
+  font-size: var(--text-xs);
+  color: var(--comic-red);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-widest);
+}
+
+.missionBriefingTitle {
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  color: var(--comic-blue);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-widest);
+}
+
+.topSecretStamp {
+  font-family: var(--font-display);
+  font-size: var(--text-xs);
+  color: var(--comic-red);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-widest);
+  transform: rotate(-8deg);
+}
+
+.missionCompanyHeader {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.missionCompanyName {
+  font-family: var(--font-display);
+  font-size: var(--text-2xl);
+  color: var(--comic-red);
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.missionLocationBadge {
+  font-family: var(--font-caption);
+  font-size: var(--text-sm);
+  background: var(--comic-blue);
+  color: var(--comic-white);
+  padding: 2px var(--spacing-sm);
+  border-radius: 12px;
+  border: 1px solid var(--comic-black);
+}
+
+.missionDesignation {
+  display: flex;
+  flex-direction: row;
+  gap: var(--spacing-xs);
+  align-items: center;
+  font-family: var(--font-caption);
+  font-size: var(--text-xs);
+}
+
+.missionDesignationLabel {
+  font-family: var(--font-display);
+  font-size: var(--text-xs);
+  color: var(--comic-blue);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+}
+
+.missionDesignationRole {
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: 700;
+  flex: 1;
+}
+
+.missionDesignationPeriod {
+  font-family: var(--font-caption);
+  font-size: var(--text-sm);
+  color: var(--text-caption);
+}
+
+.missionThreat {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--spacing-sm);
+  background: linear-gradient(135deg, var(--comic-red-mission-start) 0%, var(--comic-red-mission-end) 100%);
+  border: 2px solid var(--comic-red);
+  border-left: 4px solid var(--comic-red);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  box-shadow: inset 0 0 8px rgba(237, 28, 36, 0.2);
+}
+
+.missionThreatLabel {
+  font-family: var(--font-caption);
+  font-size: var(--text-xs);
+  color: var(--comic-white);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+}
+
+.missionThreatTarget {
+  font-family: var(--font-display);
+  font-size: var(--text-sm);
+  color: var(--comic-yellow);
+  text-transform: uppercase;
+  flex: 1;
+}
+
+.missionThreatLevel {
+  font-family: var(--font-display);
+  font-size: 8px;
+  background: var(--comic-red);
+  color: var(--comic-white);
+  padding: 2px 6px;
+  border-radius: 2px;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+  animation: threatPulse 2s ease-in-out infinite;
+}
+
+@keyframes threatPulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.05);
+  }
+}
+
+.missionObjectives {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+
+.missionObjectivesTitle {
+  font-family: var(--font-display);
+  font-size: var(--text-sm);
+  color: var(--comic-blue);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+  padding-bottom: var(--spacing-xs);
+  border-bottom: 2px solid var(--comic-blue);
+  margin-bottom: var(--spacing-xs);
+}
+
+.missionObjectivesList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.missionObjectiveItem {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--spacing-xs);
+  font-family: var(--font-body);
+  font-size: var(--text-xs);
+  padding-left: var(--spacing-lg);
+  padding-right: var(--spacing-md);
+}
+
+.missionObjectiveNumber {
+  font-family: var(--font-caption);
+  font-size: var(--text-xs);
+  color: var(--comic-blue);
+  font-weight: 700;
+  min-width: 20px;
+}
+
+.missionObjectiveText {
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  flex: 1;
+  line-height: 1.3;
+}
+
+.missionObjectiveStatus {
+  font-family: var(--font-display);
+  font-size: var(--text-xs);
+  color: var(--comic-green);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+  flex-shrink: 0;
+  text-shadow: 0 0 1px rgba(0, 166, 81, 0.3);
+}
+
+.classifiedDivider {
+  font-family: var(--font-display);
+  font-size: var(--text-2xl);
+  color: var(--comic-red);
+  text-align: center;
+  letter-spacing: var(--tracking-widest);
+  text-transform: uppercase;
+  opacity: 0.15;
+  padding: var(--spacing-xs) 0;
+  border-top: 2px dashed rgba(237, 28, 36, 0.2);
+  border-bottom: 2px dashed rgba(237, 28, 36, 0.2);
+  transform: rotate(-2deg);
+}
+
+.missionTactics {
+  margin-top: auto;
+  padding: var(--spacing-sm) var(--spacing-sm) var(--spacing-md);
+  border-top: 1px dashed var(--comic-blue);
+}
+
+.missionTacticsTitle {
+  font-family: var(--font-display);
+  font-size: var(--text-xs);
+  color: var(--comic-blue);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+  margin-bottom: var(--spacing-xs);
+}
+
+.missionTacticsBadges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.missionTacticBadge {
+  font-family: var(--font-display);
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+  background: var(--comic-blue);
+  color: var(--comic-white);
+  padding: 3px 6px;
+  border: 1px solid var(--comic-black);
+}
+
+/* ========== RANK UP EXPERIENCE (Ezlinks) ========== */
+.rankPage {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  padding: var(--spacing-md);
+  gap: 0;
+}
+
+.rankCompanyRow {
+  display: flex;
+  align-items: baseline;
+  gap: var(--spacing-sm);
+  margin-bottom: 2px;
+  flex-wrap: wrap;
+}
+
+.rankCompanyName {
+  font-family: var(--font-display);
+  font-size: var(--text-2xl);
+  color: var(--comic-green);
+  text-transform: uppercase;
+  text-shadow: 1px 1px 0 var(--comic-black);
+  margin: 0;
+}
+
+.rankLocation {
+  font-family: var(--font-caption);
+  font-size: var(--text-sm);
+  color: var(--text-caption);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wider);
+}
+
+.rankPeriod {
+  font-family: var(--font-caption);
+  font-size: var(--text-sm);
+  color: var(--text-caption);
+  margin-left: auto;
+}
+
+.rankVillainBadge {
+  display: inline-flex;
+  align-self: flex-start;
+  background: linear-gradient(135deg, var(--comic-green) 0%, var(--comic-green-dark) 100%);
+  color: var(--comic-white);
+  font-family: var(--font-display);
+  font-size: var(--text-sm);
+  padding: 3px var(--spacing-sm);
+  border: 2px solid var(--comic-black);
+  box-shadow: 2px 2px 0 var(--comic-black);
+  margin: var(--spacing-xs) 0;
+}
+
+.rankProgression {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: var(--comic-green) transparent;
+}
+
+.rankCard {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+
+.rankUpBadge {
+  font-family: var(--font-display);
+  font-size: var(--text-xs);
+  color: var(--comic-green);
+  text-align: center;
+  letter-spacing: var(--tracking-widest);
+  padding: var(--spacing-xs) 0;
+  position: relative;
+}
+
+.rankUpBadge::before,
+.rankUpBadge::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 25%;
+  height: 1px;
+  background: var(--comic-green);
+  opacity: 0.4;
+}
+
+.rankUpBadge::before {
+  left: 5%;
+}
+
+.rankUpBadge::after {
+  right: 5%;
+}
+
+.rankCardInner {
+  border: 2px solid var(--comic-black);
+  border-left: 3px solid var(--comic-green);
+  padding: var(--spacing-sm);
+  background: rgba(0, 166, 81, 0.04);
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.15);
+}
+
+.rankCardHeader {
+  display: flex;
+  align-items: baseline;
+  gap: var(--spacing-xs);
+  margin-bottom: var(--spacing-xs);
+  flex-wrap: wrap;
+  border-bottom: 1px solid rgba(0, 166, 81, 0.2);
+  padding-bottom: var(--spacing-xs);
+}
+
+.rankStars {
+  font-size: var(--text-base);
+  color: var(--comic-yellow);
+  text-shadow: 0 0 3px var(--comic-black);
+  flex-shrink: 0;
+}
+
+.rankRoleTitle {
+  font-family: var(--font-display);
+  font-size: var(--text-sm);
+  color: var(--comic-black);
+  text-transform: uppercase;
+}
+
+.rankRolePeriod {
+  font-family: var(--font-caption);
+  font-size: var(--text-xs);
+  color: var(--text-caption);
+  margin-left: auto;
+}
+
+.rankHighlights {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 2px;
+}
+
+.rankHighlightItem {
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  line-height: 1.3;
+  padding: 1px 0;
+  padding-left: var(--spacing-md);
+  position: relative;
+}
+
+.rankHighlightItem::before {
+  content: '\25B8';
+  position: absolute;
+  left: 0;
+  color: var(--comic-green);
+  font-size: 10px;
+}
+
+.rankTechRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px;
+  margin-top: var(--spacing-xs);
+  padding-top: var(--spacing-xs);
+  border-top: 1px solid rgba(0, 166, 81, 0.3);
+}
+
+.rankTechBadge {
+  font-family: var(--font-display);
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+  background: var(--comic-green);
+  color: var(--comic-white);
+  padding: 3px 6px;
+  border: 1px solid var(--comic-black);
+}
+
+/* ========== CASE FILES EXPERIENCE (Geneca) ========== */
+.caseFilePage {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  padding: var(--spacing-md);
+  gap: var(--spacing-sm);
+}
+
+.caseFileHeader {
+  text-align: center;
+  margin-bottom: var(--spacing-sm);
+}
+
+.caseFileSubtitle {
+  font-family: var(--font-display);
+  font-size: var(--text-sm);
+  color: var(--comic-purple);
+  letter-spacing: var(--tracking-widest);
+  text-transform: uppercase;
+  margin: var(--spacing-xs) 0;
+}
+
+.caseFileGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-xs);
+  height: 100%;
+}
+
+.caseFileCard {
+  background: var(--comic-white);
+  border: 2px solid var(--comic-black);
+  border-left: 4px solid var(--comic-purple);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  display: flex;
+  flex-direction: column;
+  box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.2);
+}
+
+.caseFileNumber {
+  font-family: var(--font-caption);
+  font-size: 8px;
+  letter-spacing: var(--tracking-widest);
+  text-transform: uppercase;
+  color: var(--comic-purple);
+  opacity: 0.7;
+  margin-bottom: var(--spacing-xs);
+}
+
+.caseFileReport {
+  font-family: var(--font-body);
+  font-size: var(--text-xs);
+  line-height: 1.3;
+  flex: 1;
+  margin: 0;
+}
+
+.caseFileTools {
+  margin-top: auto;
+  padding-top: var(--spacing-xs);
+}
+
+/* ========== ORIGIN STORY EXPERIENCE (Healthation) ========== */
+.originNarrator {
+  margin-bottom: var(--spacing-xs);
+}
+
+.originCompanyHeader {
+  text-align: center;
+  margin-bottom: var(--spacing-sm);
+}
+
+.originChapterLabel {
+  font-family: var(--font-display);
+  font-size: var(--text-sm);
+  color: var(--comic-orange);
+  letter-spacing: var(--tracking-widest);
+  text-transform: uppercase;
+  margin-bottom: var(--spacing-xs);
+}
+
+.originCompanyName {
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  color: var(--comic-orange);
+  text-transform: uppercase;
+  text-shadow: 2px 2px 0 var(--comic-black);
+  margin: var(--spacing-xs) 0;
+}
+
+.originLocation {
+  font-family: var(--font-caption);
+  font-size: var(--text-xs);
+  color: var(--text-caption);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+  margin: var(--spacing-xs) 0;
+}
+
+.originRoleInfo {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: var(--spacing-sm);
+  margin-top: var(--spacing-xs);
+}
+
+.originRole {
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: 700;
+  color: var(--comic-black);
+}
+
+.originPeriod {
+  font-family: var(--font-caption);
+  font-size: var(--text-xs);
+  color: var(--text-caption);
+}
+
+.originStoryBeats {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.originBeat {
+  font-family: var(--font-body);
+  font-size: var(--text-xs);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-left: 3px solid var(--comic-orange);
+  line-height: 1.4;
+  background: rgba(247, 148, 29, 0.05);
+}
+
+.originBeatOdd {
+  border-left-color: var(--comic-orange);
+}
+
+.originBeatEven {
+  border-left-color: var(--comic-yellow);
+  background: rgba(255, 242, 0, 0.05);
+}
+
+.originClosing {
+  font-family: var(--font-display);
+  font-size: var(--text-sm);
+  color: var(--comic-orange);
+  text-align: center;
+  font-style: italic;
+  margin-top: auto;
+  letter-spacing: var(--tracking-wide);
+}
+
+/* ========== EARLY CAREER COMBINED (Geneca + Healthation) ========== */
+.earlyCareerPage {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  padding: var(--spacing-md);
+  gap: 0;
+}
+
+.earlyCareerSection {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.earlyCareerSectionHeader {
+  border-left: 4px solid;
+  padding-left: var(--spacing-sm);
+  margin-bottom: var(--spacing-xs);
+}
+
+.earlyCareerCompanyRow {
+  display: flex;
+  align-items: baseline;
+  gap: var(--spacing-sm);
+  flex-wrap: wrap;
+}
+
+.earlyCareerCompanyName {
+  font-family: var(--font-display);
+  font-size: var(--text-2xl);
+  text-transform: uppercase;
+  text-shadow: 1px 1px 0 var(--comic-black);
+  margin: 0;
+}
+
+.earlyCareerRole {
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  font-weight: 700;
+  color: var(--comic-black);
+}
+
+.earlyCareerMeta {
+  font-family: var(--font-caption);
+  font-size: var(--text-sm);
+  color: var(--text-caption);
+}
+
+.earlyCareerVillain {
+  display: inline-flex;
+  align-self: flex-start;
+  color: var(--comic-white);
+  font-family: var(--font-display);
+  font-size: var(--text-sm);
+  padding: 2px var(--spacing-sm);
+  margin-bottom: var(--spacing-xs);
+}
+
+.earlyCareerList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-height: 0;
+  overflow-y: auto;
+  scrollbar-width: thin;
+}
+
+.earlyCareerItem {
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  line-height: 1.3;
+  padding: 2px var(--spacing-xs) 2px var(--spacing-sm);
+  border-left: 3px solid;
+}
+
+.earlyCareerTech {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px;
+  margin-top: var(--spacing-xs);
+}
+
+.earlyCareerBadge {
+  font-family: var(--font-display);
+  font-size: var(--text-sm);
+  text-transform: uppercase;
+  color: var(--comic-white);
+  padding: 3px 6px;
+  border: 1px solid var(--comic-black);
+}
+
+.earlyCareerDivider {
+  height: 2px;
+  background: linear-gradient(90deg, var(--comic-purple), var(--comic-orange));
+  margin: var(--spacing-sm) 0;
+  opacity: 0.5;
+  flex-shrink: 0;
+}
+
+/* ========== RESPONSIVE - EXPERIENCE VARIANTS ========== */
+@media (max-width: 480px) {
+  .missionBriefingTitle {
+    font-size: var(--text-base);
+  }
+
+  .missionCompanyName {
+    font-size: var(--text-base);
+  }
+
+  .originCompanyName {
+    font-size: var(--text-lg);
+  }
+
+  .caseFileGrid {
+    gap: 6px;
+  }
+
+  .caseFileCard {
+    padding: 6px var(--spacing-xs);
+  }
+}

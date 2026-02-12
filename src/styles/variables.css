@@ -67,8 +67,26 @@
   --z-panel: 10;
   --z-bubble: 20;
   --z-action-word: 30;
-  --z-navigation: 100;
-  --z-overlay: 200;
+  --z-navigation: 1000;
+  --z-overlay: 2000;
+
+  /* UI Colors */
+  --comic-gray: #CCCCCC;
+
+  /* Background & Atmosphere */
+  --bg-dark-start: #1a1a2e;
+  --bg-dark-mid: #16213e;
+  --bg-dark-end: #0f3460;
+
+  /* Accent Shades (gradients) */
+  --comic-yellow-dark: #E6D800;
+  --comic-blue-light: #00A0E9;
+  --comic-blue-dark: #004A7C;
+  --comic-red-dark: #8B0000;
+  --comic-red-darker: #5C0000;
+  --comic-green-dark: #1a4d2e;
+  --comic-red-mission-start: #1a0000;
+  --comic-red-mission-end: #3d0000;
 }
 
 /* Dark mode overrides (optional) */

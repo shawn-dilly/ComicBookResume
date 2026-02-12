@@ -15,6 +15,7 @@
 import {
   forwardRef,
   useCallback,
+  useMemo,
   useRef,
   useImperativeHandle,
   useState,
@@ -69,17 +70,18 @@ const ComicBookGSAP = forwardRef<ComicBookGSAPRef, ComicBookGSAPProps>(
     },
     ref
   ) => {
-    // Convert children to array
-    const pages = Children.toArray(children).filter(isValidElement) as ReactElement[];
-
-    // Pair pages into sheets (front/back of physical paper)
-    const sheets: Sheet[] = [];
-    for (let i = 0; i < pages.length; i += 2) {
-      sheets.push({
-        front: pages[i],
-        back: pages[i + 1] || null,
-      });
-    }
+    // Convert children to array and pair into sheets (memoized)
+    const sheets = useMemo<Sheet[]>(() => {
+      const pages = Children.toArray(children).filter(isValidElement) as ReactElement[];
+      const result: Sheet[] = [];
+      for (let i = 0; i < pages.length; i += 2) {
+        result.push({
+          front: pages[i],
+          back: pages[i + 1] || null,
+        });
+      }
+      return result;
+    }, [children]);
 
     const totalSheets = sheets.length;
 
@@ -170,8 +172,8 @@ const ComicBookGSAP = forwardRef<ComicBookGSAPRef, ComicBookGSAPProps>(
             setCurrentSheet(newCurrentSheet);
             setIsAnimating(false);
 
-            // Calculate the "page index" for callbacks (approximate)
-            const pageIndex = newCurrentSheet === 0 ? 0 : newCurrentSheet * 2 - 1;
+            // Calculate the "page index" for callbacks — use right-side (odd) page of spread
+            const pageIndex = newCurrentSheet * 2;
             onPageChange?.(pageIndex);
 
             if (newCurrentSheet > 0 && !isOpen) {
@@ -227,7 +229,7 @@ const ComicBookGSAP = forwardRef<ComicBookGSAPRef, ComicBookGSAPProps>(
           flipSheet('backward');
         }
       },
-      getCurrentPage: () => (currentSheet === 0 ? 0 : currentSheet * 2 - 1),
+      getCurrentPage: () => currentSheet * 2,
       isBookOpen: () => isOpen,
     }));
 
@@ -309,21 +311,19 @@ const ComicBookGSAP = forwardRef<ComicBookGSAPRef, ComicBookGSAPProps>(
           {sheets.map((sheet, index) => renderSheet(sheet, index))}
 
           {/* Click zones for navigation */}
-          <div
+          <button
             className={`${styles.clickZone} ${styles.clickZoneLeft}`}
             onClick={handleLeftClick}
-            onKeyDown={(e) => e.key === 'Enter' && handleLeftClick()}
-            role="button"
+            disabled={currentSheet <= 0}
             aria-label="Previous page"
-            tabIndex={0}
+            tabIndex={-1}
           />
-          <div
+          <button
             className={`${styles.clickZone} ${styles.clickZoneRight}`}
             onClick={handleRightClick}
-            onKeyDown={(e) => e.key === 'Enter' && handleRightClick()}
-            role="button"
+            disabled={currentSheet >= totalSheets - 1}
             aria-label="Next page"
-            tabIndex={0}
+            tabIndex={-1}
           />
         </div>
       </div>

@@ -148,7 +148,7 @@
 }
 
 .coverPage .pageBack {
-  background: linear-gradient(135deg, #8B0000 0%, #5C0000 100%);
+  background: linear-gradient(135deg, var(--comic-red-dark) 0%, var(--comic-red-darker) 100%);
 }
 
 .backCover .pageFront {
@@ -207,17 +207,28 @@
   height: 100%;
   z-index: 50;
   cursor: pointer;
+  /* Reset button styles */
+  background: transparent;
+  border: none;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  color: inherit;
   /* Visual feedback on hover */
   transition: background 0.2s ease;
 }
 
-.clickZone:hover {
+.clickZone:hover:not(:disabled) {
   background: rgba(255, 255, 255, 0.03);
 }
 
-.clickZone:focus {
-  outline: none;
-  background: rgba(255, 255, 255, 0.05);
+.clickZone:focus-visible {
+  outline: 2px solid var(--comic-yellow);
+  outline-offset: -2px;
+}
+
+.clickZone:disabled {
+  cursor: default;
 }
 
 .clickZoneLeft {

@@ -1,13 +1,14 @@
 import { forwardRef } from 'react';
 import { Page } from '../components';
 import { resumeData } from '../data/resume';
-import styles from './pages.module.css';
+import shared from './pages.module.css';
+import styles from './InsideCover.module.css';
 
 const InsideCoverPage = forwardRef<HTMLDivElement>((_, ref) => {
   const { personal, contact } = resumeData;
 
   return (
-    <Page ref={ref} pageNumber={2} variant="inner">
+    <Page ref={ref} pageNumber={3} variant="inner">
       <div className={styles.insideCoverPage}>
         <div className={styles.dossierHeader}>
           S.H.I.E.L.D. PERSONNEL FILE
@@ -68,7 +69,7 @@ const InsideCoverPage = forwardRef<HTMLDivElement>((_, ref) => {
           )}
         </div>
 
-        <div className={styles.classifiedStamp}>
+        <div className={shared.classifiedStamp}>
           TOP SECRET
         </div>
       </div>

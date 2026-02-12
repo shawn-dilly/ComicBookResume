@@ -2,7 +2,8 @@ import React, { forwardRef } from 'react';
 import { Page, Panel, SpeechBubble } from '../components';
 import { resumeData } from '../data/resume';
 import type { Testimonial } from '../types';
-import styles from './pages.module.css';
+import shared from './pages.module.css';
+import styles from './Testimonials.module.css';
 
 interface TestimonialsPageProps {
   pageNumber: number;
@@ -54,8 +55,8 @@ const TestimonialsPage = forwardRef<HTMLDivElement, TestimonialsPageProps>(
     return (
       <Page ref={ref} pageNumber={pageNumber} variant="inner">
         <div className={`${styles.testimonialsPage} ${isMultiple ? styles.testimonialsPageMultiple : ''}`}>
-          {showHeader && <h2 className={styles.pageHeader}>Mighty Allies</h2>}
-          {!showHeader && <h2 className={styles.pageHeader}>Mighty Allies (Continued)</h2>}
+          {showHeader && <h2 className={shared.pageHeader}>Mighty Allies</h2>}
+          {!showHeader && <h2 className={shared.pageHeader}>Mighty Allies (Continued)</h2>}
 
           {displayTestimonials.map((testimonial, index) => {
             const comicStyle = getComicPanelStyle(testimonial.name);
@@ -65,7 +66,7 @@ const TestimonialsPage = forwardRef<HTMLDivElement, TestimonialsPageProps>(
               variant="standard"
               animate
               animationDelay={index * 0.15}
-              className={`${styles.flexPanel} ${isMultiple ? styles.testimonialPanelCompact : ''}`}
+              className={`${shared.flexPanel} ${isMultiple ? styles.testimonialPanelCompact : ''}`}
               style={{
                 padding: isMultiple ? '10px' : '16px',
                 ...comicStyle,

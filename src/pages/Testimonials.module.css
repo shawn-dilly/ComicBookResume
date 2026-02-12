@@ -1,0 +1,94 @@
+/* ========== TESTIMONIALS PAGE ========== */
+.testimonialsPage {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-md);
+  overflow: hidden;
+}
+
+/* Testimonial panel fills available space */
+.testimonialsPage > *:not(h2) {
+  flex: 1;
+  min-height: 0;
+}
+
+.testimonialPanel {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.testimonialContent {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.testimonialQuote {
+  font-family: var(--font-body);
+  font-size: var(--text-lg);
+  line-height: 1.55;
+  font-style: italic;
+  margin-bottom: var(--spacing-xs);
+  overflow-y: auto;
+  flex: 1;
+}
+
+.testimonialAttribution {
+  margin-top: var(--spacing-sm);
+  padding-left: var(--spacing-md);
+}
+
+.testimonialAuthor {
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  color: var(--comic-blue);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+}
+
+.heroAlias {
+  font-family: var(--font-caption);
+  font-size: var(--text-sm);
+  margin-left: var(--spacing-sm);
+  opacity: 0.7;
+  text-transform: none;
+  letter-spacing: normal;
+}
+
+.testimonialRole {
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  color: var(--text-caption);
+  margin-top: 2px;
+}
+
+/* Compact styles for multiple testimonials on one page */
+.testimonialsPageMultiple {
+  gap: var(--spacing-xs);
+  padding: var(--spacing-sm);
+}
+
+.testimonialPanelCompact {
+  /* Panels share space equally */
+}
+
+.testimonialQuoteCompact {
+  font-size: var(--text-base);
+  line-height: 1.45;
+}
+
+.testimonialAuthorCompact {
+  font-size: var(--text-lg);
+}
+
+.testimonialRoleCompact {
+  font-size: var(--text-sm);
+}

@@ -1,4 +1,4 @@
-import { useRef, useEffect, type ReactNode } from 'react';
+import { memo, useRef, useEffect, type ReactNode } from 'react';
 import { gsap } from 'gsap';
 import type { BubbleVariant, TailDirection } from '../../types';
 import styles from './SpeechBubble.module.css';
@@ -26,7 +26,7 @@ const SpeechBubble = ({
 
   useEffect(() => {
     if (animate && bubbleRef.current) {
-      gsap.fromTo(
+      const tween = gsap.fromTo(
         bubbleRef.current,
         {
           opacity: 0,
@@ -42,6 +42,7 @@ const SpeechBubble = ({
           ease: 'back.out(1.5)',
         }
       );
+      return () => { tween.kill(); };
     }
   }, [animate, animationDelay]);
 
@@ -63,4 +64,4 @@ const SpeechBubble = ({
   );
 };
 
-export default SpeechBubble;
+export default memo(SpeechBubble);

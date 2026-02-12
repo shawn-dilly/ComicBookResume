@@ -35,7 +35,7 @@
 .navButton:disabled {
   opacity: 0.4;
   cursor: not-allowed;
-  background: #cccccc;
+  background: var(--comic-gray);
 }
 
 .pageIndicator {
