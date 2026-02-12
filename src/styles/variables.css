@@ -87,12 +87,114 @@
   --comic-green-dark: #1a4d2e;
   --comic-red-mission-start: #1a0000;
   --comic-red-mission-end: #3d0000;
+
+  /* Dark Mode Switchable Effects */
+  --halftone-dot-color: var(--comic-black);
+  --blend-mode-halftone: multiply;
+  --aged-tint: rgba(139, 69, 19, 0.08);
+  --aged-tint-light: rgba(139, 69, 19, 0.05);
+  --speed-line-color: rgba(0, 0, 0, 0.1);
+  --burst-line-color: rgba(0, 0, 0, 0.05);
+  --page-edge-shadow: rgba(0, 0, 0, 0.1);
+  --inset-shadow-light: rgba(0, 0, 0, 0.05);
+  --panel-hover-shadow: rgba(0, 0, 0, 0.1);
+
+  /* Paper/Page Context Shadows */
+  --paper-texture-line: rgba(0, 0, 0, 0.02);
+  --paper-shadow-subtle: rgba(0, 0, 0, 0.1);
+  --paper-shadow-medium: rgba(0, 0, 0, 0.2);
+  --page-gradient-edge: rgba(0, 0, 0, 0.06);
+
+  /* Experience Page Tints */
+  --mission-briefing-bg: #0a1628;
+  --rank-card-tint: rgba(0, 166, 81, 0.04);
+  --rank-border-accent: rgba(0, 166, 81, 0.2);
+  --rank-border-strong: rgba(0, 166, 81, 0.3);
+  --classified-border: rgba(237, 28, 36, 0.2);
+  --mission-threat-glow: rgba(237, 28, 36, 0.2);
+  --origin-beat-bg: rgba(247, 148, 29, 0.05);
+  --origin-beat-even-bg: rgba(255, 242, 0, 0.05);
+  --objective-status-glow: rgba(0, 166, 81, 0.3);
+  --case-file-shadow: rgba(0, 0, 0, 0.2);
+
+  /* UI Overlays */
+  --keyboard-hints-bg: rgba(0, 0, 0, 0.5);
 }
 
-/* Dark mode overrides (optional) */
+/* ============================================
+   DARK MODE OVERRIDES
+   Noir comic / midnight reading aesthetic
+   ============================================ */
 @media (prefers-color-scheme: dark) {
   :root {
+    /* Paper & Texture - dark warm paper */
     --newsprint: #2A2520;
     --newsprint-dark: #1A1510;
+    --aged-paper: #332D28;
+
+    /* Primary Colors - slightly muted for dark backgrounds */
+    --comic-black: #E8E0D0;
+    --comic-white: #1A1510;
+    --comic-cream: #2A2820;
+
+    /* Panel & Border - visible on dark */
+    --panel-border: #C8C0B0;
+
+    /* Shadow Colors - deeper for dark mode */
+    --shadow-color: rgba(0, 0, 0, 0.5);
+    --shadow-dark: rgba(0, 0, 0, 0.7);
+
+    /* Typography - light text on dark */
+    --text-primary: #E8E0D0;
+    --text-caption: #B0A898;
+
+    /* UI Colors */
+    --comic-gray: #555555;
+
+    /* Halftone - light dots on dark paper */
+    --halftone-opacity: 0.12;
+
+    /* Background & Atmosphere - deeper for dark mode */
+    --bg-dark-start: #0e0e1a;
+    --bg-dark-mid: #0c1528;
+    --bg-dark-end: #081a3a;
+
+    /* Accent Shades - adjusted for dark bg contrast */
+    --comic-red-dark: #B81C1C;
+    --comic-red-darker: #8B0000;
+    --comic-red-mission-start: #1a0000;
+    --comic-red-mission-end: #3d0000;
+
+    /* Switchable Effects - inverted for dark mode */
+    --halftone-dot-color: rgba(255, 240, 220, 0.3);
+    --blend-mode-halftone: screen;
+    --aged-tint: rgba(200, 180, 160, 0.05);
+    --aged-tint-light: rgba(200, 180, 160, 0.03);
+    --speed-line-color: rgba(255, 255, 255, 0.08);
+    --burst-line-color: rgba(255, 255, 255, 0.04);
+    --page-edge-shadow: rgba(255, 255, 255, 0.06);
+    --inset-shadow-light: rgba(255, 255, 255, 0.03);
+    --panel-hover-shadow: rgba(255, 255, 255, 0.08);
+
+    /* Paper/Page Context Shadows - light on dark */
+    --paper-texture-line: rgba(255, 255, 255, 0.02);
+    --paper-shadow-subtle: rgba(255, 255, 255, 0.06);
+    --paper-shadow-medium: rgba(255, 255, 255, 0.1);
+    --page-gradient-edge: rgba(255, 255, 255, 0.04);
+
+    /* Experience Page Tints - boosted for dark bg visibility */
+    --mission-briefing-bg: #0a1628;
+    --rank-card-tint: rgba(0, 166, 81, 0.08);
+    --rank-border-accent: rgba(0, 166, 81, 0.3);
+    --rank-border-strong: rgba(0, 166, 81, 0.4);
+    --classified-border: rgba(237, 28, 36, 0.3);
+    --mission-threat-glow: rgba(237, 28, 36, 0.3);
+    --origin-beat-bg: rgba(247, 148, 29, 0.08);
+    --origin-beat-even-bg: rgba(255, 242, 0, 0.08);
+    --objective-status-glow: rgba(0, 166, 81, 0.4);
+    --case-file-shadow: rgba(255, 255, 255, 0.08);
+
+    /* UI Overlays */
+    --keyboard-hints-bg: rgba(0, 0, 0, 0.7);
   }
 }

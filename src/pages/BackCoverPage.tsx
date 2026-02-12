@@ -36,6 +36,12 @@ const BackCoverPage = forwardRef<HTMLDivElement>((_, ref) => {
             📧 {contact.email}
           </a>
 
+          {contact.phone && (
+            <a href={`tel:${contact.phone.replace(/[^+\d]/g, '')}`} className={styles.contactLink}>
+              📞 {contact.phone}
+            </a>
+          )}
+
           {contact.linkedin && (
             <a
               href={contact.linkedin}
@@ -43,7 +49,7 @@ const BackCoverPage = forwardRef<HTMLDivElement>((_, ref) => {
               rel="noopener noreferrer"
               className={styles.contactLink}
             >
-              💼 {contact.linkedin}
+              💼 LinkedIn Profile
             </a>
           )}
 
@@ -54,18 +60,7 @@ const BackCoverPage = forwardRef<HTMLDivElement>((_, ref) => {
               rel="noopener noreferrer"
               className={styles.contactLink}
             >
-              💻 {contact.github}
-            </a>
-          )}
-
-          {contact.website && (
-            <a
-              href={contact.website}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={styles.contactLink}
-            >
-              🌐 {contact.website}
+              💻 GitHub Profile
             </a>
           )}
         </div>

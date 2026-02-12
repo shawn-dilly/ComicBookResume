@@ -42,20 +42,31 @@
   display: flex;
   flex-direction: column;
   gap: var(--spacing-sm);
+  width: 100%;
+  max-width: 320px;
 }
 
 .contactLink {
-  font-family: var(--font-body);
-  font-size: var(--text-sm);
-  color: var(--comic-blue);
+  font-family: var(--font-display);
+  font-size: var(--text-base);
+  color: var(--comic-white);
   text-decoration: none;
   display: flex;
   align-items: center;
-  gap: var(--spacing-xs);
+  gap: var(--spacing-sm);
+  padding: var(--spacing-xs) var(--spacing-md);
+  background: var(--comic-blue);
+  border: 3px solid var(--comic-black);
+  box-shadow: 3px 3px 0 var(--comic-black);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .contactLink:hover {
-  color: var(--comic-red);
+  color: var(--comic-white);
+  transform: translate(-2px, -2px);
+  box-shadow: 5px 5px 0 var(--comic-black);
 }
 
 .backCoverFooter {
@@ -64,4 +75,29 @@
   font-family: var(--font-caption);
   font-size: var(--text-xs);
   color: var(--text-caption);
+}
+
+/* Dark mode - make HIRE ME! stand out */
+@media (prefers-color-scheme: dark) {
+  .ctaBox {
+    background: var(--comic-red);
+    border-color: #FFFFFF;
+    box-shadow: 5px 5px 0 #231F20;
+  }
+
+  .ctaText {
+    color: #FFFFFF;
+  }
+
+  .contactLink {
+    background: #0072BC;
+    border-color: #FFFFFF;
+    color: #FFFFFF;
+    box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.4);
+  }
+
+  .contactLink:hover {
+    color: #FFFFFF;
+    box-shadow: 5px 5px 0 rgba(0, 0, 0, 0.4);
+  }
 }

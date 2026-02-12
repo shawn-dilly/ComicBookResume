@@ -65,7 +65,7 @@
   border-width: 4px;
   box-shadow:
     6px 6px 0 var(--comic-black),
-    inset 0 0 30px rgba(0, 0, 0, 0.05);
+    inset 0 0 30px var(--inset-shadow-light);
 }
 
 /* Halftone overlays */
@@ -80,12 +80,12 @@
   pointer-events: none;
   background-image: radial-gradient(
     circle at center,
-    var(--comic-black) 1px,
+    var(--halftone-dot-color) 1px,
     transparent 1px
   );
   background-size: var(--halftone-size) var(--halftone-size);
   opacity: var(--halftone-opacity);
-  mix-blend-mode: multiply;
+  mix-blend-mode: var(--blend-mode-halftone);
   z-index: 3;
 }
 
@@ -118,7 +118,7 @@
 
 /* Panel hover effect (subtle) */
 .panel:hover {
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 8px var(--panel-hover-shadow);
 }
 
 /* Panel grid helpers */
@@ -139,6 +139,6 @@
   .splash {
     box-shadow:
       4px 4px 0 var(--comic-black),
-      inset 0 0 20px rgba(0, 0, 0, 0.05);
+      inset 0 0 20px var(--inset-shadow-light);
   }
 }

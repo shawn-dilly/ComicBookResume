@@ -271,6 +271,87 @@
 }
 
 /* ============================================
+   HEIGHT-BASED RESPONSIVE
+   ============================================ */
+
+@media (max-height: 940px) {
+  .sidebar {
+    gap: 14px;
+  }
+
+  .badge {
+    width: 64px;
+    height: 64px;
+  }
+
+  .email .badgeIcon {
+    font-size: 26px;
+  }
+
+  .phone .badgeIcon {
+    font-size: 16px;
+  }
+
+  .linkedin .badgeIcon {
+    font-size: 28px;
+    box-shadow: 3px 3px 0 var(--comic-black, #231F20);
+  }
+
+  .github .badgeIcon {
+    font-size: 14px;
+  }
+}
+
+@media (max-height: 800px) {
+  .sidebar {
+    gap: 10px;
+  }
+
+  .badge {
+    width: 52px;
+    height: 52px;
+  }
+
+  .email .badgeIcon {
+    font-size: 22px;
+    border-width: 2px;
+  }
+
+  .email .badgeIcon::after {
+    left: -9px;
+    border-top: 7px solid transparent;
+    border-bottom: 7px solid transparent;
+    border-right: 9px solid var(--comic-black, #231F20);
+  }
+
+  .email .badgeIcon::before {
+    border-top: 5px solid transparent;
+    border-bottom: 5px solid transparent;
+    border-right: 7px solid var(--comic-blue, #0072BC);
+  }
+
+  .phone .badgeIcon {
+    font-size: 13px;
+    border-width: 2px;
+  }
+
+  .linkedin .badgeIcon {
+    font-size: 24px;
+    border-width: 2px;
+    box-shadow: 2px 2px 0 var(--comic-black, #231F20);
+  }
+
+  .github .badgeIcon {
+    font-size: 12px;
+  }
+
+  .badgeLabel {
+    font-size: 12px;
+    padding: 4px 10px;
+  }
+}
+
+/* ============================================
    REDUCED MOTION
    ============================================ */
 

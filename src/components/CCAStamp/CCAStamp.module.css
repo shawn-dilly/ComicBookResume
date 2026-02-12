@@ -118,7 +118,7 @@
   content: '';
   position: absolute;
   inset: 0;
-  background: rgba(139, 69, 19, 0.05);
+  background: var(--aged-tint-light);
   pointer-events: none;
   border-radius: 3px;
 }

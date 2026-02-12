@@ -114,7 +114,7 @@
   z-index: 1;
   box-shadow:
     3px 3px 0 var(--comic-black),
-    inset 0 0 20px rgba(0, 0, 0, 0.03);
+    inset 0 0 20px var(--inset-shadow-light);
 }
 
 .missionBriefingContainer {
@@ -129,7 +129,7 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  background: #0a1628;
+  background: var(--mission-briefing-bg);
   padding: var(--spacing-xs) var(--spacing-sm);
   border-bottom: 3px solid var(--comic-blue);
   border-top: 2px solid var(--comic-blue);
@@ -225,7 +225,7 @@
   border: 2px solid var(--comic-red);
   border-left: 4px solid var(--comic-red);
   padding: var(--spacing-xs) var(--spacing-sm);
-  box-shadow: inset 0 0 8px rgba(237, 28, 36, 0.2);
+  box-shadow: inset 0 0 8px var(--mission-threat-glow);
 }
 
 .missionThreatLabel {
@@ -328,7 +328,7 @@
   text-transform: uppercase;
   letter-spacing: var(--tracking-wide);
   flex-shrink: 0;
-  text-shadow: 0 0 1px rgba(0, 166, 81, 0.3);
+  text-shadow: 0 0 1px var(--objective-status-glow);
 }
 
 .classifiedDivider {
@@ -340,8 +340,8 @@
   text-transform: uppercase;
   opacity: 0.15;
   padding: var(--spacing-xs) 0;
-  border-top: 2px dashed rgba(237, 28, 36, 0.2);
-  border-bottom: 2px dashed rgba(237, 28, 36, 0.2);
+  border-top: 2px dashed var(--classified-border);
+  border-bottom: 2px dashed var(--classified-border);
   transform: rotate(-2deg);
 }
 
@@ -486,12 +486,12 @@
   border: 2px solid var(--comic-black);
   border-left: 3px solid var(--comic-green);
   padding: var(--spacing-sm);
-  background: rgba(0, 166, 81, 0.04);
+  background: var(--rank-card-tint);
   display: flex;
   flex-direction: column;
   flex: 1;
   min-height: 0;
-  box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.15);
+  box-shadow: 2px 2px 0 var(--paper-shadow-subtle);
 }
 
 .rankCardHeader {
@@ -500,7 +500,7 @@
   gap: var(--spacing-xs);
   margin-bottom: var(--spacing-xs);
   flex-wrap: wrap;
-  border-bottom: 1px solid rgba(0, 166, 81, 0.2);
+  border-bottom: 1px solid var(--rank-border-accent);
   padding-bottom: var(--spacing-xs);
 }
 
@@ -559,7 +559,7 @@
   gap: 3px;
   margin-top: var(--spacing-xs);
   padding-top: var(--spacing-xs);
-  border-top: 1px solid rgba(0, 166, 81, 0.3);
+  border-top: 1px solid var(--rank-border-strong);
 }
 
 .rankTechBadge {
@@ -613,7 +613,7 @@
   padding: var(--spacing-xs) var(--spacing-sm);
   display: flex;
   flex-direction: column;
-  box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.2);
+  box-shadow: 2px 2px 0 var(--paper-shadow-medium);
 }
 
 .caseFileNumber {
@@ -712,7 +712,7 @@
   padding: var(--spacing-xs) var(--spacing-sm);
   border-left: 3px solid var(--comic-orange);
   line-height: 1.4;
-  background: rgba(247, 148, 29, 0.05);
+  background: var(--origin-beat-bg);
 }
 
 .originBeatOdd {
@@ -721,7 +721,7 @@
 
 .originBeatEven {
   border-left-color: var(--comic-yellow);
-  background: rgba(255, 242, 0, 0.05);
+  background: var(--origin-beat-even-bg);
 }
 
 .originClosing {
@@ -864,5 +864,120 @@
 
   .caseFileCard {
     padding: 6px var(--spacing-xs);
+  }
+}
+
+/* Height-based adjustments for short viewports */
+@media (max-height: 940px) {
+  /* Rank page (Ezlinks) - tighten spacing */
+  .rankPage {
+    padding: var(--spacing-sm);
+  }
+
+  .rankUpBadge {
+    padding: 2px 0;
+    font-size: 0.6rem;
+  }
+
+  .rankCardInner {
+    padding: var(--spacing-xs);
+  }
+
+  .rankCardHeader {
+    margin-bottom: 2px;
+    padding-bottom: 2px;
+  }
+
+  .rankHighlightItem {
+    font-size: var(--text-xs);
+    line-height: 1.2;
+    padding: 0 0 0 var(--spacing-md);
+  }
+
+  .rankTechRow {
+    margin-top: 2px;
+    padding-top: 2px;
+    gap: 2px;
+  }
+
+  .rankCompanyRow {
+    margin-bottom: 0;
+  }
+
+  .rankVillainBadge {
+    margin: 2px 0;
+    padding: 1px var(--spacing-xs);
+    font-size: var(--text-xs);
+  }
+
+  /* Battle page (general experience) - tighten spacing */
+  .battlePanel {
+    padding: var(--spacing-xs);
+  }
+
+  .battleHeader {
+    margin-bottom: var(--spacing-xs);
+  }
+
+  .achievementItem {
+    padding: 1px 0 1px var(--spacing-md);
+    font-size: 0.65rem;
+  }
+
+  /* Mission control (PeopleReady) */
+  .missionControlPage {
+    padding: var(--spacing-sm);
+    gap: var(--spacing-xs);
+  }
+
+  .missionObjectiveText {
+    font-size: var(--text-sm);
+    line-height: 1.25;
+  }
+
+  .missionTactics {
+    padding: var(--spacing-xs) var(--spacing-sm) var(--spacing-sm);
+  }
+
+  /* Case file (Geneca) */
+  .caseFilePage {
+    padding: var(--spacing-sm);
+    gap: var(--spacing-xs);
+  }
+
+  .caseFileCard {
+    padding: var(--spacing-xs);
+  }
+
+  /* Early career combined page */
+  .earlyCareerPage {
+    padding: var(--spacing-sm);
+  }
+
+  .earlyCareerItem {
+    font-size: var(--text-xs);
+    line-height: 1.2;
+    padding: 1px var(--spacing-xs) 1px var(--spacing-sm);
+  }
+
+  .earlyCareerDivider {
+    margin: var(--spacing-xs) 0;
+  }
+}
+
+/* Keep text/borders dark on colored backgrounds in dark mode */
+@media (prefers-color-scheme: dark) {
+  .battlePeriod {
+    color: #4A4A4A;
+    border-color: #231F20;
+  }
+
+  /* Keep threat assessment text white on dark red background */
+  .missionThreatLabel {
+    color: #FFFFFF;
+  }
+
+  .missionThreatLevel {
+    color: #FFFFFF;
   }
 }

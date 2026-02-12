@@ -21,7 +21,7 @@
   font-family: var(--font-body);
   font-size: var(--text-xs);
   color: var(--comic-black);
-  box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.3);
+  box-shadow: 2px 2px 0 var(--shadow-color);
   max-width: 90%;
 }
 
@@ -34,7 +34,7 @@
   flex-direction: column;
   align-items: center;
   gap: var(--spacing-xs);
-  box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.4);
+  box-shadow: 3px 3px 0 var(--shadow-color);
   max-width: 85%;
   margin: 0 auto;
 }
@@ -53,4 +53,16 @@
   color: var(--comic-black);
   text-align: center;
   line-height: 1.4;
+}
+
+/* Keep text dark on colored backgrounds in dark mode */
+@media (prefers-color-scheme: dark) {
+  .captionBox,
+  .missionText {
+    color: #231F20;
+  }
+
+  .captionBox {
+    border-color: #231F20;
+  }
 }

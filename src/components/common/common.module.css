@@ -13,6 +13,7 @@
 .captionNarrator {
   background: var(--comic-yellow);
   font-style: italic;
+  font-weight: 700;
 }
 
 .captionLocation {
@@ -219,4 +220,21 @@
   color: var(--comic-white);
   border-radius: var(--radius-sm);
   font-size: var(--text-xs);
+}
+
+/* Keep text dark on colored backgrounds in dark mode */
+@media (prefers-color-scheme: dark) {
+  .captionNarrator {
+    color: #231F20;
+    border-color: #231F20;
+  }
+
+  .captionLocation {
+    border-color: #231F20;
+  }
+
+  .skillTag {
+    color: #231F20;
+    border-color: #231F20;
+  }
 }

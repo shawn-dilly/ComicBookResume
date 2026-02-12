@@ -12,12 +12,12 @@
   pointer-events: none;
   background-image: radial-gradient(
     circle at center,
-    var(--comic-black) 1px,
+    var(--halftone-dot-color) 1px,
     transparent 1px
   );
   background-size: var(--halftone-size) var(--halftone-size);
   opacity: var(--halftone-opacity);
-  mix-blend-mode: multiply;
+  mix-blend-mode: var(--blend-mode-halftone);
 }
 
 /* Color halftone variants */
@@ -74,8 +74,8 @@
     -45deg,
     transparent,
     transparent 2px,
-    rgba(0, 0, 0, 0.1) 2px,
-    rgba(0, 0, 0, 0.1) 4px
+    var(--speed-line-color) 2px,
+    var(--speed-line-color) 4px
   );
 }
 
@@ -92,7 +92,7 @@
   background: conic-gradient(
     from 0deg,
     transparent 0deg,
-    rgba(0, 0, 0, 0.05) 5deg,
+    var(--burst-line-color) 5deg,
     transparent 10deg
   );
   background-repeat: repeat;
@@ -111,7 +111,7 @@
   background-image:
     url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
   opacity: 0.03;
-  mix-blend-mode: multiply;
+  mix-blend-mode: var(--blend-mode-halftone);
 }
 
 /* CMYK-style color separation effect */
@@ -161,7 +161,7 @@
   pointer-events: none;
   background-image: radial-gradient(
     circle at center,
-    var(--comic-black) 1px,
+    var(--halftone-dot-color) 1px,
     transparent 1px
   );
   background-size: 4px 4px;
@@ -214,14 +214,14 @@
   inset: 0;
   pointer-events: none;
   background:
-    radial-gradient(ellipse at 20% 20%, rgba(139, 69, 19, 0.1) 0%, transparent 50%),
-    radial-gradient(ellipse at 80% 80%, rgba(139, 69, 19, 0.1) 0%, transparent 50%),
-    radial-gradient(ellipse at 60% 10%, rgba(139, 69, 19, 0.05) 0%, transparent 40%);
+    radial-gradient(ellipse at 20% 20%, var(--aged-tint) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 80%, var(--aged-tint) 0%, transparent 50%),
+    radial-gradient(ellipse at 60% 10%, var(--aged-tint-light) 0%, transparent 40%);
 }
 
 /* Comic panel shadow */
 .panel-shadow {
   box-shadow:
     4px 4px 0 var(--comic-black),
-    inset 0 0 20px rgba(0, 0, 0, 0.05);
+    inset 0 0 20px var(--inset-shadow-light);
 }

@@ -116,7 +116,7 @@
   font-family: var(--font-display);
   font-size: var(--text-7xl);
   color: var(--comic-white);
-  text-shadow: 3px 3px 0 rgba(0, 0, 0, 0.3);
+  text-shadow: 3px 3px 0 var(--shadow-color);
 }
 
 .actionBurst {
@@ -231,7 +231,7 @@
   right: 0;
   bottom: 0;
   background:
-    radial-gradient(circle, rgba(0, 0, 0, 0.06) 1px, transparent 1px);
+    radial-gradient(circle, var(--page-gradient-edge) 1px, transparent 1px);
   background-size: 3px 3px;
   pointer-events: none;
   z-index: 0;
@@ -250,16 +250,16 @@
       from 0deg at 50% 50%,
       transparent 0deg,
       transparent 7deg,
-      rgba(0, 0, 0, 0.35) 7deg,
-      rgba(0, 0, 0, 0.35) 9deg
+      var(--shadow-color) 7deg,
+      var(--shadow-color) 9deg
     ),
     /* Concentric web rings - bolder and tighter */
     repeating-radial-gradient(
       circle at 50% 50%,
       transparent 0px,
       transparent 30px,
-      rgba(0, 0, 0, 0.3) 30px,
-      rgba(0, 0, 0, 0.3) 34px
+      var(--shadow-color) 30px,
+      var(--shadow-color) 34px
     );
   pointer-events: none;
   z-index: 1;
@@ -283,7 +283,7 @@
 .bannerText {
   font-family: var(--font-display);
   font-size: var(--text-sm);
-  color: var(--comic-yellow);
+  color: var(--comic-red);
   letter-spacing: var(--tracking-wider);
   text-transform: uppercase;
 }
@@ -291,7 +291,7 @@
 .tmMark {
   font-family: var(--font-caption);
   font-size: 6px;
-  color: var(--comic-yellow);
+  color: var(--comic-red);
   vertical-align: super;
   margin-left: 1px;
 }
@@ -349,8 +349,8 @@
   gap: 0;
   /* Strong shadow for depth */
   box-shadow:
-    0 4px 0 rgba(0, 0, 0, 0.5),
-    0 6px 12px rgba(0, 0, 0, 0.3);
+    0 4px 0 var(--shadow-dark),
+    0 6px 12px var(--shadow-color);
 }
 
 .theSmall {
@@ -360,8 +360,8 @@
   letter-spacing: var(--tracking-widest);
   margin-bottom: -4px;
   text-shadow:
-    1px 1px 0 rgba(0, 0, 0, 0.5),
-    2px 2px 0 rgba(0, 0, 0, 0.3);
+    1px 1px 0 var(--shadow-dark),
+    2px 2px 0 var(--shadow-color);
 }
 
 .incredibleItalic {
@@ -372,9 +372,9 @@
   font-style: italic;
   margin-bottom: -2px;
   text-shadow:
-    1px 1px 0 rgba(0, 0, 0, 0.5),
-    2px 2px 0 rgba(0, 0, 0, 0.3),
-    3px 3px 0 rgba(0, 0, 0, 0.2);
+    1px 1px 0 var(--shadow-dark),
+    2px 2px 0 var(--shadow-color),
+    3px 3px 0 var(--paper-shadow-medium);
 }
 
 /* Hero Name - HUGE Text in Banner - Matching IRON ARCHITECT style */
@@ -390,8 +390,8 @@
   text-shadow:
     2px 2px 0 var(--comic-red),
     3px 3px 0 var(--comic-red),
-    4px 4px 0 rgba(0, 0, 0, 0.6),
-    5px 5px 0 rgba(0, 0, 0, 0.4);
+    4px 4px 0 var(--shadow-dark),
+    5px 5px 0 var(--shadow-color);
 }
 
 /* ========== BREAKTHROUGH MASK FRAME - CENTERED ========== */
@@ -469,7 +469,7 @@
   );
   z-index: 1;
   /* Subtle shadow to enhance 3D pop */
-  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+  filter: drop-shadow(0 4px 8px var(--shadow-color));
 }
 
 /* Secondary glow layer for depth */
@@ -505,8 +505,8 @@
   /* 3D depth with shadows */
   box-shadow:
     inset 0 0 0 4px var(--comic-black),
-    5px 8px 0 rgba(0, 0, 0, 0.4),
-    0 0 0 3px rgba(255, 255, 255, 0.3);
+    5px 8px 0 var(--shadow-color),
+    0 0 0 3px var(--inset-shadow-light);
   overflow: hidden;
 }
 
@@ -519,7 +519,7 @@
   bottom: 0;
   background:
     /* Halftone dot pattern for newspaper feel */
-    radial-gradient(circle, rgba(0, 0, 0, 0.08) 1px, transparent 1px),
+    radial-gradient(circle, var(--halftone-dot-color) 1px, transparent 1px),
     linear-gradient(to bottom, var(--newsprint) 0%, var(--aged-paper) 100%);
   background-size: 4px 4px, 100% 100%;
   display: flex;
@@ -589,7 +589,7 @@
   transform: rotate(12deg);
   box-shadow:
     4px 4px 0 var(--comic-black),
-    inset 0 -4px 0 rgba(0, 0, 0, 0.3);
+    inset 0 -4px 0 var(--shadow-color);
   z-index: 20;
   /* Subtle pulse animation */
   animation: badgePulse 2s ease-in-out infinite;
@@ -610,7 +610,7 @@
   color: var(--comic-white);
   text-shadow:
     1px 1px 0 var(--comic-black),
-    2px 2px 0 rgba(0, 0, 0, 0.3);
+    2px 2px 0 var(--shadow-color);
   line-height: 1;
   letter-spacing: var(--tracking-wide);
 }
@@ -627,8 +627,8 @@
       0deg,
       transparent 0px,
       transparent 2px,
-      rgba(0, 0, 0, 0.02) 2px,
-      rgba(0, 0, 0, 0.02) 4px
+      var(--paper-texture-line) 2px,
+      var(--paper-texture-line) 4px
     ),
     var(--comic-white);
   border-top: 4px solid var(--comic-black);
@@ -638,8 +638,8 @@
   z-index: 10;
   /* Slight paper shadow */
   box-shadow:
-    inset 0 2px 4px rgba(0, 0, 0, 0.1),
-    0 2px 4px rgba(0, 0, 0, 0.1);
+    inset 0 2px 4px var(--paper-shadow-subtle),
+    0 2px 4px var(--paper-shadow-subtle);
 }
 
 .headlineText {
@@ -650,7 +650,7 @@
   letter-spacing: var(--tracking-wider);
   font-weight: 700;
   /* Newspaper headline style */
-  text-shadow: 0.5px 0.5px 0 rgba(0, 0, 0, 0.1);
+  text-shadow: 0.5px 0.5px 0 var(--paper-shadow-subtle);
 }
 
 /* Footer - Adjusted for red background */
@@ -666,7 +666,7 @@
   font-family: var(--font-caption);
   font-size: var(--text-xs);
   color: var(--comic-white);
-  text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.5);
+  text-shadow: 1px 1px 0 var(--shadow-dark);
   z-index: 5;
 }
 
@@ -796,5 +796,40 @@
 
   .hireBadgeText {
     font-size: var(--text-xs);
+  }
+}
+
+/* Keep text dark on colored backgrounds in dark mode */
+@media (prefers-color-scheme: dark) {
+  .taglineText,
+  .cornerInitial {
+    color: #231F20;
+  }
+
+  .coverTagline {
+    border-color: #231F20;
+  }
+
+  .cornerBoxIcon {
+    border-color: #231F20;
+  }
+
+  /* Keep mask border black so the breakthrough burst pops */
+  .maskOutline {
+    border-color: #231F20;
+    box-shadow:
+      inset 0 0 0 4px #231F20,
+      5px 8px 0 rgba(0, 0, 0, 0.4),
+      0 0 0 3px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Match explosion color to border so they blend together */
+  .breakthroughBurst {
+    background: #231F20;
+  }
+
+  /* Keep HIRE ME text white on the blue badge */
+  .hireBadgeText {
+    color: #FFFFFF;
   }
 }

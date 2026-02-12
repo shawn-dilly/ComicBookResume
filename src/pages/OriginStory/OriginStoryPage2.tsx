@@ -21,7 +21,7 @@ const OriginStoryPage2 = forwardRef<HTMLDivElement>((_, ref) => {
           >
             <div className={styles.panelOverlay} style={{ justifyContent: 'flex-end', alignItems: 'center' }}>
               <SpeechBubble variant="shout" maxWidth="85%">
-                <span style={{ fontSize: '24px' }}>
+                <span style={{ fontSize: '1.5rem' }}>
                   A new hero arises..<br />
                   <strong>THE IRON ARCHITECT</strong>
                 </span>

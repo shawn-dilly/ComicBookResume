@@ -141,3 +141,15 @@
     font-size: var(--text-xl);
   }
 }
+
+@media (max-height: 940px) {
+  .pageHeader {
+    font-size: var(--text-xl);
+    padding-bottom: 2px;
+    margin-bottom: var(--spacing-xs);
+  }
+
+  .panelGrid {
+    gap: var(--spacing-xs);
+  }
+}

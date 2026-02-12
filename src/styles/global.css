@@ -161,7 +161,7 @@ body {
   gap: var(--spacing-xs);
   align-items: center;
   z-index: var(--z-navigation);
-  background: rgba(0, 0, 0, 0.5);
+  background: var(--keyboard-hints-bg);
   padding: 6px 12px;
   border-radius: var(--radius-md);
   backdrop-filter: blur(8px);
@@ -209,7 +209,7 @@ body {
   padding: 0 var(--spacing-xs);
 }
 
-/* Responsive adjustments */
+/* Responsive adjustments - width-based */
 @media (max-width: 1200px) {
   html {
     font-size: 14px;
@@ -234,7 +234,26 @@ body {
   .click-hint {
     font-size: var(--text-lg);
   }
+}
 
+/* Responsive adjustments - height-based (for wide but short viewports) */
+/* min-width guards prevent overriding a width breakpoint that already set a smaller font */
+@media (max-height: 940px) and (min-width: 1201px) {
+  html {
+    font-size: 14px;
+  }
+}
+
+@media (max-height: 800px) and (min-width: 901px) {
+  html {
+    font-size: 12px;
+  }
+}
+
+@media (max-height: 650px) and (min-width: 601px) {
+  html {
+    font-size: 10px;
+  }
 }
 
 /* Accessibility - Reduce motion */
@@ -245,6 +264,26 @@ body {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+  }
+}
+
+/* Dark mode overrides for navigation bar */
+@media (prefers-color-scheme: dark) {
+  .keyboard-hint {
+    color: #231F20;
+    border-color: #231F20;
+    box-shadow: 2px 2px 0 #231F20;
+  }
+
+  .keyboard-hint kbd {
+    color: #FFFFFF;
+    background: #231F20;
+    border-color: #555;
+  }
+
+  .page-indicator {
+    color: #FFFFFF;
+    text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.5);
   }
 }
 

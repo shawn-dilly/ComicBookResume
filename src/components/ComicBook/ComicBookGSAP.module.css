@@ -30,8 +30,8 @@
   contain: paint;
   /* Book shadow */
   box-shadow:
-    0 0 30px rgba(0, 0, 0, 0.4),
-    0 0 60px rgba(0, 0, 0, 0.15);
+    0 0 30px var(--shadow-color),
+    0 0 60px var(--inset-shadow-light);
 }
 
 /* Book spine shadow - adds depth */
@@ -45,10 +45,10 @@
   transform: translateX(-50%);
   background: linear-gradient(
     90deg,
-    rgba(0, 0, 0, 0.3) 0%,
-    rgba(0, 0, 0, 0.1) 30%,
-    rgba(0, 0, 0, 0.1) 70%,
-    rgba(0, 0, 0, 0.3) 100%
+    var(--shadow-color) 0%,
+    var(--page-edge-shadow) 30%,
+    var(--page-edge-shadow) 70%,
+    var(--shadow-color) 100%
   );
   z-index: 100;
   pointer-events: none;
@@ -144,8 +144,8 @@
       0deg,
       transparent,
       transparent 2px,
-      rgba(0, 0, 0, 0.02) 2px,
-      rgba(0, 0, 0, 0.02) 4px
+      var(--paper-texture-line) 2px,
+      var(--paper-texture-line) 4px
     );
 }
 
@@ -167,7 +167,7 @@
 
 .backCover .pageBack {
   background: var(--comic-red, #ED1C24);
-  box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.2);
+  box-shadow: inset 0 0 40px var(--paper-shadow-medium);
 }
 
 /* ============================================
@@ -184,7 +184,7 @@
   z-index: 3;
   background: linear-gradient(
     to right,
-    rgba(0, 0, 0, 0.06) 0%,
+    var(--page-gradient-edge) 0%,
     transparent 5%,
     transparent 100%
   );
@@ -200,7 +200,7 @@
   z-index: 3;
   background: linear-gradient(
     to left,
-    rgba(0, 0, 0, 0.06) 0%,
+    var(--page-gradient-edge) 0%,
     transparent 5%,
     transparent 100%
   );
