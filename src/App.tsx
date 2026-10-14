@@ -2,6 +2,7 @@ import { useCallback, useState, useRef } from 'react';
 
 import { ComicBookGSAP, type ComicBookGSAPRef } from './components/ComicBook';
 import { ContactSidebar } from './components/ContactSidebar';
+import { SpiderWebs, type SpiderWebsRef } from './components/SpiderWebs';
 import {
   CoverPage,
   InsideFrontCoverPage,
@@ -10,10 +11,10 @@ import {
   OriginStoryPage2,
   SkillsPage1,
   SkillsPage2,
+  ExperienceGrodivo,
   ExperiencePeopleReady,
   ExperienceEzlinks,
   ExperienceEarlyCareer,
-  SpecialProjectsPage,
   TestimonialsPage,
   BackCoverPage,
 } from './pages';
@@ -26,6 +27,7 @@ function App() {
   const [currentPage, setCurrentPage] = useState(0);
   const [isBookOpen, setIsBookOpen] = useState(false);
   const comicBookRef = useRef<ComicBookGSAPRef>(null);
+  const spiderWebsRef = useRef<SpiderWebsRef>(null);
   const soundEffects = useSoundEffects(true);
 
   // Split testimonials: first 2 on one page, middle ones individual, last 2 on one page
@@ -43,6 +45,7 @@ function App() {
 
   const handlePageFlip = useCallback(() => {
     soundEffects.playPageTurn();
+    spiderWebsRef.current?.pulse();
   }, [soundEffects]);
 
   const handleBookOpen = useCallback(() => {
@@ -71,6 +74,7 @@ function App() {
   // Experience data references - lookup by company name for resilience to reordering
   const findExperience = (company: string) =>
     resumeData.experience.find(e => e.company === company)!;
+  const grodivo = findExperience('Grodivo');
   const peopleReady = findExperience('PeopleReady');
   const ezlinks = findExperience('Ezlinks Golf');
   const geneca = findExperience('Geneca');
@@ -78,6 +82,8 @@ function App() {
 
   return (
     <div className="app-container">
+      {/* Animated web border - fixed layer behind the book */}
+      <SpiderWebs ref={spiderWebsRef} delay={0.15} />
       <ContactSidebar />
       <div className={`comic-wrapper ${isBookOpen ? 'open' : 'closed'}`}>
         <ComicBookGSAP
@@ -95,23 +101,27 @@ function App() {
           <OriginStoryPage2 />
           <SkillsPage1 isVisible={currentPage === 6} />
           <SkillsPage2 isVisible={currentPage === 6} />
+          <ExperienceGrodivo
+            key="exp-grodivo"
+            experience={grodivo}
+            pageNumber={8}
+          />
           <ExperiencePeopleReady
             key="exp-peopleready"
             experience={peopleReady}
-            pageNumber={8}
+            pageNumber={9}
           />
           <ExperienceEzlinks
             key="exp-ezlinks"
             experience={ezlinks}
-            pageNumber={9}
+            pageNumber={10}
           />
           <ExperienceEarlyCareer
             key="exp-early-career"
             geneca={geneca}
             healthation={healthation}
-            pageNumber={10}
+            pageNumber={11}
           />
-          <SpecialProjectsPage pageNumber={11} />
           {/* First page with 2 testimonials */}
           <TestimonialsPage
             key="testimonials-first"

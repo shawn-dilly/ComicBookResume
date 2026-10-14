@@ -50,6 +50,7 @@ body {
   align-items: center;
   justify-content: center;
   position: relative;
+  z-index: 1; /* Paint above the fixed SpiderWebs border layer */
   transition: all 0.5s ease-out;
   overflow: visible; /* Allow book shadow to show */
   /* Padding to keep comic book clear of navigation control */

@@ -119,6 +119,10 @@
 
   /* UI Overlays */
   --keyboard-hints-bg: rgba(0, 0, 0, 0.5);
+
+  /* Spider Web Border (strands on the dark page surround) */
+  --web-strand-color: rgba(255, 255, 255, 0.55);
+  --web-halo-color: rgba(0, 160, 233, 0.14);
 }
 
 /* ============================================
@@ -196,5 +200,9 @@
 
     /* UI Overlays */
     --keyboard-hints-bg: rgba(0, 0, 0, 0.7);
+
+    /* Spider Web Border - dimmer silk for the noir backdrop */
+    --web-strand-color: rgba(232, 224, 208, 0.42);
+    --web-halo-color: rgba(0, 160, 233, 0.1);
   }
 }

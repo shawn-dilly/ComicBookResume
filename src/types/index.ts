@@ -6,7 +6,6 @@ export interface ResumeData {
   skills: SkillCategory[];
   experience: Experience[];
   education: Education[];
-  specialProjects?: SpecialProject[];
   testimonials: Testimonial[];
   contact: ContactInfo;
 }
@@ -35,6 +34,11 @@ export interface ExperienceRole {
   highlights: string[];
 }
 
+export interface ExperienceStat {
+  value: string; // e.g. "4x", "15+"
+  label: string; // e.g. "Velocity"
+}
+
 export interface Experience {
   company: string;
   role: string;
@@ -44,6 +48,7 @@ export interface Experience {
   villain?: string; // The "challenge" overcome
   powers?: string[]; // Technologies/skills used
   roles?: ExperienceRole[]; // For companies with multiple roles (timeline display)
+  stats?: ExperienceStat[]; // Headline numbers for stat-strip layouts
 }
 
 export interface Education {
@@ -51,14 +56,6 @@ export interface Education {
   degree: string;
   year: string;
   highlights?: string[];
-}
-
-export interface SpecialProject {
-  codename: string;
-  title: string;
-  description: string;
-  impact: string;
-  tech: string[];
 }
 
 export interface Testimonial {

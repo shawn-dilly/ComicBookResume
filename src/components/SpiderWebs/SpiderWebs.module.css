@@ -1,0 +1,159 @@
+/**
+ * SpiderWebs - CSS Module
+ * Corner webs framing the comic book. Sits behind the book, above the body gradient.
+ */
+
+/* ============================================
+   LAYER - full viewport, never intercepts input
+   ============================================ */
+
+.layer {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+  /* Each corner web is a square this large; sized so two webs stacked
+     vertically cover most of the side margins around the open book. */
+  --web-size: min(68vmin, 60vw, 820px);
+}
+
+/* ============================================
+   CORNERS - one square per viewport corner.
+   The same top-left geometry is mirrored into place with transforms, so the
+   SVG's local origin (0,0) is always the viewport corner it hangs from.
+   ============================================ */
+
+.corner {
+  position: absolute;
+  width: var(--web-size);
+  height: var(--web-size);
+}
+
+.topLeft {
+  top: 0;
+  left: 0;
+}
+
+.topRight {
+  top: 0;
+  right: 0;
+  transform: scaleX(-1);
+}
+
+.bottomLeft {
+  bottom: 0;
+  left: 0;
+  transform: scaleY(-1);
+}
+
+.bottomRight {
+  bottom: 0;
+  right: 0;
+  transform: scale(-1, -1);
+}
+
+/* ============================================
+   SVG + STRANDS
+   ============================================ */
+
+.web {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  will-change: transform, opacity;
+}
+
+.web path {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  /* pathLength="1" on every path normalises its length. With a 1-unit dash
+     and a 2-unit gap, offset 1.02 parks the entire strand inside the gap, so
+     it is hidden; GSAP tweens the offset to 0 to "draw" it. The gap is longer
+     than the path and the offset slightly over 1 so that rounding in the
+     browser's pathLength normalisation and round line caps cannot expose a
+     sliver at either end. Hidden by default so nothing flashes before JS. */
+  stroke-dasharray: 1 2;
+  stroke-dashoffset: 1.02;
+  /* NOTE: do not add `vector-effect: non-scaling-stroke` here. Chromium then
+     measures the dash pattern in screen pixels and ignores pathLength, which
+     breaks the draw-on and renders every strand as a dotted line. */
+}
+
+/* Stroke widths are in viewBox user units (viewBox is 100 wide), so they
+   scale with --web-size: at a typical ~600px web, 1 unit = 6px. */
+
+/* Wide, faint underlayer gives a glow without SVG filters */
+.halo {
+  stroke: var(--web-halo-color);
+}
+
+.halo .spoke {
+  stroke-width: 1.1;
+}
+
+.halo .ring {
+  stroke-width: 0.8;
+}
+
+/* Crisp silk on top; radial spokes are slightly heavier than the spiral */
+.strand {
+  stroke: var(--web-strand-color);
+}
+
+.strand .spoke {
+  stroke-width: 0.26;
+}
+
+.strand .ring {
+  stroke-width: 0.18;
+}
+
+/* The lead line that fires first is the heaviest strand in the web */
+.strand .lead {
+  stroke-width: 0.34;
+}
+
+.halo .lead {
+  stroke-width: 1.4;
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+
+/* Short, wide viewports: the side margins are what is visible, so let the
+   webs grow taller than vmin alone would allow. */
+@media (max-height: 800px) and (min-width: 1201px) {
+  .layer {
+    --web-size: min(80vmin, 45vw, 820px);
+  }
+}
+
+/* Phones: the book nearly fills the width; keep webs to the corners only */
+@media (max-width: 600px) {
+  .layer {
+    --web-size: min(55vmin, 45vw);
+  }
+
+  /* Smaller webs mean fewer px per unit; thicken so strands stay visible */
+  .strand .spoke {
+    stroke-width: 0.45;
+  }
+
+  .strand .ring {
+    stroke-width: 0.32;
+  }
+}
+
+/* ============================================
+   PRINT
+   ============================================ */
+
+@media print {
+  .layer {
+    display: none;
+  }
+}
