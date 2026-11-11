@@ -51,3 +51,50 @@
   justify-content: space-evenly;
   min-height: 0;
 }
+
+/* Three or more panels on one page: tighten gaps, headers and meters so nothing clips */
+.skillsPageDense {
+  gap: var(--spacing-sm);
+}
+
+.skillsPageDense .skillCategoryHeader {
+  font-size: var(--text-md, var(--text-base));
+  margin-bottom: 2px;
+}
+
+.skillsPageDense .skillsList {
+  gap: 2px;
+}
+
+.skillsPageDense .skillsList > * {
+  margin-bottom: 0;
+}
+
+/* Short desktop windows: slim the meters on both pages so panels never clip */
+@media (max-height: 680px) {
+  .skillsPage {
+    gap: var(--spacing-xs);
+    padding: var(--spacing-sm);
+  }
+
+  .skillCategoryHeader {
+    font-size: var(--text-base);
+    margin-bottom: 0;
+  }
+
+  .skillsList {
+    gap: 0;
+  }
+
+  .skillsList > * {
+    margin-bottom: 0;
+  }
+
+  .skillsList > * > div:first-child {
+    margin-bottom: 0;
+  }
+
+  .skillsList > * > div:nth-child(2) {
+    height: 11px;
+  }
+}

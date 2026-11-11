@@ -50,7 +50,7 @@ body {
   align-items: center;
   justify-content: center;
   position: relative;
-  z-index: 1; /* Paint above the fixed SpiderWebs border layer */
+  z-index: 1; /* Paint above the fixed back web layer (WebCatch) */
   transition: all 0.5s ease-out;
   overflow: visible; /* Allow book shadow to show */
   /* Padding to keep comic book clear of navigation control */
@@ -63,6 +63,11 @@ body {
 .comic-wrapper.closed {
   justify-content: center;
   overflow: hidden;
+}
+
+/* While the book is falling in and being caught it must not be clipped */
+.comic-wrapper.closed.intro {
+  overflow: visible;
 }
 
 /* When book is open, show full book centered */
@@ -166,6 +171,27 @@ body {
   padding: 6px 12px;
   border-radius: var(--radius-md);
   backdrop-filter: blur(8px);
+}
+
+.holo-replay {
+  font-family: var(--font-caption);
+  font-weight: 700;
+  font-size: var(--text-xs);
+  letter-spacing: 0.08em;
+  color: #bff5ff;
+  background: rgba(8, 36, 66, 0.7);
+  border: 1px solid rgba(120, 220, 255, 0.55);
+  border-radius: var(--radius-sm);
+  padding: 3px 9px;
+  cursor: pointer;
+  text-transform: uppercase;
+}
+
+.holo-replay:hover,
+.holo-replay:focus-visible {
+  color: #fff;
+  border-color: #ffd678;
+  outline: none;
 }
 
 .keyboard-hint {

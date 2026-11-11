@@ -1,8 +1,8 @@
-import { useCallback, useState, useRef } from 'react';
+import { useCallback, useEffect, useState, useRef, type MouseEvent } from 'react';
 
-import { ComicBookGSAP, type ComicBookGSAPRef } from './components/ComicBook';
+import { ComicBookGSAP, type ComicBookGSAPRef, type FlipDirection } from './components/ComicBook';
 import { ContactSidebar } from './components/ContactSidebar';
-import { SpiderWebs, type SpiderWebsRef } from './components/SpiderWebs';
+import { WebCatch, type IntroState, type WebCatchRef } from './components/WebCatch';
 import {
   CoverPage,
   InsideFrontCoverPage,
@@ -18,7 +18,9 @@ import {
   TestimonialsPage,
   BackCoverPage,
 } from './pages';
-import { useSoundEffects, usePageNavigation } from './hooks';
+import { useSoundEffects, usePageNavigation, useHoloSound, useHologramMode } from './hooks';
+import { SkillsHologram, HOLO } from './components/SkillsHologram';
+import type { PageSize } from './components/ComicBook';
 import { resumeData } from './data/resume';
 
 import './styles/global.css';
@@ -27,8 +29,18 @@ function App() {
   const [currentPage, setCurrentPage] = useState(0);
   const [isBookOpen, setIsBookOpen] = useState(false);
   const comicBookRef = useRef<ComicBookGSAPRef>(null);
-  const spiderWebsRef = useRef<SpiderWebsRef>(null);
+  const webCatchRef = useRef<WebCatchRef>(null);
+  // The book falls in and is caught by webs; it can only be opened once held.
+  const [webState, setWebState] = useState<IntroState>('falling');
+  const isHeld = webState === 'held';
+  // How many of the four main lines hold the book (read by the e2e tests)
+  const [webLines, setWebLines] = useState(0);
+  // One click made during the drop is remembered and applied when the book is held
+  const pendingOpenRef = useRef(false);
   const soundEffects = useSoundEffects(true);
+  const holoSound = useHoloSound(true);
+  // Powers & Abilities hologram: the book lies flat and a projection rises out of the spread
+  const holo = useHologramMode({ webCatchRef, comicBookRef, isHeld });
 
   // Split testimonials: first 2 on one page, middle ones individual, last 2 on one page
   const firstTwoTestimonials = resumeData.testimonials.slice(0, 2);
@@ -45,8 +57,45 @@ function App() {
 
   const handlePageFlip = useCallback(() => {
     soundEffects.playPageTurn();
-    spiderWebsRef.current?.pulse();
   }, [soundEffects]);
+
+  // The wrapped strands let go while a page turns; on landing they snap back and the book dips
+  // A key pressed while a page is turning is dropped by the book; remember it so landing on the Powers spread
+  // does not start the hologram under a reader who is still turning pages.
+  const flipActiveRef = useRef(false);
+  const keyDuringFlipRef = useRef<FlipDirection | null>(null);
+
+  const handleFlipStart = useCallback((direction: FlipDirection) => {
+    flipActiveRef.current = true;
+    keyDuringFlipRef.current = null;
+    webCatchRef.current?.release(direction);
+  }, []);
+
+  const handleFlipProgress = useCallback(() => {
+    webCatchRef.current?.flipProgress();
+  }, []);
+
+  const handleFlipLanded = useCallback(
+    (direction: FlipDirection, pageIndex: number) => {
+      webCatchRef.current?.rewrap();
+      flipActiveRef.current = false;
+      const queued = keyDuringFlipRef.current;
+      keyDuringFlipRef.current = null;
+      if (queued && pageIndex === HOLO.triggerPage) {
+        // Still turning pages: skip the hologram and keep going.
+        webCatchRef.current?.land(direction);
+        webCatchRef.current?.reattachAll();
+        comicBookRef.current?.flipAfterLanding(queued);
+        return;
+      }
+      // The disconnected corners shoot back. Landing on the Powers spread then lays the book down, with all
+      // four lines still attached (they follow the corners while it lies down).
+      webCatchRef.current?.land(direction);
+      webCatchRef.current?.reattachAll();
+      holo.landed(pageIndex);
+    },
+    [holo]
+  );
 
   const handleBookOpen = useCallback(() => {
     setIsBookOpen(true);
@@ -57,12 +106,22 @@ function App() {
   }, []);
 
   const handleNext = useCallback(() => {
+    // A key pressed while the book is still falling in counts like a click: open once held
+    if (!isHeld) {
+      if (!comicBookRef.current?.isBookOpen()) pendingOpenRef.current = true;
+      return;
+    }
+    if (holo.requestTurn('forward')) return;
+    if (flipActiveRef.current) keyDuringFlipRef.current = 'forward';
     comicBookRef.current?.flipNext();
-  }, []);
+  }, [isHeld, holo]);
 
   const handlePrevious = useCallback(() => {
+    if (!isHeld) return;
+    if (holo.requestTurn('backward')) return;
+    if (flipActiveRef.current) keyDuringFlipRef.current = 'backward';
     comicBookRef.current?.flipPrev();
-  }, []);
+  }, [isHeld, holo]);
 
   // Setup keyboard navigation
   usePageNavigation({
@@ -70,6 +129,53 @@ function App() {
     onPrevious: handlePrevious,
     enabled: true,
   });
+
+  // Escape closes the hologram
+  useEffect(() => {
+    const onKey = (event: KeyboardEvent): void => {
+      if (event.key === 'Escape' && holo.phase !== 'off') {
+        event.preventDefault();
+        holo.requestClose();
+      }
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [holo]);
+
+  const renderHologram = useCallback(
+    (page: PageSize) =>
+      holo.phase === 'off' ? null : (
+        <SkillsHologram
+          page={page}
+          phase={holo.phase}
+          onReady={holo.onReady}
+          onPoweredDown={holo.onPoweredDown}
+          onTurn={holo.requestTurn}
+          onClose={holo.requestClose}
+          onPowerUp={holoSound.playPowerUp}
+          onPowerDown={holoSound.playPowerDown}
+        />
+      ),
+    [holo, holoSound]
+  );
+
+  // Swallow clicks until the book is held, remembering that the visitor wanted it open
+  const handleWrapperClickCapture = useCallback(
+    (event: MouseEvent) => {
+      if (isHeld) return;
+      event.stopPropagation();
+      if (!comicBookRef.current?.isBookOpen()) pendingOpenRef.current = true;
+    },
+    [isHeld]
+  );
+
+  // Perform the remembered click as soon as the book is caught
+  useEffect(() => {
+    if (isHeld && pendingOpenRef.current) {
+      pendingOpenRef.current = false;
+      comicBookRef.current?.flipNext();
+    }
+  }, [isHeld]);
 
   // Experience data references - lookup by company name for resilience to reordering
   const findExperience = (company: string) =>
@@ -81,17 +187,24 @@ function App() {
   const healthation = findExperience('Healthation');
 
   return (
-    <div className="app-container">
-      {/* Animated web border - fixed layer behind the book */}
-      <SpiderWebs ref={spiderWebsRef} delay={0.15} />
+    <div className="app-container" data-web-state={webState} data-web-lines={webLines} data-holo={holo.phase}>
       <ContactSidebar />
-      <div className={`comic-wrapper ${isBookOpen ? 'open' : 'closed'}`}>
+      <div
+        className={`comic-wrapper ${isBookOpen ? 'open' : 'closed'}${isHeld ? '' : ' intro'}`}
+        onClickCapture={handleWrapperClickCapture}
+      >
         <ComicBookGSAP
           ref={comicBookRef}
+          clip={isHeld && holo.phase === 'off'}
+          flat={holo.phase !== 'off'}
+          renderOverlay={renderHologram}
           onPageChange={handlePageChange}
           onPageFlip={handlePageFlip}
           onBookOpen={handleBookOpen}
           onBookClose={handleBookClose}
+          onFlipStart={handleFlipStart}
+          onFlipProgress={handleFlipProgress}
+          onFlipLanded={handleFlipLanded}
           showCover={true}
         >
           <CoverPage />
@@ -149,7 +262,16 @@ function App() {
         </ComicBookGSAP>
       </div>
 
-      {!isBookOpen && currentPage === 0 && (
+      {/* Webs: lines and webs behind the book, plus a front layer above it */}
+      <WebCatch
+        ref={webCatchRef}
+        bookRef={comicBookRef}
+        onStateChange={setWebState}
+        onLinesChange={setWebLines}
+        onPose={holo.onPose}
+      />
+
+      {isHeld && !isBookOpen && currentPage === 0 && (
         <div className="click-hint">
           ↑ CLICK COVER TO OPEN ↑
         </div>
@@ -163,6 +285,11 @@ function App() {
           <span className="page-indicator">
             {currentPage + 1} / {totalPages}
           </span>
+          {holo.phase === 'off' && currentPage === 6 && holo.available() && (
+            <button type="button" className="holo-replay" data-holo-control="" onClick={holo.replay}>
+              ▶ Replay hologram
+            </button>
+          )}
         </div>
       )}
     </div>

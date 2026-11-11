@@ -216,6 +216,7 @@
   right: 0;
   bottom: 0;
   background: var(--comic-red); /* Spider-Man red background */
+  container-type: inline-size;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -235,34 +236,6 @@
   background-size: 3px 3px;
   pointer-events: none;
   z-index: 0;
-}
-
-/* Spider Web Background Pattern - Darker lines for red background */
-.spiderWebBg {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background:
-    /* Radial web lines from center - more pronounced */
-    repeating-conic-gradient(
-      from 0deg at 50% 50%,
-      transparent 0deg,
-      transparent 7deg,
-      var(--shadow-color) 7deg,
-      var(--shadow-color) 9deg
-    ),
-    /* Concentric web rings - bolder and tighter */
-    repeating-radial-gradient(
-      circle at 50% 50%,
-      transparent 0px,
-      transparent 30px,
-      var(--shadow-color) 30px,
-      var(--shadow-color) 34px
-    );
-  pointer-events: none;
-  z-index: 1;
 }
 
 /* Top Banner - Marvel Comics Group Style */
@@ -333,65 +306,185 @@
   z-index: 20; /* Above the banner */
 }
 
-/* Title Treatment - DIAGONAL BLACK BANNER */
+/* Title Treatment - Silver Age logo banner.
+   Fixed print colours (not --comic-black/--comic-white, which flip in dark mode):
+   the banner is the same navy ribbon in both schemes. */
 .titleTreatment {
+  --logo: clamp(1rem, 10.6cqw, 4rem);
+  font-size: var(--logo);
+  --ink: #231f20;
+  --navy: #16235a;
+  --navy-dot: #2c479f;
+
   position: absolute;
-  top: 70px; /* Lowered to make room for issue box and CCA */
-  left: -20px;
-  right: -20px;
-  background: var(--comic-black);
-  padding: var(--spacing-sm) var(--spacing-xl);
+  top: 84px; /* Below the CCA stamp; the corner box overlaps the ribbon end */
+  left: 6px;
+  right: 6px;
   transform: rotate(-3deg);
   z-index: 10; /* Lower than corner box and CCA */
+  /* Hard offset shadow (no blur) that follows the ribbon's notched ends */
+  filter: drop-shadow(0.085em 0.105em 0 rgba(35, 31, 32, 0.55));
+}
+
+/* Ribbon: ink edge, yellow stripe, navy Ben-Day fill; swallow-tail ends */
+.titleBand {
+  position: absolute;
+  inset: 0;
+  background: var(--ink);
+  clip-path: polygon(0 0, 100% 0, calc(100% - 0.33em) 50%, 100% 100%, 0 100%, 0.33em 50%);
+}
+
+.titleBand::before {
+  content: '';
+  position: absolute;
+  inset: 0.06em;
+  background: #fff200;
+  clip-path: polygon(0 0, 100% 0, calc(100% - 0.31em) 50%, 100% 100%, 0 100%, 0.31em 50%);
+}
+
+.titleBand::after {
+  content: '';
+  position: absolute;
+  inset: 0.125em;
+  background:
+    radial-gradient(circle, var(--navy-dot) 0.023em, transparent 0.03em) 0 0 / 0.105em 0.105em,
+    linear-gradient(180deg, #1d2f7a 0%, var(--navy) 55%, #101a46 100%);
+  clip-path: polygon(0 0, 100% 0, calc(100% - 0.29em) 50%, 100% 100%, 0 100%, 0.29em 50%);
+}
+
+.titleContent {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0;
-  /* Strong shadow for depth */
-  box-shadow:
-    0 4px 0 var(--shadow-dark),
-    0 6px 12px var(--shadow-color);
+  padding: 0.23em 0.45em 0.31em 0.8em;
+}
+
+.titleRow {
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+  gap: 0.2em;
+  margin-bottom: -0.04em;
+  transform: rotate(-2deg);
+}
+
+/* THE INCREDIBLE: one italic outlined phrase, THE a little smaller */
+.logoWord {
+  position: relative;
+  display: inline-block;
+  font-family: var(--font-display);
+  font-style: italic;
+  letter-spacing: var(--tracking-wide);
+  line-height: 1.05;
+  white-space: nowrap;
 }
 
 .theSmall {
-  font-family: var(--font-display);
-  font-size: var(--text-xl);
-  color: var(--comic-yellow);
-  letter-spacing: var(--tracking-widest);
-  margin-bottom: -4px;
-  text-shadow:
-    1px 1px 0 var(--shadow-dark),
-    2px 2px 0 var(--shadow-color);
+  font-size: calc(var(--logo) * 0.56);
 }
 
 .incredibleItalic {
-  font-family: var(--font-display);
-  font-size: clamp(1.5rem, 6vw, 2rem);
-  color: var(--comic-yellow);
-  letter-spacing: var(--tracking-wide);
-  font-style: italic;
-  margin-bottom: -2px;
-  text-shadow:
-    1px 1px 0 var(--shadow-dark),
-    2px 2px 0 var(--shadow-color),
-    3px 3px 0 var(--paper-shadow-medium);
+  font-size: calc(var(--logo) * 0.7);
 }
 
-/* Hero Name - HUGE Text in Banner - Matching IRON ARCHITECT style */
+.logoExtrude {
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--ink);
+  -webkit-text-stroke: 0.17em var(--ink);
+  paint-order: stroke fill;
+  text-shadow:
+    0.03em 0.03em 0 #e8281f,
+    0.06em 0.06em 0 #e8281f,
+    0.09em 0.09em 0 #e8281f,
+    0.12em 0.12em 0 var(--ink);
+  user-select: none;
+  pointer-events: none;
+}
+
+.logoFill {
+  position: relative;
+  color: #fffbe8;
+}
+
+/* Hero name: chunky logotype with a solid extruded block */
 .heroNameSpider {
+  position: relative;
+  display: inline-block;
   font-family: var(--font-display);
-  font-size: clamp(2rem, 10vw, 3rem);
-  color: var(--comic-yellow);
+  font-size: var(--logo);
   text-transform: uppercase;
   letter-spacing: var(--tracking-wide);
-  line-height: 0.9;
+  line-height: 0.95;
   text-align: center;
-  /* Bold 3D shadow effect matching IRON ARCHITECT */
+  white-space: nowrap;
+}
+
+.heroTilt {
+  position: relative;
+  display: inline-block;
+  transform: skewX(-7deg) rotate(-1deg);
+}
+
+.heroExtrude {
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--ink);
+  -webkit-text-stroke: 0.19em var(--ink);
+  paint-order: stroke fill;
   text-shadow:
-    2px 2px 0 var(--comic-red),
-    3px 3px 0 var(--comic-red),
-    4px 4px 0 var(--shadow-dark),
-    5px 5px 0 var(--shadow-color);
+    0.021em 0.021em 0 #e8281f,
+    0.042em 0.042em 0 #e8281f,
+    0.063em 0.063em 0 #e8281f,
+    0.084em 0.084em 0 #e8281f,
+    0.105em 0.105em 0 #b3141a,
+    0.126em 0.126em 0 #b3141a,
+    0.147em 0.147em 0 var(--ink),
+    0.168em 0.168em 0 var(--ink);
+  user-select: none;
+  pointer-events: none;
+}
+
+.heroFill {
+  position: relative;
+  /* Split-tone: bright yellow cap, golden middle, orange base */
+  background: linear-gradient(
+    180deg,
+    #fffbb0 0%,
+    #fff200 36%,
+    #ffd21a 50%,
+    #ffa01a 52%,
+    #f7791d 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Sparkle marks */
+.spark {
+  position: absolute;
+  width: 0.3em;
+  height: 0.3em;
+  background: #fffbe8;
+  clip-path: polygon(50% 0, 62% 38%, 100% 50%, 62% 62%, 50% 100%, 38% 62%, 0 50%, 38% 38%);
+  pointer-events: none;
+}
+
+.sparkA {
+  right: 0.45em;
+  top: 0.17em;
+}
+
+.sparkB {
+  left: 0.5em;
+  bottom: 0.19em;
+  width: 0.21em;
+  height: 0.21em;
 }
 
 /* ========== BREAKTHROUGH MASK FRAME - CENTERED ========== */
@@ -409,86 +502,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-/* BREAKTHROUGH BURST EFFECT - Jagged white starburst behind mask */
-.breakthroughBurst {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 115%;
-  height: 115%;
-  background: var(--comic-white);
-  /* Jagged starburst/explosion shape - like paper tearing */
-  clip-path: polygon(
-    50% 0%,
-    55% 8%,
-    62% 2%,
-    65% 12%,
-    75% 5%,
-    77% 15%,
-    88% 12%,
-    85% 22%,
-    95% 25%,
-    90% 33%,
-    100% 40%,
-    92% 45%,
-    98% 55%,
-    90% 58%,
-    95% 68%,
-    85% 68%,
-    88% 80%,
-    78% 77%,
-    75% 88%,
-    67% 82%,
-    60% 92%,
-    55% 85%,
-    50% 95%,
-    45% 85%,
-    40% 92%,
-    33% 82%,
-    25% 88%,
-    22% 77%,
-    12% 80%,
-    15% 68%,
-    5% 68%,
-    10% 58%,
-    2% 55%,
-    8% 45%,
-    0% 40%,
-    10% 33%,
-    5% 25%,
-    15% 22%,
-    12% 12%,
-    23% 15%,
-    25% 5%,
-    35% 12%,
-    38% 2%,
-    45% 8%
-  );
-  z-index: 1;
-  /* Subtle shadow to enhance 3D pop */
-  filter: drop-shadow(0 4px 8px var(--shadow-color));
-}
-
-/* Secondary glow layer for depth */
-.breakthroughGlow {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 105%;
-  height: 105%;
-  background: radial-gradient(
-    ellipse at center,
-    rgba(255, 255, 255, 0.9) 0%,
-    rgba(255, 255, 255, 0.6) 40%,
-    rgba(255, 255, 255, 0.2) 70%,
-    transparent 100%
-  );
-  z-index: 0;
-  filter: blur(8px);
 }
 
 /* The mask outline frame itself - JUST THE OUTLINE */
@@ -676,21 +689,6 @@
 
 /* ========== RESPONSIVE - Spider Cover (Breakthrough Design) ========== */
 @media (max-width: 480px) {
-  .heroNameSpider {
-    font-size: clamp(1.8rem, 10vw, 2.8rem);
-  }
-
-  .titleTreatment {
-    margin-top: 48px;
-  }
-
-  .theSmall {
-    font-size: var(--text-lg);
-  }
-
-  .incredibleItalic {
-    font-size: var(--text-xl);
-  }
 
   .spiderMaskFrame {
     width: 70%;
@@ -770,9 +768,7 @@
 }
 
 @media (max-width: 360px) {
-  .heroNameSpider {
-    font-size: clamp(1.5rem, 9vw, 2.2rem);
-  }
+
 
   .spiderMaskFrame {
     width: 65%;
@@ -781,11 +777,6 @@
 
   .maskOutline {
     border-width: 6px;
-  }
-
-  .breakthroughBurst {
-    width: 110%;
-    height: 110%;
   }
 
   .hireBadge {
@@ -821,11 +812,6 @@
       inset 0 0 0 4px #231F20,
       5px 8px 0 rgba(0, 0, 0, 0.4),
       0 0 0 3px rgba(0, 0, 0, 0.1);
-  }
-
-  /* Match explosion color to border so they blend together */
-  .breakthroughBurst {
-    background: #231F20;
   }
 
   /* Keep HIRE ME text white on the blue badge */

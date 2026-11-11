@@ -10,6 +10,16 @@
  * - Sheet 1: front = page 2, back = page 3
  * - etc.
  * - After flipping N sheets, you see: sheet[N-1].back (left) + sheet[N].front (right)
+ *
+ * Hanger:
+ * - The book sits inside a "hanger" wrapper (a flex box that fills the scene).
+ *   The hanger never affects layout; an external physics loop (see
+ *   WebCatch/useHangPhysics) writes a transform onto it so the whole book can
+ *   fall, hang and swing without touching the GSAP-owned `.book` transform.
+ *   The hanger is `transform-style: preserve-3d` so the scene perspective keeps
+ *   applying exactly as it did when the book was the scene's direct child.
+ * - `getPageSize()` and `getOpenProgress()` let that loop track the visible
+ *   corners of the book (0 = closed cover centred, 1 = full spread).
  */
 
 import {
@@ -36,12 +46,71 @@ const FLIP_EASE = 'power2.inOut';
 const BOOK_SHADOW = '0 0 30px rgba(0,0,0,0.4), 0 0 60px rgba(0,0,0,0.15)';
 const BOOK_SHADOW_HIDDEN = '0 0 30px rgba(0,0,0,0), 0 0 60px rgba(0,0,0,0)';
 
+export type FlipDirection = 'forward' | 'backward';
+
+/** Size of one page in CSS pixels. */
+export interface PageSize {
+  width: number;
+  height: number;
+}
+
+/**
+ * Page size for a viewport: maximise screen usage while keeping a 2:3 page and
+ * leaving room for the 12px top / 70px bottom of the comic wrapper.
+ */
+function calculatePageSize(): PageSize {
+  const vh = window.innerHeight;
+  const vw = window.innerWidth;
+  const aspectRatio = 2 / 3;
+
+  const availableHeight = vh - 82;
+  const availableWidth = vw - 24;
+
+  const maxPageWidth = availableWidth / 2;
+  // Use 98% of available height
+  let pageHeight = availableHeight * 0.98;
+  let pageWidth = pageHeight * aspectRatio;
+
+  if (pageWidth > maxPageWidth) {
+    pageWidth = maxPageWidth;
+    pageHeight = pageWidth / aspectRatio;
+  }
+
+  return {
+    width: Math.max(200, Math.floor(pageWidth)),
+    height: Math.max(300, Math.floor(pageHeight)),
+  };
+}
+
 interface ComicBookGSAPProps {
   children: ReactNode;
   onPageChange?: (pageIndex: number) => void;
   onPageFlip?: () => void;
   onBookOpen?: () => void;
   onBookClose?: () => void;
+  /** A page turn (or the cover opening/closing) is about to animate. */
+  onFlipStart?: (direction: FlipDirection) => void;
+  /**
+   * Fired on every GSAP update of a flip. `t` is how far the turning sheet is
+   * flipped (0 = flat on the right, 1 = flat on the left); `openProgress` is
+   * the cover-open progress (0 = closed, 1 = spread), which moves while the
+   * cover turns.
+   */
+  onFlipProgress?: (sheetIndex: number, t: number, openProgress: number) => void;
+  /** A flip finished and the page has landed. */
+  onFlipLanded?: (direction: FlipDirection, pageIndex: number) => void;
+  /** Let the scene clip its contents (default). Pass false while the book is falling in. */
+  clip?: boolean;
+  /**
+   * The book lies flat (hologram mode): its own pointer handling is switched off so nothing under the
+   * tilted pages competes with the overlay, which takes over clicks.
+   */
+  flat?: boolean;
+  /**
+   * Extra content drawn next to the book inside the hanger, so it shares the book's 3D pose. It is centred on
+   * the visible spread and gets the page size. (Not a child of `.book`: that clips and flattens.)
+   */
+  renderOverlay?: (page: PageSize) => ReactNode;
   showCover?: boolean;
   startPage?: number;
 }
@@ -49,9 +118,25 @@ interface ComicBookGSAPProps {
 export interface ComicBookGSAPRef {
   flipNext: () => void;
   flipPrev: () => void;
+  /**
+   * Turn a page as soon as the current flip has landed and the book is free again (right away if no flip is
+   * running). Used to honour a key pressed during a flip that would otherwise be dropped.
+   */
+  flipAfterLanding: (direction: FlipDirection) => void;
   flipTo: (page: number) => void;
   getCurrentPage: () => number;
   isBookOpen: () => boolean;
+  /** The wrapper element between `.scene` and `.book` that physics moves and tilts. */
+  getHangerElement: () => HTMLDivElement | null;
+  /** Size of one page in CSS pixels. */
+  getPageSize: () => PageSize;
+  /** 0 = closed cover centred on screen, 1 = full spread (moves while the cover turns). */
+  getOpenProgress: () => number;
+  /**
+   * 0 while the last sheet lies on the right; 1 once it has turned onto the
+   * left (only the left half of the book is then visible).
+   */
+  getCloseProgress: () => number;
 }
 
 // Represents a physical sheet of paper with front and back
@@ -68,6 +153,12 @@ const ComicBookGSAP = forwardRef<ComicBookGSAPRef, ComicBookGSAPProps>(
       onPageFlip,
       onBookOpen,
       onBookClose,
+      onFlipStart,
+      onFlipProgress,
+      onFlipLanded,
+      clip = true,
+      flat = false,
+      renderOverlay,
       showCover = true,
       startPage = 0,
     },
@@ -92,9 +183,10 @@ const ComicBookGSAP = forwardRef<ComicBookGSAPRef, ComicBookGSAPProps>(
     const [currentSheet, setCurrentSheet] = useState(Math.floor(startPage / 2));
     const [isAnimating, setIsAnimating] = useState(false);
     const [isOpen, setIsOpen] = useState(startPage > 0);
-    const [dimensions, setDimensions] = useState({ width: 350, height: 525 });
+    const [dimensions, setDimensions] = useState<PageSize>(calculatePageSize);
 
     // Refs for sheet elements
+    const hangerRef = useRef<HTMLDivElement>(null);
     const bookRef = useRef<HTMLDivElement>(null);
     const sheetRefs = useRef<(HTMLDivElement | null)[]>([]);
 
@@ -105,37 +197,34 @@ const ComicBookGSAP = forwardRef<ComicBookGSAPRef, ComicBookGSAPProps>(
       }
     }, [startPage]);
 
-    // Calculate dimensions based on viewport - maximize screen usage
+    // Keep the page size in step with the viewport
     useEffect(() => {
-      const calculateDimensions = () => {
-        const vh = window.innerHeight;
-        const vw = window.innerWidth;
-        const aspectRatio = 2 / 3;
-
-        // Reserve space: 12px top + 70px bottom for nav control with margin
-        const availableHeight = vh - 82;
-        const availableWidth = vw - 24;
-
-        const maxPageWidth = availableWidth / 2;
-        // Use 98% of available height
-        let pageHeight = availableHeight * 0.98;
-        let pageWidth = pageHeight * aspectRatio;
-
-        if (pageWidth > maxPageWidth) {
-          pageWidth = maxPageWidth;
-          pageHeight = pageWidth / aspectRatio;
-        }
-
-        pageWidth = Math.max(200, Math.floor(pageWidth));
-        pageHeight = Math.max(300, Math.floor(pageHeight));
-
-        setDimensions({ width: pageWidth, height: pageHeight });
-      };
-
-      calculateDimensions();
-      window.addEventListener('resize', calculateDimensions);
-      return () => window.removeEventListener('resize', calculateDimensions);
+      const handleResize = () => setDimensions(calculatePageSize());
+      window.addEventListener('resize', handleResize);
+      return () => window.removeEventListener('resize', handleResize);
     }, []);
+
+    // Mirror the size for synchronous reads (physics runs outside React)
+    const dimensionsRef = useRef(dimensions);
+    useLayoutEffect(() => {
+      dimensionsRef.current = dimensions;
+    }, [dimensions]);
+
+    /**
+     * Cover-open progress, read from the cover sheet's rotation. The cover's
+     * rotateY and the book's slide share one tween, so they always agree.
+     */
+    const readSheetProgress = useCallback((index: number): number => {
+      const sheet = sheetRefs.current[index];
+      if (!sheet) return 0;
+      const rotation = Number(gsap.getProperty(sheet, 'rotateY')) || 0;
+      return Math.min(1, Math.max(0, Math.abs(rotation) / 180));
+    }, []);
+    const readOpenProgress = useCallback((): number => readSheetProgress(0), [readSheetProgress]);
+    const readCloseProgress = useCallback(
+      (): number => readSheetProgress(totalSheets - 1),
+      [readSheetProgress, totalSheets]
+    );
 
     /**
      * Get z-index for a sheet based on its flip state
@@ -176,9 +265,15 @@ const ComicBookGSAP = forwardRef<ComicBookGSAPRef, ComicBookGSAPProps>(
 
         setIsAnimating(true);
         onPageFlip?.();
+        onFlipStart?.(direction);
 
         const tl = gsap.timeline({
+          onUpdate: () => {
+            const rotation = Number(gsap.getProperty(sheetEl, 'rotateY')) || 0;
+            onFlipProgress?.(sheetToFlip, Math.min(1, Math.abs(rotation) / 180), readOpenProgress());
+          },
           onComplete: () => {
+            onFlipLanded?.(direction, newCurrentSheet * 2);
             setCurrentSheet(newCurrentSheet);
             setIsAnimating(false);
 
@@ -245,14 +340,31 @@ const ComicBookGSAP = forwardRef<ComicBookGSAPRef, ComicBookGSAPProps>(
         onPageFlip,
         onBookOpen,
         onBookClose,
+        onFlipStart,
+        onFlipProgress,
+        onFlipLanded,
+        readOpenProgress,
         getSheetZIndex,
       ]
     );
+
+    // A turn asked for while another one was running: it runs as soon as the book is free
+    const queuedRef = useRef<FlipDirection | null>(null);
+    useEffect(() => {
+      if (isAnimating || !queuedRef.current) return;
+      const direction = queuedRef.current;
+      queuedRef.current = null;
+      flipSheet(direction);
+    }, [isAnimating, flipSheet]);
 
     // Expose ref methods
     useImperativeHandle(ref, () => ({
       flipNext: () => flipSheet('forward'),
       flipPrev: () => flipSheet('backward'),
+      flipAfterLanding: (direction: FlipDirection) => {
+        if (isAnimating) queuedRef.current = direction;
+        else flipSheet(direction);
+      },
       flipTo: (page: number) => {
         if (isAnimating) return;
         const targetSheet = Math.floor(page / 2);
@@ -291,6 +403,10 @@ const ComicBookGSAP = forwardRef<ComicBookGSAPRef, ComicBookGSAPProps>(
       },
       getCurrentPage: () => currentSheet * 2,
       isBookOpen: () => isOpen,
+      getHangerElement: () => hangerRef.current,
+      getPageSize: () => dimensionsRef.current,
+      getOpenProgress: readOpenProgress,
+      getCloseProgress: readCloseProgress,
     }));
 
     // Click handlers
@@ -358,33 +474,36 @@ const ComicBookGSAP = forwardRef<ComicBookGSAPRef, ComicBookGSAPProps>(
     };
 
     return (
-      <div className={styles.scene}>
-        <div
-          ref={bookRef}
-          className={`${styles.book} ${currentSheet === 0 ? styles.bookClosed : ''}`}
-          style={{
-            '--page-width': `${dimensions.width}px`,
-            '--page-height': `${dimensions.height}px`,
-          } as React.CSSProperties}
-        >
-          {/* Render all sheets */}
-          {sheets.map((sheet, index) => renderSheet(sheet, index))}
+      <div className={`${styles.scene} ${clip ? styles.sceneClip : ''}`}>
+        <div ref={hangerRef} className={styles.hanger}>
+          <div
+            ref={bookRef}
+            className={`${styles.book} ${currentSheet === 0 ? styles.bookClosed : ''} ${flat ? styles.bookFlat : ''}`}
+            style={{
+              '--page-width': `${dimensions.width}px`,
+              '--page-height': `${dimensions.height}px`,
+            } as React.CSSProperties}
+          >
+            {/* Render all sheets */}
+            {sheets.map((sheet, index) => renderSheet(sheet, index))}
 
-          {/* Click zones for navigation */}
-          <button
-            className={`${styles.clickZone} ${styles.clickZoneLeft}`}
-            onClick={handleLeftClick}
-            disabled={currentSheet <= 0}
-            aria-label="Previous page"
-            tabIndex={-1}
-          />
-          <button
-            className={`${styles.clickZone} ${styles.clickZoneRight}`}
-            onClick={handleRightClick}
-            disabled={currentSheet >= totalSheets - 1}
-            aria-label="Next page"
-            tabIndex={-1}
-          />
+            {/* Click zones for navigation */}
+            <button
+              className={`${styles.clickZone} ${styles.clickZoneLeft}`}
+              onClick={handleLeftClick}
+              disabled={currentSheet <= 0}
+              aria-label="Previous page"
+              tabIndex={-1}
+            />
+            <button
+              className={`${styles.clickZone} ${styles.clickZoneRight}`}
+              onClick={handleRightClick}
+              disabled={currentSheet >= totalSheets - 1}
+              aria-label="Next page"
+              tabIndex={-1}
+            />
+          </div>
+          {renderOverlay?.(dimensions)}
         </div>
       </div>
     );

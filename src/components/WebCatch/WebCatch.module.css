@@ -1,0 +1,24 @@
+/**
+ * WebCatch - CSS Module
+ * Two full-screen canvases that never intercept input: the back layer holds
+ * the lines and webs behind the book, the front layer holds anything that
+ * crosses the face of the book.
+ */
+
+.layer {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+/* Same stacking slot the old corner webs used: under the book (.comic-wrapper is z-index 1). */
+.back {
+  z-index: 0;
+}
+
+/* Above the book, below the navigation controls. */
+.front {
+  z-index: calc(var(--z-navigation) - 1);
+}

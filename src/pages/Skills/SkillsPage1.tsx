@@ -1,6 +1,7 @@
 import { forwardRef } from 'react';
 import { Page, Panel, PowerMeter } from '../../components';
 import { resumeData } from '../../data/resume';
+import { splitSkillCategories } from './layout';
 import shared from '../pages.module.css';
 import styles from '../Skills.module.css';
 
@@ -10,8 +11,8 @@ interface SkillsPage1Props {
 
 const SkillsPage1 = forwardRef<HTMLDivElement, SkillsPage1Props>(
   ({ isVisible = false }, ref) => {
-    // Get first two skill categories
-    const skillCategories = resumeData.skills.slice(0, 2);
+    // Left page keeps the first SKILLS_LEFT_COUNT categories
+    const skillCategories = splitSkillCategories(resumeData.skills).left;
 
     return (
       <Page ref={ref} pageNumber={6} variant="inner">

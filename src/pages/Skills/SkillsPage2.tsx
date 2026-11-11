@@ -1,6 +1,7 @@
 import { forwardRef } from 'react';
 import { Page, Panel, PowerMeter } from '../../components';
 import { resumeData } from '../../data/resume';
+import { splitSkillCategories } from './layout';
 import shared from '../pages.module.css';
 import styles from '../Skills.module.css';
 
@@ -10,12 +11,14 @@ interface SkillsPage2Props {
 
 const SkillsPage2 = forwardRef<HTMLDivElement, SkillsPage2Props>(
   ({ isVisible = false }, ref) => {
-    // Get remaining skill categories
-    const remainingCategories = resumeData.skills.slice(2);
+    // Right page shows every category after the left page's
+    const remainingCategories = splitSkillCategories(resumeData.skills).right;
+    // Three or more panels need tighter padding and gaps to fit without clipping
+    const dense = remainingCategories.length > 2;
 
     return (
       <Page ref={ref} pageNumber={7} variant="inner">
-        <div className={styles.skillsPage}>
+        <div className={`${styles.skillsPage} ${dense ? styles.skillsPageDense : ''}`}>
           {remainingCategories.map((category, catIndex) => (
             <Panel
               key={category.category}
@@ -23,7 +26,7 @@ const SkillsPage2 = forwardRef<HTMLDivElement, SkillsPage2Props>(
               animate
               animationDelay={catIndex * 0.2}
               className={shared.flexPanel}
-              style={{ padding: '12px' }}
+              style={{ padding: dense ? '7px 10px' : '12px' }}
             >
               <div className={styles.skillCategory}>
                 <h3 className={styles.skillCategoryHeader}>

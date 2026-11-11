@@ -12,5 +12,7 @@ export { Caption, PowerMeter, IssueNumber } from './common';
 
 // Layout Components
 export { ContactSidebar } from './ContactSidebar';
-export { SpiderWebs } from './SpiderWebs';
-export type { SpiderWebsRef } from './SpiderWebs';
+export { CoverWeb } from './CoverWeb';
+export { CoverBurst } from './CoverBurst';
+export { WebCatch } from './WebCatch';
+export type { WebCatchRef, IntroState } from './WebCatch';

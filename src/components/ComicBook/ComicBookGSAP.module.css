@@ -14,7 +14,31 @@
   align-items: center;
   justify-content: center;
   perspective: 2500px;
+}
+
+/* Clip the scene at rest. WebCatch turns this off while the book falls in, so
+   the tilting book is not cut off. */
+.sceneClip {
   overflow: hidden;
+}
+
+/* ============================================
+   HANGER
+   Fills the scene and centres the book exactly as the scene used to. An
+   external physics loop writes `transform` on this element (translate + tilt
+   about its centre, which is the centre of the visible book). preserve-3d
+   keeps the scene perspective reaching the book through this extra level.
+   ============================================ */
+
+.hanger {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform-style: preserve-3d;
+  /* Anchor for overlays (the hologram) that are centred on the book */
+  position: relative;
 }
 
 /* ============================================
@@ -32,6 +56,12 @@
   box-shadow:
     0 0 30px var(--shadow-color),
     0 0 60px var(--inset-shadow-light);
+}
+
+/* Lying flat (hologram mode): the overlay owns all pointer input, nothing in the tilted pages is hit */
+.bookFlat,
+.bookFlat * {
+  pointer-events: none !important;
 }
 
 /* Book spine shadow - adds depth */

@@ -23,6 +23,15 @@ const usePageNavigation = ({
         return;
       }
 
+      // Space on a focused hologram tower or control activates it instead of turning the page
+      if (
+        event.key === ' ' &&
+        event.target instanceof Element &&
+        event.target.closest('[data-holo-tower], [data-holo-nameplate], [data-holo-control]')
+      ) {
+        return;
+      }
+
       switch (event.key) {
         case 'ArrowRight':
         case 'ArrowDown':

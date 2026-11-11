@@ -1,0 +1,733 @@
+/**
+ * SkillsHologram - CSS Module
+ *
+ * 3D rules this file lives by:
+ * - everything is positioned in the page plane (the plane of the book); towers stand along +Z from it
+ * - `opacity`, `filter` and `mix-blend-mode` on an element that has 3D children flatten them, so towers fade
+ *   through the `--flick` variable that their faces read, and labels fade on the label text itself
+ * - idle motion is CSS animation on transform / opacity of leaf elements only
+ */
+
+.root {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  transform-style: preserve-3d;
+  pointer-events: none;
+  /* Held in the same stacking slot as the book */
+  --lift: 8px;
+}
+
+/* ---------- ground shadow: just behind the page plane, spilling out past the book's edges ---------- */
+.shadow {
+  position: absolute;
+  inset: 3% 1.5%;
+  transform: translateZ(-3px);
+  border-radius: 6px;
+  box-shadow: 0 26px 46px 16px rgba(0, 0, 0, 0.55), 0 0 90px 30px rgba(4, 12, 30, 0.5);
+}
+
+/* ---------- page-turn hit plane: right above the page, under the towers ---------- */
+.hitPlane {
+  position: absolute;
+  inset: 0;
+  transform: translateZ(1px);
+  pointer-events: auto;
+  display: flex;
+}
+
+.hitLeft,
+.hitRight {
+  flex: 1;
+  height: 100%;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  appearance: none;
+}
+
+.hitLeft:hover,
+.hitRight:hover {
+  background: rgba(var(--base), 0.035);
+}
+
+/* ---------- the projection stage ---------- */
+.stage {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+  transform: translateZ(2px);
+  pointer-events: none;
+}
+
+.root[data-phase='on'] .stage {
+  animation: holoFloat var(--floatPeriod) ease-in-out infinite;
+}
+
+.root[data-paused='true'] .stage,
+.root[data-paused='true'] .stage *,
+.root[data-paused='true'] .stage *::after {
+  animation-play-state: paused !important;
+}
+
+@keyframes holoFloat {
+  0%,
+  100% {
+    transform: translateZ(2px);
+  }
+  50% {
+    transform: translateZ(calc(2px + var(--float)));
+  }
+}
+
+/* ---------- plate: the emitter footprint on the pages ---------- */
+.plate {
+  position: absolute;
+  inset: 2.2%;
+  opacity: 0;
+  border: 1px solid rgba(var(--edge), 0.32);
+  background:
+    repeating-linear-gradient(0deg, rgba(var(--edge), 0.05) 0 1px, transparent 1px 4px),
+    radial-gradient(ellipse at 50% 55%, rgba(var(--base), 0.22), rgba(var(--deep), 0.1) 62%, transparent 85%),
+    rgba(3, 16, 34, 0.78);
+  box-shadow: inset 0 0 30px rgba(var(--base), 0.2), 0 0 18px rgba(var(--base), 0.25);
+}
+
+.spineGlow {
+  position: absolute;
+  left: calc(50% - 1px);
+  top: 3%;
+  bottom: 3%;
+  width: 2px;
+  background: linear-gradient(to bottom, transparent, rgba(var(--edge), 0.7), transparent);
+}
+
+.bracket {
+  position: absolute;
+  width: 7%;
+  height: 7%;
+  border: 0 solid rgba(var(--edge), 0.95);
+  filter: none;
+}
+
+.b1 { left: -1px; top: -1px; border-left-width: 2px; border-top-width: 2px; }
+.b2 { right: -1px; top: -1px; border-right-width: 2px; border-top-width: 2px; }
+.b3 { right: -1px; bottom: -1px; border-right-width: 2px; border-bottom-width: 2px; }
+.b4 { left: -1px; bottom: -1px; border-left-width: 2px; border-bottom-width: 2px; }
+
+/* ---------- emitter flash and scan line ---------- */
+.flash {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  background: radial-gradient(ellipse at 50% 50%, rgba(var(--edge), 0.7), rgba(var(--base), 0.22) 38%, transparent 70%);
+}
+
+.scan {
+  position: absolute;
+  top: -1%;
+  left: calc(50% - 22px);
+  width: 44px;
+  height: 102%;
+  opacity: 0;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(var(--base), 0.25) 35%,
+    rgba(var(--edge), 0.95) 50%,
+    rgba(var(--base), 0.25) 65%,
+    transparent
+  );
+}
+
+/* ---------- light panel standing at the back edge: a tapering beam with a faint grid ---------- */
+.panel {
+  position: absolute;
+  left: 3%;
+  width: 94%;
+  height: calc(var(--maxh) * 1.34);
+  top: calc(var(--ph) * 0.04 - var(--maxh) * 1.34);
+  transform-origin: 50% 100%;
+  transform: rotateX(-90deg);
+  opacity: 0;
+  overflow: hidden;
+  clip-path: polygon(0% 100%, 100% 100%, 91% 0%, 9% 0%);
+  background:
+    repeating-linear-gradient(90deg, rgba(var(--edge), 0.08) 0 1px, transparent 1px 46px),
+    repeating-linear-gradient(0deg, rgba(var(--edge), 0.06) 0 1px, transparent 1px calc(var(--maxh) / 10)),
+    linear-gradient(to top, rgba(var(--base), 0.26), rgba(var(--base), 0.07) 62%, transparent 100%);
+}
+
+.panelBand {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 16%;
+  background: linear-gradient(to bottom, transparent, rgba(var(--edge), 0.22), transparent);
+  transform: translateY(-120%);
+}
+
+.root[data-phase='on'] .panelBand {
+  animation: holoBand var(--shimmerPeriod) linear infinite;
+}
+
+@keyframes holoBand {
+  from { transform: translateY(-120%); }
+  to { transform: translateY(720%); }
+}
+
+/* ---------- category floor zones: an outline on the page around each row's tower bases ---------- */
+.zone {
+  position: absolute;
+  left: calc(50% + var(--zx) - var(--zw) / 2);
+  top: calc(50% + var(--zy) - var(--zh) / 2);
+  width: var(--zw);
+  height: var(--zh);
+  opacity: 0;
+  pointer-events: none;
+  --dim: 1;
+}
+
+.zoneBody {
+  position: absolute;
+  inset: 0;
+  box-sizing: border-box;
+  border-radius: 12px;
+  border: 1px solid rgba(var(--edge), 0.42);
+  background:
+    radial-gradient(ellipse at 50% 50%, rgba(var(--base), 0.2), rgba(var(--base), 0.07) 70%),
+    rgba(var(--deep), 0.2);
+  box-shadow: inset 0 0 16px rgba(var(--base), 0.18), 0 0 10px rgba(var(--base), 0.18);
+  opacity: var(--dim);
+  transition: opacity 0.18s ease-out, border-color 0.18s ease-out, box-shadow 0.18s ease-out;
+}
+
+/* The nameplate's footprint on the floor, and a leader joining it to the zone */
+.foot2 {
+  position: absolute;
+  left: calc(var(--pxz) - var(--zx) + var(--zw) / 2 - var(--pwid) / 2);
+  top: calc(50% - 2px);
+  width: var(--pwid);
+  height: 4px;
+  box-sizing: border-box;
+  border: 1px solid rgba(var(--edge), 0.6);
+  border-radius: 2px;
+  background: rgba(var(--base), 0.3);
+  box-shadow: 0 0 8px rgba(var(--base), 0.4);
+  opacity: var(--dim);
+  transition: opacity 0.18s ease-out;
+}
+
+.leader {
+  position: absolute;
+  left: calc(var(--lx) - var(--zx) + var(--zw) / 2);
+  top: calc(50% - 0.5px);
+  width: var(--lwid);
+  height: 1px;
+  background: linear-gradient(90deg, rgba(var(--edge), 0.8), rgba(var(--edge), 0.4));
+  opacity: var(--dim);
+}
+
+.zone[data-cat-state='soft'] .zoneBody {
+  border-color: rgba(var(--edge), 0.75);
+  box-shadow: inset 0 0 20px rgba(var(--base), 0.3), 0 0 14px rgba(var(--base), 0.32);
+}
+
+.zone[data-cat-state='hot'] .zoneBody {
+  border-color: rgba(var(--edge), 1);
+  background:
+    radial-gradient(ellipse at 50% 50%, rgba(var(--base), 0.42), rgba(var(--base), 0.16) 70%),
+    rgba(var(--deep), 0.25);
+  box-shadow: inset 0 0 26px rgba(var(--base), 0.45), 0 0 22px rgba(var(--base), 0.55);
+}
+
+.zone[data-cat-state='dim'] {
+  --dim: 0.4;
+}
+
+/* ---------- category nameplates: standing, billboarded, one level above the skill labels ---------- */
+/* Zero-size anchor on the floor where the plate stands. */
+.plateAnchor {
+  position: absolute;
+  left: calc(50% + var(--px));
+  top: calc(50% + var(--py));
+  width: 0;
+  height: 0;
+  pointer-events: none;
+  transform-style: preserve-3d;
+}
+
+/* The button IS the visible plate: it stands on the anchor, facing the viewer, so its box is where it is seen.
+   It fades in through --appear so that opacity stays free for --dim. */
+.nameplate {
+  position: absolute;
+  left: calc(var(--pwid) / -2);
+  bottom: 0;
+  width: var(--pwid);
+  box-sizing: border-box;
+  margin: 0;
+  padding: 3px 6px 4px;
+  appearance: none;
+  cursor: pointer;
+  outline: none;
+  /* Only reachable once the projection is up (see the data-phase rule below) */
+  pointer-events: none;
+  text-align: center;
+  font-family: var(--font-display);
+  font-size: var(--pf);
+  line-height: 1.04;
+  letter-spacing: var(--plateSpacing);
+  text-transform: uppercase;
+  color: #e9fcff;
+  background: linear-gradient(to bottom, rgba(16, 66, 114, 0.96), rgba(6, 30, 60, 0.96));
+  border: 1px solid rgba(var(--edge), 0.85);
+  border-left: 4px solid rgb(var(--edge));
+  border-radius: 2px;
+  box-shadow: 0 0 12px rgba(var(--base), 0.45), inset 0 0 10px rgba(var(--base), 0.2);
+  text-shadow: 0 0 6px rgba(var(--base), 0.8);
+  transform-origin: 50% 100%;
+  transform: translateZ(var(--plateLift)) rotateX(calc(var(--tilt) * -1));
+  --appear: 0;
+  --dim: 1;
+  opacity: calc(var(--appear) * var(--dim));
+  transition: box-shadow 0.18s ease-out, border-color 0.18s ease-out;
+}
+
+.root[data-phase='on'] .nameplate,
+.root[data-phase='on'] .labelBody {
+  pointer-events: auto;
+}
+
+.plateName {
+  display: block;
+  /* Keep the trailing letter-spacing from pushing the text off centre */
+  margin-right: calc(var(--plateSpacing) * -1);
+}
+
+.nameplate:focus-visible {
+  outline: 2px solid rgb(var(--warm));
+  outline-offset: 2px;
+}
+
+.nameplate[data-cat-state='soft'] {
+  box-shadow: 0 0 16px rgba(var(--base), 0.7), inset 0 0 12px rgba(var(--base), 0.3);
+}
+
+.nameplate[data-cat-state='hot'] {
+  color: #fff;
+  background: linear-gradient(to bottom, rgba(38, 118, 176, 0.98), rgba(14, 62, 110, 0.98));
+  border-color: rgb(255, 255, 255);
+  box-shadow: 0 0 26px rgba(var(--base), 0.95), inset 0 0 14px rgba(var(--edge), 0.4);
+}
+
+.nameplate[data-cat-state='dim'] {
+  --dim: 0.4;
+}
+
+/* ---------- towers ---------- */
+.tower {
+  position: absolute;
+  left: calc(50% + var(--tx));
+  top: calc(50% + var(--ty));
+  width: 0;
+  height: 0;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  color: inherit;
+  appearance: none;
+  cursor: pointer;
+  outline: none;
+  pointer-events: auto;
+  transform-style: preserve-3d;
+  --rise: 0;
+  --flick: 0;
+  --dim: 1;
+  /* Skill colour, re-lit to fixed lightness levels so every skill reads on the dark scene (plain mixes first,
+     for browsers without relative colour syntax). */
+  --t-foot: color-mix(in srgb, var(--accent) 55%, rgb(6, 28, 60));
+  --t-mid: color-mix(in srgb, var(--accent) 75%, rgb(30, 90, 150));
+  --t-top: color-mix(in srgb, var(--accent) 60%, rgb(190, 235, 255));
+  --t-cap: color-mix(in srgb, var(--accent) 40%, rgb(235, 250, 255));
+}
+
+@supports (color: oklch(from red l c h)) {
+  .tower {
+    --t-foot: oklch(from var(--accent) var(--lFoot) calc(c * var(--cFoot)) h);
+    --t-mid: oklch(from var(--accent) var(--lMid) c h);
+    --t-top: oklch(from var(--accent) var(--lTop) c h);
+    --t-cap: oklch(from var(--accent) var(--lCap) calc(c * var(--cCap)) h);
+  }
+
+  .tower[data-active='true'] {
+    --t-foot: oklch(from var(--accent) var(--lFootHot) calc(c * var(--cFoot)) h);
+    --t-mid: oklch(from var(--accent) var(--lMidHot) c h);
+    --t-top: oklch(from var(--accent) var(--lTopHot) c h);
+    --t-cap: oklch(from var(--accent) var(--lCapHot) calc(c * var(--cCap)) h);
+  }
+}
+
+.foot {
+  position: absolute;
+  left: calc(var(--tw) / -2);
+  top: calc(var(--tw) / -2);
+  width: var(--tw);
+  height: var(--tw);
+  box-sizing: border-box;
+  border: 1px solid var(--t-top);
+  background: color-mix(in srgb, var(--t-mid) 45%, transparent);
+  box-shadow: 0 0 10px color-mix(in srgb, var(--t-mid) 80%, transparent);
+  opacity: var(--flick);
+}
+
+.face {
+  position: absolute;
+  left: calc(var(--tw) / -2);
+  top: calc(var(--h) * -1);
+  width: var(--tw);
+  height: var(--h);
+  box-sizing: border-box;
+  transform-origin: 50% 100%;
+  transform: rotateZ(var(--a)) translateY(calc(var(--tw) / 2)) rotateX(-90deg) scaleY(var(--rise));
+  /* Only outward-facing sides draw, so the far sides never show through the near ones. */
+  backface-visibility: hidden;
+  opacity: var(--flick);
+  /* Thin light-blue rim on the vertical edges: the hologram's own light on top of the skill colour. */
+  border-left: 1px solid rgba(var(--edge), 0.95);
+  border-right: 1px solid rgba(var(--edge), 0.95);
+  /* Ten-step scale lines over a body in the skill colour: dark at the foot, brighter toward the top. */
+  background:
+    repeating-linear-gradient(to top, rgba(var(--edge), 0.5) 0 1px, transparent 1px var(--seg)),
+    linear-gradient(to top, color-mix(in srgb, var(--t-top) 40%, transparent), transparent 14%),
+    linear-gradient(
+      to top,
+      color-mix(in srgb, var(--t-foot) 92%, transparent),
+      color-mix(in srgb, var(--t-mid) 88%, transparent) 55%,
+      color-mix(in srgb, var(--t-top) 86%, transparent)
+    );
+  box-shadow: inset 0 0 9px color-mix(in srgb, var(--t-top) 55%, transparent);
+}
+
+.f0 { --a: 0deg; }
+.f1 { --a: 90deg; }
+.f2 { --a: 180deg; }
+.f3 { --a: 270deg; }
+
+/* Two-tone sides: the faces turned away from the light read darker, which gives the box volume. */
+.f1 { --shade: 0.22; }
+.f3 { --shade: 0.12; }
+.f0, .f2 { --shade: 0; }
+
+.face::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(2, 14, 36, var(--shade));
+  pointer-events: none;
+}
+
+/* The cap is the brightest face. */
+.cap {
+  position: absolute;
+  left: calc(var(--tw) / -2);
+  top: calc(var(--tw) / -2);
+  width: var(--tw);
+  height: var(--tw);
+  box-sizing: border-box;
+  transform: translateZ(calc(var(--h) * var(--rise)));
+  opacity: var(--flick);
+  backface-visibility: hidden;
+  border: 1px solid rgba(var(--edge), 1);
+  background: var(--t-cap);
+  box-shadow: 0 0 12px color-mix(in srgb, var(--t-top) 90%, transparent), 0 0 3px rgba(var(--edge), 1);
+}
+
+/* Hovered / focused: lighter body, a stronger edge and a glowing cap. */
+.tower[data-active='true'] .face {
+  border-left-color: #fff;
+  border-right-color: #fff;
+  box-shadow: inset 0 0 12px color-mix(in srgb, var(--t-cap) 70%, transparent), 0 0 12px color-mix(in srgb, var(--t-top) 60%, transparent);
+}
+
+.tower[data-active='true'] .cap {
+  background: var(--t-cap);
+  box-shadow: 0 0 26px var(--t-top), 0 0 8px #fff;
+}
+
+.tower:focus-visible .foot {
+  outline: 2px solid rgb(var(--warm));
+  outline-offset: 2px;
+}
+
+/* ---------- billboarded labels: stand on the tower top and face the viewer ---------- */
+.label {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+  transform-style: preserve-3d;
+  transform: translateZ(calc(var(--h) * var(--rise) + var(--labelLift)));
+}
+
+.labelText {
+  position: absolute;
+  left: calc(var(--lw) / -2);
+  bottom: 0;
+  width: var(--lw);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+  text-align: center;
+  line-height: 1.02;
+  transform-origin: 50% 100%;
+  transform: rotateX(calc(var(--tilt) * -1));
+  opacity: 0;
+}
+
+/* Dark plate behind the text so a label reads over towers and printed text. Dimming lives here, not on the
+   billboarded wrapper (opacity there would flatten it). */
+.labelBody {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+  padding: 2px 6px 3px;
+  max-width: 100%;
+  box-sizing: border-box;
+  background: rgba(3, 16, 34, 0.84);
+  border: 1px solid color-mix(in srgb, var(--t-top) 85%, transparent);
+  border-bottom-width: 2px;
+  border-radius: 3px;
+  text-shadow: 0 0 3px rgba(var(--deep), 1), 0 0 8px rgba(var(--deep), 0.9);
+  opacity: var(--dim, 1);
+  transition: opacity 0.18s ease-out;
+}
+
+.labelName {
+  font-family: var(--font-display);
+  font-size: var(--lf);
+  letter-spacing: 0.04em;
+  color: #f4fdff;
+}
+
+.labelLevel {
+  font-family: var(--font-caption);
+  font-weight: 700;
+  font-size: calc(var(--lf) * 0.86);
+  color: color-mix(in srgb, var(--t-top) 70%, white 30%);
+}
+
+.tower[data-active='true'] .labelName {
+  color: #fff;
+  text-shadow: 0 0 10px rgb(var(--edge));
+}
+
+/* ---------- focus: while one tower (or one category) is highlighted, the rest step back ---------- */
+.stage[data-focus='tower'] .tower:not([data-active='true']),
+.stage[data-focus='cat'] .tower:not([data-in='true']) {
+  --dim: 0.4;
+}
+
+.stage[data-focus='tower'] .tower:not([data-active='true']) .face,
+.stage[data-focus='tower'] .tower:not([data-active='true']) .cap,
+.stage[data-focus='tower'] .tower:not([data-active='true']) .foot,
+.stage[data-focus='cat'] .tower:not([data-in='true']) .face,
+.stage[data-focus='cat'] .tower:not([data-in='true']) .cap,
+.stage[data-focus='cat'] .tower:not([data-in='true']) .foot {
+  opacity: calc(var(--flick) * var(--dim));
+}
+
+.stage[data-focus='cat'] .tower[data-in='true'] .cap {
+  box-shadow: 0 0 20px var(--t-top), 0 0 5px rgba(var(--edge), 1);
+}
+
+/* ---------- HUD (2D, portalled out of the 3D space) ---------- */
+.hud {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1500;
+  opacity: 0;
+  animation: hudIn 0.5s ease-out 1.5s forwards;
+}
+
+.hud[data-phase='exiting'] {
+  animation: none;
+  opacity: 0;
+  transition: opacity 0.15s ease-out;
+}
+
+@keyframes hudIn {
+  to { opacity: 1; }
+}
+
+.close {
+  position: absolute;
+  right: 22px;
+  top: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  pointer-events: auto;
+  cursor: pointer;
+  padding: 6px 12px;
+  font-family: var(--font-caption);
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.12em;
+  color: rgb(190, 245, 255);
+  background: rgba(8, 36, 66, 0.55);
+  border: 1px solid rgba(120, 220, 255, 0.55);
+  border-radius: 3px;
+  box-shadow: 0 0 14px rgba(70, 200, 255, 0.25), inset 0 0 12px rgba(70, 200, 255, 0.12);
+  backdrop-filter: blur(4px);
+}
+
+.close:hover,
+.close:focus-visible {
+  color: #fff;
+  border-color: rgb(255, 214, 120);
+  box-shadow: 0 0 18px rgba(255, 214, 120, 0.35);
+  outline: none;
+}
+
+.closeText {
+  opacity: 0.7;
+  font-size: 11px;
+}
+
+.readout {
+  position: absolute;
+  left: 50%;
+  top: 16px;
+  transform: translateX(-50%);
+  min-width: 300px;
+  padding: 10px 18px 12px;
+  text-align: center;
+  font-family: var(--font-caption);
+  color: rgb(190, 245, 255);
+  background: linear-gradient(to bottom, rgba(10, 52, 92, 0.6), rgba(6, 28, 54, 0.5));
+  border: 1px solid rgba(120, 220, 255, 0.5);
+  border-radius: 3px;
+  box-shadow: 0 0 22px rgba(70, 200, 255, 0.22), inset 0 0 18px rgba(70, 200, 255, 0.12);
+  backdrop-filter: blur(4px);
+}
+
+.readout[data-empty='true'] {
+  min-width: 0;
+  padding: 7px 16px;
+  background: rgba(8, 36, 66, 0.32);
+  border-color: rgba(120, 220, 255, 0.25);
+  box-shadow: none;
+}
+
+.readoutHint {
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  opacity: 0.75;
+}
+
+.readoutCategory {
+  font-size: 11px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  opacity: 0.8;
+}
+
+.readoutName {
+  font-family: var(--font-display);
+  font-size: 26px;
+  letter-spacing: 0.06em;
+  color: #fff;
+  text-shadow: 0 0 10px rgba(110, 220, 255, 0.8);
+  margin: 2px 0 6px;
+}
+
+.readoutList {
+  list-style: none;
+  margin: 8px 0 0;
+  padding: 0;
+  display: grid;
+  gap: 2px;
+  text-align: left;
+}
+
+.readoutList li {
+  display: grid;
+  grid-template-columns: 12px 1fr auto;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
+  letter-spacing: 0.06em;
+}
+
+.swatch {
+  width: 12px;
+  height: 12px;
+  border: 1px solid rgba(190, 245, 255, 0.7);
+  background: var(--accent);
+  box-shadow: 0 0 8px var(--accent);
+}
+
+.listLevel strong {
+  color: rgb(255, 214, 120);
+}
+
+.readout[data-kind='category'] {
+  min-width: 330px;
+  top: 10px;
+  padding: 7px 16px 9px;
+}
+
+.readout[data-kind='category'] .readoutName {
+  font-size: 22px;
+  margin: 0 0 4px;
+}
+
+.readoutLevel {
+  margin-top: 6px;
+  font-size: 12px;
+  letter-spacing: 0.16em;
+}
+
+.readoutLevel strong {
+  color: rgb(255, 214, 120);
+  font-size: 15px;
+}
+
+.bar {
+  display: flex;
+  gap: 3px;
+  justify-content: center;
+}
+
+.bar span {
+  width: 22px;
+  height: 8px;
+  border: 1px solid rgba(120, 220, 255, 0.6);
+}
+
+.barOn {
+  background: color-mix(in srgb, var(--accent) 80%, white 20%);
+  box-shadow: 0 0 8px color-mix(in srgb, var(--accent) 80%, transparent);
+}
+
+.barOff {
+  background: rgba(120, 220, 255, 0.08);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stage,
+  .panelBand {
+    animation: none !important;
+  }
+}

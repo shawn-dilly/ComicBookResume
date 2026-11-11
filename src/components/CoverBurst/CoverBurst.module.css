@@ -1,0 +1,135 @@
+/* Portrait bursting through the cover. Fixed print colours, not theme tokens:
+   variables.css remaps --comic-black / --comic-white in dark mode, and the
+   red cover and the ink stay the same in both schemes. */
+.burst {
+  --burst-ink: #231f20;
+  --burst-paper: #f5f0e1;
+  --burst-paper-fold: rgba(35, 31, 32, 0.35);
+  --burst-red: var(--comic-red);
+  --burst-dots: rgba(237, 28, 36, 0.55);
+  --burst-hole-dots: rgba(255, 240, 220, 0.2);
+
+  position: absolute;
+  left: -50%;
+  top: -50%;
+  width: 200%;
+  height: 200%;
+  overflow: visible;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.crack,
+.speed {
+  fill: var(--burst-ink);
+}
+
+.speed {
+  opacity: 0.55;
+}
+
+.hole {
+  fill: var(--burst-ink);
+  stroke: var(--burst-ink);
+  stroke-width: 0.8;
+  stroke-linejoin: miter;
+}
+
+.holeShadow {
+  fill: var(--burst-ink);
+  opacity: 0.4;
+}
+
+.holeDots {
+  stroke: none;
+}
+
+.dotLight {
+  fill: var(--burst-hole-dots);
+}
+
+.dotRed {
+  fill: var(--burst-dots);
+}
+
+.rimLines {
+  fill: var(--burst-paper);
+  opacity: 0.7;
+}
+
+.flapShadow {
+  fill: var(--burst-ink);
+  opacity: 0.5;
+}
+
+.flapUnder {
+  fill: var(--burst-paper);
+  stroke: var(--burst-ink);
+  stroke-width: 0.7;
+  stroke-linejoin: round;
+}
+
+.flapFold {
+  fill: none;
+  stroke: var(--burst-paper-fold);
+  stroke-width: 0.5;
+  stroke-linecap: round;
+}
+
+.flapCurl {
+  fill: var(--burst-red);
+  stroke: var(--burst-ink);
+  stroke-width: 0.6;
+  stroke-linejoin: round;
+}
+
+.energy {
+  stroke: var(--burst-ink);
+  stroke-width: 1.1;
+  stroke-linejoin: miter;
+  stroke-miterlimit: 4;
+}
+
+.energyDots {
+  stroke: none;
+  opacity: 0.9;
+}
+
+.shardRed {
+  fill: var(--burst-red);
+  stroke: var(--burst-ink);
+  stroke-width: 0.6;
+  stroke-linejoin: round;
+}
+
+.shardCream {
+  fill: var(--burst-paper);
+  stroke: var(--burst-ink);
+  stroke-width: 0.6;
+  stroke-linejoin: round;
+}
+
+.strand,
+.strandSheen {
+  fill: none;
+  stroke-linecap: round;
+  vector-effect: non-scaling-stroke;
+}
+
+.strand {
+  stroke: rgba(35, 31, 32, 0.75);
+  stroke-width: 1.3px;
+}
+
+.strandSheen {
+  stroke: rgba(255, 255, 255, 0.35);
+  stroke-width: 0.8px;
+}
+
+.loose {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.85);
+  stroke-width: 1.2px;
+  stroke-linecap: round;
+  vector-effect: non-scaling-stroke;
+}
