@@ -1,0 +1,79 @@
+/* A sheet of the reader. Turned with transforms only; the spine is the left edge. */
+.page {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+  transform-origin: 0 50%;
+  visibility: hidden;
+}
+
+/* Only the current sheet (and the two sheets in a turn) is visible and focusable; the reader sets this class. */
+.page:global(.is-cur) {
+  visibility: visible;
+}
+
+.page:not(:global(.is-cur)) * {
+  visibility: hidden !important;
+}
+
+.face {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.front {
+  background:
+    radial-gradient(circle at 1px 1px, rgba(35, 31, 32, 0.075) 1px, transparent 1.3px) 0 0 / 5px 5px,
+    linear-gradient(180deg, var(--m-paper), var(--m-paper-low));
+}
+
+.front::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  box-shadow: inset 0 0 38px rgba(139, 69, 19, 0.14);
+  z-index: 4;
+}
+
+.back {
+  transform: rotateY(180deg);
+  background:
+    radial-gradient(circle at 1px 1px, rgba(35, 31, 32, 0.1) 1px, transparent 1.3px) 0 0 / 5px 5px,
+    var(--m-back);
+}
+
+.shade {
+  position: absolute;
+  inset: 0;
+  background: #000;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 9;
+}
+
+.cast {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 150px;
+  pointer-events: none;
+  opacity: 0;
+  z-index: 8;
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.18) 45%, rgba(0, 0, 0, 0));
+}
+
+.spine {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 14px;
+  pointer-events: none;
+  z-index: 7;
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0.28), rgba(0, 0, 0, 0));
+}

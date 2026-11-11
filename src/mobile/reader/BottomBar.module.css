@@ -1,0 +1,147 @@
+.bar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 40;
+  height: var(--m-bar-height);
+  padding: 0 10px var(--m-safe-bottom) 8px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: linear-gradient(180deg, var(--m-navy-bar-top), var(--m-navy-bar-bottom));
+  border-top: 3px solid var(--m-ink);
+  box-shadow: 0 -3px 0 rgba(255, 242, 0, 0.85);
+}
+
+.bar button {
+  border: 0;
+  background: none;
+  color: #fff;
+  font: inherit;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.circle {
+  flex: none;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.08);
+  border: 2px solid rgba(255, 255, 255, 0.3) !important;
+}
+
+.circle svg {
+  width: 24px;
+  height: 24px;
+  stroke: #fff;
+  fill: none;
+  stroke-width: 3.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.circle[aria-disabled='true'] {
+  opacity: 0.28;
+}
+
+.toc {
+  flex: 1;
+  min-width: 0;
+  height: 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: center;
+  gap: 5px;
+  padding: 0 4px;
+  text-align: left;
+}
+
+.line {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  min-width: 0;
+}
+
+.chapter {
+  display: block;
+  flex: 1 1 auto;
+  min-width: 0;
+  font: 400 16px/1 var(--m-display);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--comic-yellow);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.count {
+  flex: none;
+  font: 700 14px/1 var(--m-mono);
+  color: #bcd0f5;
+}
+
+.dots {
+  display: flex;
+  gap: 3px;
+  height: 6px;
+}
+
+.dots i {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.22);
+  border-radius: 2px;
+  transition: background 0.25s, flex 0.25s;
+}
+
+.dots i.on {
+  background: var(--comic-yellow);
+  flex: 2.2;
+}
+
+.dots i.past {
+  background: rgba(255, 242, 0, 0.45);
+}
+
+.bar .hire {
+  flex: none;
+  height: 44px;
+  padding: 4px 10px 0;
+  background: var(--comic-blue);
+  border: 3px solid var(--m-ink);
+  font: 400 19px/1 var(--m-display);
+  letter-spacing: 0.06em;
+  box-shadow: 3px 3px 0 var(--m-ink);
+  white-space: nowrap;
+  transition: opacity 0.2s;
+}
+
+.bar .hire:active {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0 var(--m-ink);
+}
+
+.bar .hireOff {
+  opacity: 0;
+  pointer-events: none;
+  width: 0;
+  padding: 0;
+  border-width: 0;
+  margin-left: -4px;
+  overflow: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bar,
+  .dots i {
+    transition-duration: 0.001s;
+  }
+}

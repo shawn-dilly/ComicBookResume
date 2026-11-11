@@ -30,13 +30,14 @@ export const resumeData: ResumeData = {
     {
       // Derived from the Grodivo entry below (Claude Code workflow, 12 agents,
       // Bedrock RAG, Ragas evaluation).
-      // Levels are placeholders chosen by Claude; adjust to taste.
+      // Claude Code and AI Development levels were set by Shawn. The levels of
+      // Multi-Agent Workflows and RAG / Bedrock are placeholders chosen by Claude; adjust to taste.
       category: 'Agentic Development',
       skills: [
-        { name: 'Claude Code', level: 9, color: 'var(--comic-orange)' },
+        { name: 'Claude Code', level: 10, color: 'var(--comic-orange)' },
         { name: 'Multi-Agent Workflows', level: 9, color: 'var(--comic-purple)' },
         { name: 'RAG / Bedrock', level: 8, color: 'var(--comic-cyan)' },
-        { name: 'AI Evals', level: 8, color: 'var(--comic-green)' },
+        { name: 'AI Development', level: 9, color: 'var(--comic-green)' },
       ],
     },
     {

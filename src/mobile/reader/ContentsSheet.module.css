@@ -1,0 +1,147 @@
+.sheet {
+  position: absolute;
+  inset: 0;
+  z-index: 70;
+  visibility: hidden;
+  transition: visibility 0s 0.35s;
+}
+
+.open {
+  visibility: visible;
+  transition: none;
+}
+
+.scrim {
+  position: absolute;
+  inset: 0;
+  background: rgba(5, 8, 20, 0.72);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.open .scrim {
+  opacity: 1;
+}
+
+.panel {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  max-height: 88%;
+  display: flex;
+  flex-direction: column;
+  background: var(--newsprint);
+  border-top: 5px solid var(--m-ink);
+  box-shadow: 0 -6px 0 var(--comic-yellow);
+  transform: translateY(102%);
+  transition: transform 0.38s cubic-bezier(0.2, 0.9, 0.25, 1);
+  padding-bottom: var(--m-safe-bottom);
+  color: var(--m-ink);
+}
+
+.open .panel {
+  transform: none;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 10px 8px 16px;
+  border-bottom: 3px solid var(--m-ink);
+  background: var(--comic-yellow);
+}
+
+.header h2 {
+  margin: 0;
+  font: 400 30px/1 var(--m-display);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.close {
+  width: 46px;
+  height: 46px;
+  border: 3px solid var(--m-ink);
+  background: #fff;
+  color: var(--m-ink);
+  font: 400 22px/1 var(--m-display);
+  box-shadow: 2px 2px 0 var(--m-ink);
+  cursor: pointer;
+}
+
+.body {
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  padding: 10px 14px 18px;
+  touch-action: pan-y;
+}
+
+.list,
+.sub {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  min-height: 52px;
+  padding: 6px 10px;
+  border: 0;
+  border-bottom: 2px dashed rgba(35, 31, 32, 0.35);
+  background: none;
+  color: var(--m-ink);
+  text-align: left;
+  font: inherit;
+  cursor: pointer;
+}
+
+.no {
+  flex: none;
+  width: 34px;
+  height: 34px;
+  border: 3px solid var(--m-ink);
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font: 400 19px/1 var(--m-display);
+  padding-top: 2px;
+}
+
+.title {
+  font: 400 23px/1.05 var(--m-display);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.subItem {
+  padding-left: 46px;
+  min-height: 48px;
+}
+
+.subItem .title {
+  font-size: 19px;
+}
+
+.cur {
+  background: rgba(255, 242, 0, 0.55);
+}
+
+.cur .no {
+  background: var(--comic-red);
+  color: #fff;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scrim,
+  .panel {
+    transition-duration: 0.001s;
+  }
+}

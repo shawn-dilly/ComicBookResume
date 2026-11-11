@@ -1,0 +1,60 @@
+/*
+ * The cover fills the page. It is a size container so the portrait can follow the screen's height (cqh), and the
+ * desktop cover root inside it is a width container (cqw) for the logo banner.
+ */
+.cover {
+  position: absolute;
+  inset: 0;
+  container-type: size;
+  /* The drawn web is 400x600 units scaled to cover the screen; its hub lands here. */
+  --web-scale: max(calc(100cqw / 400), calc(100cqh / 600));
+  --hub-y: calc(18 * var(--web-scale) + 50cqh);
+}
+
+.topBanner {
+  padding-top: var(--m-safe-top);
+  box-sizing: content-box;
+}
+
+/* The portrait frame sits on the web's hub; its size follows the width and, on short screens, the height. */
+.portrait {
+  position: absolute;
+  left: 50%;
+  top: var(--hub-y);
+  width: min(72cqw, 300px, 38cqh);
+  aspect-ratio: 1 / 1.15;
+  transform: translate(-50%, -50%);
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tap {
+  position: absolute;
+  left: 50%;
+  bottom: 128px;
+  z-index: 22;
+  transform: translateX(-50%);
+  animation: tapPulse 1.6s ease-in-out infinite;
+  white-space: nowrap;
+  min-height: var(--m-tap);
+  padding: 9px 18px 7px;
+  background: var(--comic-yellow);
+  color: var(--m-ink);
+  border: 3px solid var(--m-ink);
+  box-shadow: 4px 4px 0 var(--m-ink);
+  font: 400 24px/1 var(--m-display);
+  letter-spacing: 0.08em;
+  cursor: pointer;
+}
+
+.still {
+  animation: none;
+}
+
+@keyframes tapPulse {
+  50% {
+    transform: translateX(-50%) scale(1.06);
+  }
+}

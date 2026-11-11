@@ -1,0 +1,323 @@
+/* Powers card and hologram. The scene is a fixed 340x440 box scaled as a whole (see mobileConfig HOLO). */
+.hs {
+  position: relative;
+  margin: 0 auto;
+  overflow: hidden;
+  touch-action: pan-y;
+  transition: height 0.6s cubic-bezier(0.3, 0.8, 0.3, 1);
+}
+
+.on,
+.on * {
+  touch-action: none !important;
+}
+
+.inner {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 340px;
+  height: 440px;
+  transform-origin: 0 0;
+  transition: transform 0.6s cubic-bezier(0.3, 0.8, 0.3, 1);
+}
+
+.scene {
+  position: absolute;
+  inset: 0;
+  perspective: 1100px;
+  perspective-origin: 50% 40%;
+}
+
+.world {
+  position: absolute;
+  left: 170px;
+  top: 0;
+  width: 0;
+  height: 0;
+  transform-style: preserve-3d;
+}
+
+.floor {
+  position: absolute;
+  left: -170px;
+  top: -186px;
+  width: 340px;
+  height: 372px;
+  overflow: hidden;
+}
+
+.paper {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 1px 1px, rgba(35, 31, 32, 0.075) 1px, transparent 1.3px) 0 0 / 5px 5px,
+    #fffdf3;
+  border: 3px solid var(--m-ink);
+  box-shadow: 4px 4px 0 var(--m-ink);
+  padding: 12px 14px;
+  backface-visibility: hidden;
+  overflow: hidden;
+}
+
+.glow {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  border: 2px solid rgba(110, 225, 255, 0.9);
+  background:
+    repeating-linear-gradient(90deg, rgba(110, 225, 255, 0.16) 0 1px, transparent 1px 34px),
+    repeating-linear-gradient(0deg, rgba(110, 225, 255, 0.16) 0 1px, transparent 1px 34px),
+    radial-gradient(ellipse at 50% 50%, rgba(0, 140, 220, 0.55), rgba(3, 22, 48, 0.92) 72%),
+    #031630;
+  box-shadow:
+    0 0 40px rgba(0, 174, 239, 0.55),
+    inset 0 0 40px rgba(0, 174, 239, 0.35);
+  pointer-events: none;
+}
+
+.glow::before,
+.glow::after {
+  content: '';
+  position: absolute;
+  width: 26px;
+  height: 26px;
+  border: 3px solid #9ff;
+  pointer-events: none;
+}
+
+.glow::before {
+  left: 8px;
+  top: 8px;
+  border-right: 0;
+  border-bottom: 0;
+}
+
+.glow::after {
+  right: 8px;
+  bottom: 8px;
+  border-left: 0;
+  border-top: 0;
+}
+
+.scan {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 60px;
+  background: linear-gradient(180deg, transparent, rgba(160, 255, 255, 0.55), transparent);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.towers {
+  position: absolute;
+  left: 0;
+  top: 0;
+  transform-style: preserve-3d;
+}
+
+.tower {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 0;
+  height: 0;
+  transform-style: preserve-3d;
+}
+
+.body {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 0;
+  height: 0;
+  transform-style: preserve-3d;
+  transform: scale3d(1, 1, 0.001);
+  visibility: hidden;
+}
+
+.face {
+  position: absolute;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  left: calc(var(--tw) / -2);
+  top: calc(var(--th) / -2);
+  width: var(--tw);
+  height: var(--th);
+  background-color: rgba(var(--c), 0.9);
+}
+
+.fr {
+  transform: translate3d(0, calc(var(--tw) / 2), calc(var(--th) / 2)) rotateX(-90deg);
+  background-image:
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.2) 0 1px, transparent 1px 7px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0) 40%, rgba(0, 0, 0, 0.18));
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.35);
+}
+
+.lf {
+  transform: translate3d(calc(var(--tw) / -2), 0, calc(var(--th) / 2)) rotateZ(90deg) rotateX(-90deg);
+  background-image:
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.12) 0 1px, transparent 1px 7px),
+    linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.4));
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.25);
+}
+
+.rt {
+  transform: translate3d(calc(var(--tw) / 2), 0, calc(var(--th) / 2)) rotateZ(-90deg) rotateX(-90deg);
+  background-image:
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.15) 0 1px, transparent 1px 7px),
+    linear-gradient(0deg, rgba(0, 0, 0, 0.22), rgba(0, 0, 0, 0.12));
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.3);
+}
+
+.tp {
+  height: var(--tw);
+  top: calc(var(--tw) / -2);
+  transform: translate3d(0, 0, var(--th));
+  background-color: rgba(var(--c), 1);
+  background-image: linear-gradient(135deg, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.25));
+  box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.8);
+}
+
+.ring {
+  position: absolute;
+  left: calc(var(--tw) * -1.1);
+  top: calc(var(--tw) * -1.1);
+  width: calc(var(--tw) * 2.2);
+  height: calc(var(--tw) * 2.2);
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(var(--c), 0.85), rgba(var(--c), 0.25) 55%, transparent 72%);
+  transform: translateZ(1px);
+  opacity: 0;
+}
+
+.sel .face {
+  filter: brightness(1.45) saturate(1.15);
+}
+
+.plate {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: var(--pw, 76px);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: auto;
+  text-align: center;
+  cursor: pointer;
+  padding: 3px 4px 4px;
+  background: linear-gradient(180deg, rgba(16, 66, 114, 0.96), rgba(6, 30, 60, 0.96));
+  border: 1px solid rgb(var(--c));
+  border-left: 4px solid rgb(var(--c));
+  border-radius: 2px;
+  box-shadow:
+    0 0 12px rgba(var(--c), 0.6),
+    inset 0 0 10px rgba(var(--c), 0.25);
+  color: #e9fcff;
+  text-shadow: 0 0 6px rgba(var(--c), 0.9);
+}
+
+.plate b {
+  display: block;
+  font: 700 var(--pf, 10.5px) / 1.05 var(--m-body);
+  text-transform: uppercase;
+}
+
+.plate i {
+  display: block;
+  margin-top: 2px;
+  font: 400 19px/1 var(--m-display);
+  font-style: normal;
+  letter-spacing: 0.04em;
+}
+
+.plate i small {
+  font-size: 12px;
+  opacity: 0.7;
+}
+
+.sel .plate {
+  border-color: #fff;
+  box-shadow:
+    0 0 22px rgba(var(--c), 1),
+    inset 0 0 12px rgba(var(--c), 0.5);
+  background: linear-gradient(180deg, rgba(38, 118, 176, 0.98), rgba(14, 62, 110, 0.98));
+}
+
+.lead {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 2px;
+  margin-left: -1px;
+  background: linear-gradient(0deg, rgba(var(--c), 0.9), rgba(var(--c), 0));
+  opacity: 0;
+  transform-origin: 50% 100%;
+}
+
+.readout {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  min-height: 0;
+  padding: 9px 12px 10px;
+  background: linear-gradient(180deg, rgba(6, 30, 60, 0.92), rgba(3, 16, 36, 0.96));
+  border: 2px solid rgb(var(--c, 110, 225, 255));
+  box-shadow: 0 0 18px rgba(var(--c, 0, 174, 239), 0.5);
+  color: #e9fcff;
+  opacity: 0;
+  transform: translateY(10px);
+  pointer-events: none;
+  transition: opacity 0.25s, transform 0.25s;
+}
+
+.show {
+  opacity: 1;
+  transform: none;
+}
+
+.rn {
+  font: 400 24px/1 var(--m-display);
+  letter-spacing: 0.05em;
+  text-shadow: 0 0 8px rgba(var(--c), 0.9);
+}
+
+.rn span {
+  margin-left: 6px;
+}
+
+.rm {
+  margin-top: 3px;
+  font: 700 14px/1.3 var(--m-mono);
+  color: #9fe8ff;
+}
+
+.rb {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  gap: 3px;
+  margin-top: 6px;
+}
+
+.rb i {
+  height: 9px;
+  background: rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.rb i.f {
+  background: rgb(var(--c));
+  box-shadow: 0 0 8px rgba(var(--c), 0.9);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hs,
+  .inner,
+  .readout {
+    transition-duration: 0.001s;
+  }
+}

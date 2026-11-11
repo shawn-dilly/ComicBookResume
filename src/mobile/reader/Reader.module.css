@@ -1,0 +1,86 @@
+.shell {
+  position: fixed;
+  inset: 0;
+  height: 100vh;
+  overflow: hidden;
+  background: linear-gradient(160deg, #1a1a2e, #16213e 55%, #0f3460);
+  contain: layout paint;
+  user-select: none;
+  -webkit-user-select: none;
+  color: var(--m-ink);
+  font-family: var(--m-body);
+  font-size: 16px;
+  line-height: 1.45;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+}
+
+@supports (height: 100dvh) {
+  .shell {
+    height: 100dvh;
+  }
+}
+
+.shell[data-dragging],
+.shell[data-dragging] * {
+  user-select: none !important;
+  -webkit-user-select: none !important;
+}
+
+.book {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: var(--m-bar-height);
+  overflow: hidden;
+  touch-action: pan-y;
+}
+
+.book * {
+  touch-action: pan-y;
+}
+
+.veil {
+  /* Empty and invisible to the pointer. With nothing full-size above the 3D page stack, Chromium does not start
+     touch scrolls on the pages' scrollers (the e2e swipe test shows it), so this stays. */
+  position: absolute;
+  inset: 0;
+  z-index: 35;
+  pointer-events: none;
+}
+
+.barWrap {
+  display: contents;
+}
+
+.live {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* Reduced motion and jumps fade the new page in instead of turning. */
+.book [data-fade] {
+  animation: pageFade 0.26s ease backwards;
+}
+
+@keyframes pageFade {
+  from {
+    opacity: 0;
+  }
+}
+
+.shell :focus-visible {
+  outline: 3px solid var(--comic-cyan);
+  outline-offset: 2px;
+}
+
+:where(.shell) button {
+  font: inherit;
+  color: inherit;
+}

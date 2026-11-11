@@ -1,0 +1,26 @@
+.row {
+  display: flex;
+  align-items: center;
+  min-height: 46px;
+  margin-bottom: 12px;
+}
+
+.banner {
+  display: inline-block;
+  max-width: 100%;
+  margin: 0;
+  font: 400 30px/1 var(--m-display);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--comic-yellow);
+  background: var(--m-ink);
+  padding: 7px 14px 5px;
+  transform: rotate(-1.5deg);
+  box-shadow: 3px 3px 0 var(--comic-red);
+  text-shadow: 2px 2px 0 var(--comic-red);
+}
+
+.small {
+  font-size: 22px;
+}

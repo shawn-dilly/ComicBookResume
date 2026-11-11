@@ -1,0 +1,474 @@
+/* Epic Battles pages. Four looks (blueprint, mission briefing, rank up, early career) over shared base styles. */
+
+.company {
+  display: block;
+  margin: 0;
+  max-width: 100%;
+  font: 400 44px/0.95 var(--m-display);
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+}
+
+.sub {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 12px;
+  margin-top: 6px;
+  font: 700 15px/1.25 var(--m-mono);
+}
+
+.role {
+  margin-top: 6px;
+  font: 700 20px/1.2 var(--m-body);
+}
+
+.vs {
+  display: inline-block;
+  margin-top: 10px;
+  max-width: 100%;
+  font: 400 22px/1.05 var(--m-display);
+  letter-spacing: 0.06em;
+  color: var(--comic-yellow);
+  background: var(--m-ink);
+  padding: 7px 22px 5px 12px;
+  clip-path: polygon(0 0, 100% 0, calc(100% - 12px) 50%, 100% 100%, 0 100%);
+  text-shadow: 2px 2px 0 var(--comic-red);
+}
+
+.stats {
+  display: flex;
+  gap: 10px;
+  margin: 14px 0 4px;
+}
+
+.stat {
+  flex: 1;
+  text-align: center;
+  padding: 8px 6px 6px;
+  border: 3px solid var(--m-ink);
+  background: var(--comic-yellow);
+  box-shadow: 3px 3px 0 var(--m-ink);
+}
+
+.stat b {
+  display: block;
+  font: 400 40px/1 var(--m-display);
+  letter-spacing: 0.03em;
+}
+
+.stat span {
+  display: block;
+  font: 700 14px/1.1 var(--m-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.ach {
+  margin: 14px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ach li {
+  display: flex;
+  gap: 10px;
+  margin-top: 11px;
+  font: 700 16.5px/1.38 var(--m-body);
+}
+
+.ach .n {
+  flex: none;
+  min-width: 30px;
+  font: 400 22px/1 var(--m-display);
+}
+
+.text {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.extra {
+  animation: fadeUp 0.35s ease both;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+
+.powers {
+  margin-top: 16px;
+}
+
+.powers h4 {
+  margin: 0 0 8px;
+  font: 400 18px/1 var(--m-display);
+  letter-spacing: 0.1em;
+}
+
+/* ---------- blueprint (Grodivo) ---------- */
+.blueprint {
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1px) 0 0 / 22px 22px,
+    linear-gradient(90deg, rgba(255, 255, 255, 0.07) 1px, transparent 1px) 0 0 / 22px 22px,
+    linear-gradient(180deg, #0a4a82, #07325a) !important;
+  color: #e8f6ff;
+}
+
+.blueprint .company {
+  color: #fff;
+  text-shadow: 3px 3px 0 #02203d;
+}
+
+.blueprint .sub,
+.blueprint .role {
+  color: #d9f4ff;
+}
+
+.blueprint .vs {
+  background: #00172e;
+  color: #7fe3ff;
+  text-shadow: none;
+}
+
+.blueprint .stat {
+  background: transparent;
+  border: 2px solid #7fd6ff;
+  box-shadow: none;
+  color: #fff;
+}
+
+.blueprint .stat b {
+  color: #7fe3ff;
+  text-shadow: 0 0 12px rgba(127, 227, 255, 0.6);
+}
+
+.blueprint .ach .n {
+  color: #7fe3ff;
+}
+
+.blueprint .powers h4 {
+  color: #7fd6ff;
+}
+
+.blueprint .powers {
+  --chip-bg: transparent;
+  --chip-border: #7fd6ff;
+  --chip-fg: #d9f4ff;
+}
+
+.plate {
+  margin-top: 14px;
+  border: 2px dashed #7fd6ff;
+  padding: 12px;
+  background: rgba(0, 20, 48, 0.35);
+  color: #e8f6ff;
+}
+
+.plate button {
+  color: #7fe3ff;
+}
+
+.plateTitle {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  font: 700 14px/1.2 var(--m-mono);
+  letter-spacing: 0.08em;
+  color: #7fd6ff;
+  border-bottom: 1px solid rgba(127, 214, 255, 0.5);
+  padding-bottom: 6px;
+}
+
+/* ---------- mission briefing (PeopleReady) ---------- */
+.mission {
+  background:
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.03) 0 2px, transparent 2px 5px),
+    radial-gradient(ellipse at 50% 0, #27090e, #0a1628 60%) !important;
+  color: #e6edf7;
+}
+
+.tape {
+  height: 16px;
+  margin: 0 -14px 12px;
+  background: repeating-linear-gradient(135deg, var(--comic-yellow) 0 14px, var(--m-ink) 14px 28px);
+}
+
+.briefing {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.briefing h3 {
+  margin: 0;
+  font: 400 26px/1 var(--m-display);
+  letter-spacing: 0.1em;
+  color: var(--comic-yellow);
+}
+
+.secret {
+  font: 400 16px/1 var(--m-display);
+  letter-spacing: 0.12em;
+  color: #fff;
+  background: var(--comic-red);
+  border: 2px solid var(--m-ink);
+  padding: 4px 8px 2px;
+  transform: rotate(-3deg);
+}
+
+.companyRow {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 4px 12px;
+  margin-top: 10px;
+}
+
+.companyRow .company {
+  flex: 0 1 auto;
+}
+
+.mission .company {
+  color: #fff;
+  text-shadow: 3px 3px 0 var(--comic-red-dark);
+}
+
+.badge {
+  font: 700 14px/1 var(--m-mono);
+  color: #cbd6e6;
+  border: 2px solid #3b6a9e;
+  padding: 5px 8px 4px;
+}
+
+.label {
+  display: block;
+  font: 700 14px/1.2 var(--m-mono);
+  letter-spacing: 0.1em;
+  color: #ff8a8f;
+}
+
+.designation,
+.threat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-top: 12px;
+}
+
+.mission .role {
+  margin: 0;
+  color: #fff;
+}
+
+.period {
+  font: 700 15px/1.25 var(--m-mono);
+}
+
+.mission .period {
+  color: #cbd6e6;
+}
+
+.threat {
+  border: 2px solid var(--comic-red);
+  padding: 9px 12px;
+  background: rgba(237, 28, 36, 0.12);
+}
+
+.target {
+  font: 400 24px/1.05 var(--m-display);
+  letter-spacing: 0.06em;
+  color: #fff;
+}
+
+.priority {
+  align-self: flex-start;
+  font: 400 15px/1 var(--m-display);
+  letter-spacing: 0.1em;
+  color: #fff;
+  background: var(--comic-red);
+  padding: 4px 8px 2px;
+}
+
+.objectives {
+  margin: 16px 0 0;
+  font: 400 20px/1 var(--m-display);
+  letter-spacing: 0.1em;
+  color: #ff8a8f;
+}
+
+.mission .ach li {
+  background: rgba(255, 255, 255, 0.05);
+  border-left: 4px solid var(--comic-green);
+  padding: 9px 10px;
+  margin-top: 9px;
+  font: 700 15.5px/1.4 var(--m-mono);
+}
+
+.mission .ach .n {
+  font: 700 14px/1.3 var(--m-mono);
+  color: #7dffb4;
+  min-width: 24px;
+}
+
+.done {
+  display: block;
+  margin-top: 4px;
+  font: 700 14px/1.2 var(--m-mono);
+  letter-spacing: 0.06em;
+  color: #7dffb4;
+}
+
+.mission button {
+  color: #ff8a8f;
+}
+
+.mission .powers h4 {
+  color: #ff8a8f;
+}
+
+.mission .powers {
+  --chip-bg: #0f2540;
+  --chip-border: #3b6a9e;
+  --chip-fg: #d6e8ff;
+}
+
+/* ---------- rank up (Ezlinks) ---------- */
+.rank {
+  background:
+    radial-gradient(circle at 1px 1px, rgba(0, 166, 81, 0.09) 1px, transparent 1.3px) 0 0 / 5px 5px,
+    linear-gradient(180deg, #f5f9ec, #e4efd2) !important;
+}
+
+.rank .company {
+  color: var(--comic-green);
+  text-shadow: 3px 3px 0 var(--m-ink);
+}
+
+.rank .vs {
+  background: var(--comic-green);
+  color: #fff;
+  text-shadow: 2px 2px 0 var(--m-ink);
+}
+
+.card {
+  position: relative;
+  margin-top: 26px;
+  border: 3px solid var(--m-ink);
+  background: #fff;
+  box-shadow: 4px 4px 0 var(--m-ink);
+  padding: 12px;
+}
+
+.card h3 {
+  margin: 0;
+  font: 400 24px/1.05 var(--m-display);
+  letter-spacing: 0.03em;
+}
+
+.card .period {
+  color: #444;
+}
+
+.card ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.card li {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+  font: 700 16px/1.35 var(--m-body);
+  animation: fadeUp 0.35s ease both;
+}
+
+.card li::before {
+  content: '\25B2';
+  flex: none;
+  color: var(--comic-green);
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+.stars {
+  color: var(--comic-orange);
+  font-size: 20px;
+  letter-spacing: 2px;
+  text-shadow: 1px 1px 0 var(--m-ink);
+}
+
+.rankUp {
+  position: absolute;
+  top: -17px;
+  right: 8px;
+  background: var(--comic-red);
+  color: #fff;
+  border: 3px solid var(--m-ink);
+  font: 400 17px/1 var(--m-display);
+  letter-spacing: 0.1em;
+  padding: 4px 9px 2px;
+  transform: rotate(4deg);
+}
+
+.rank button {
+  color: var(--comic-green);
+}
+
+.rank .powers {
+  --chip-bg: var(--comic-green);
+  --chip-fg: #fff;
+}
+
+/* ---------- early career (Geneca, Healthation) ---------- */
+.early {
+  background:
+    radial-gradient(circle at 1px 1px, rgba(139, 69, 19, 0.16) 1px, transparent 1.3px) 0 0 / 4px 4px,
+    linear-gradient(180deg, #f3e3b8, #e6d29a) !important;
+}
+
+.ecCard {
+  --accent: var(--comic-purple);
+  position: relative;
+  margin-top: 28px;
+  border: 3px solid var(--m-ink);
+  border-left: 8px solid var(--accent);
+  background: rgba(255, 253, 230, 0.7);
+  padding: 14px 12px;
+  box-shadow: 4px 4px 0 var(--m-ink);
+}
+
+.caption {
+  display: table;
+  margin: -27px 0 8px -2px;
+  max-width: 92%;
+  background: var(--comic-yellow);
+  border: 3px solid var(--m-ink);
+  font: 700 14px/1.2 var(--m-mono);
+  padding: 5px 8px 4px;
+  letter-spacing: 0.04em;
+}
+
+.ecCard .company {
+  font-size: 36px;
+  margin-top: 4px;
+  color: var(--accent);
+}
+
+.ecCard .vs {
+  background: var(--accent);
+  color: #fff;
+  text-shadow: 2px 2px 0 var(--m-ink);
+}
+
+.ecCard button {
+  color: #6b3a12;
+}
+
+.ecCard .powers {
+  --chip-bg: var(--comic-cream);
+}

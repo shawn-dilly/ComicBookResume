@@ -1,0 +1,29 @@
+.button {
+  width: 100%;
+  min-height: 46px;
+  margin-top: 10px;
+  padding: 6px 12px;
+  border: 3px solid currentColor;
+  background: transparent;
+  color: inherit;
+  font: 400 20px/1 var(--m-display);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.button::after {
+  content: ' \25BE';
+  display: inline-block;
+  transition: transform 0.2s;
+}
+
+.button[aria-expanded='true']::after {
+  transform: rotate(180deg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .button::after {
+    transition-duration: 0.001s;
+  }
+}

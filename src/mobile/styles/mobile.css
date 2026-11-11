@@ -1,0 +1,43 @@
+/*
+ * Phone reader tokens. Scoped to the mobile layout so nothing leaks into the desktop flipbook.
+ *
+ * The theme tokens that flip in dark mode (--comic-black, --comic-white, --comic-cream, --newsprint, ...) are
+ * pinned to their print values here: the reader is always printed paper and ink, and the desktop components it
+ * reuses (Caption, ActionWord, CCAStamp, IssueNumber, CoverBurst) read those tokens.
+ */
+[data-layout='mobile'] {
+  --comic-black: #231f20;
+  --comic-white: #ffffff;
+  --comic-cream: #fffdd0;
+  --newsprint: #f5f0e1;
+  --newsprint-dark: #e8e0c8;
+  --aged-paper: #fdf8e8;
+  --panel-border: #231f20;
+  --shadow-color: rgba(35, 31, 32, 0.3);
+  --shadow-dark: rgba(35, 31, 32, 0.6);
+  --text-primary: #231f20;
+  --text-caption: #4a4a4a;
+  --halftone-dot-color: #231f20;
+  --paper-texture-line: rgba(0, 0, 0, 0.02);
+  --paper-shadow-subtle: rgba(0, 0, 0, 0.1);
+  --page-gradient-edge: rgba(0, 0, 0, 0.06);
+  --inset-shadow-light: rgba(0, 0, 0, 0.05);
+
+  /* Reader-only tokens. Fallbacks keep the display type narrow when the web fonts have not loaded. */
+  --m-display: 'Bangers', Impact, 'Haettenschweiler', 'Arial Narrow Bold', sans-serif;
+  --m-body: 'Comic Neue', 'Chalkboard SE', 'Marker Felt', 'Comic Sans MS', system-ui, sans-serif;
+  --m-mono: 'Courier Prime', 'Courier New', monospace;
+  --m-marker: 'Permanent Marker', 'Marker Felt', cursive;
+
+  --m-ink: #231f20;
+  --m-paper: #fbf6e6;
+  --m-paper-low: #f1e9d2;
+  --m-back: #e6dcc0;
+  --m-navy: #0a1020;
+  --m-navy-bar-top: #141d3a;
+  --m-navy-bar-bottom: #0b1226;
+  --m-cyan-glow: 110, 225, 255;
+  --m-safe-top: env(safe-area-inset-top, 0px);
+  --m-safe-bottom: env(safe-area-inset-bottom, 0px);
+  --m-tap: 44px;
+}

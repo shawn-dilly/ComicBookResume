@@ -1,0 +1,6 @@
+/* Shown only while a layout chunk loads: the navy backdrop, nothing else. */
+.app-fallback {
+  position: fixed;
+  inset: 0;
+  background: linear-gradient(135deg, var(--bg-dark-start) 0%, var(--bg-dark-mid) 50%, var(--bg-dark-end) 100%);
+}

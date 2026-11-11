@@ -287,7 +287,7 @@ test.describe('Comic Book Resume - Powers & Abilities hologram', () => {
     // A tower under the pointer wins over the page beneath it, and reads out (a front-row tower: nothing stands in
     // front of its side).
     const face = await page
-      .getByRole('button', { name: 'Claude Code, 9 out of 10, Agentic Development' })
+      .getByRole('button', { name: 'Claude Code, 10 out of 10, Agentic Development' })
       .locator('span')
       .nth(1)
       .boundingBox();
