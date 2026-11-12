@@ -127,6 +127,10 @@ test.describe('Phone layout', () => {
     await expect(root).not.toHaveAttribute('data-web-state', /.*/);
     await expect(count(page)).toHaveText('1/10');
     await expect(page.locator('canvas')).toHaveCount(0);
+    // The desktop background fly-by is never mounted on the phone layout
+    await expect(page.locator('[data-flyby]')).toHaveCount(0);
+    await page.waitForTimeout(2500);
+    await expect(page.locator('[data-flyby]')).toHaveCount(0);
     // The cover is interactive immediately: its button and the bar are usable straight away.
     const tap = page.getByRole('button', { name: 'TAP TO OPEN' });
     await expect(tap).toBeVisible();
@@ -308,8 +312,10 @@ test.describe('Phone layout', () => {
     await page.setViewportSize({ width: 1280, height: 720 });
     await expect(page.locator('.app-container')).toHaveAttribute('data-layout', 'desktop');
     await expect(page.locator('.comic-wrapper')).toBeVisible();
+    await expect(page.locator('[data-flyby]')).toHaveCount(1);
     await page.setViewportSize({ width: 390, height: 844 });
     await expect(page.locator('.app-container')).toHaveAttribute('data-layout', 'mobile');
+    await expect(page.locator('[data-flyby]')).toHaveCount(0);
     expect(errors).toEqual([]);
   });
 });

@@ -1,0 +1,134 @@
+/**
+ * HeroFlyby - CSS Module
+ * A fixed, pointer-transparent layer in the page background: z-index 0 like the back web canvas, and mounted before
+ * it in the DOM so the web lines paint over him. The book (.comic-wrapper, z-index 1) always covers him.
+ *
+ * --h is the height of the upright figure in px (set per pass); everything inside is sized from it.
+ */
+
+.root {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+  contain: layout paint;
+}
+
+.hero {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 0;
+  height: 0;
+  visibility: hidden;
+  pointer-events: none;
+  will-change: transform, opacity;
+  --thrust: 1;
+}
+
+/* Every pose hangs from the hero's origin by its chest anchor (--ax, --ay) and rotates about it; JS sets the rotation.
+   --b is his head-to-boot length; each pose is --k times that wide, and its flames are sized from --h. */
+.pose {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: calc(var(--b) * var(--k));
+  height: auto;
+  --h: calc(var(--b) * var(--ts));
+  opacity: 0;
+  transform-origin: calc(var(--ax) * 100%) calc(var(--ay) * 100%);
+  transform: translate(calc(var(--ax) * -100%), calc(var(--ay) * -100%));
+  pointer-events: none;
+}
+
+/* Soft cyan halo so the dark armour separates from the navy backdrop; an ellipse along the shape of each pose */
+.glow {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 160%;
+  height: 112%;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(closest-side, rgba(90, 210, 255, 0.5), rgba(70, 170, 255, 0.2) 58%, rgba(70, 170, 255, 0) 100%);
+  pointer-events: none;
+}
+
+.pose[data-pose='rise'] .glow {
+  width: 320%;
+}
+
+.pose[data-pose='climb'] .glow {
+  width: 62%;
+  height: 130%;
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.pose[data-pose='fly'] .glow {
+  width: 118%;
+  height: 230%;
+}
+
+.pose[data-pose='fly'] .art,
+.pose[data-pose='climb'] .art {
+  filter: drop-shadow(0 0 6px rgba(60, 170, 255, 0.55));
+}
+
+.art {
+  filter: drop-shadow(0 0 6px rgba(60, 170, 255, 0.55));
+}
+
+.poseFly .glow {
+  width: 118%;
+  height: 230%;
+}
+
+.art {
+  display: block;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  user-select: none;
+  filter: drop-shadow(0 0 2px rgba(160, 238, 255, 0.95)) drop-shadow(0 0 7px rgba(60, 170, 255, 0.55));
+}
+
+/* One boot thruster: a 40 x 200 box, 0.2h wide and 1h tall, hanging from the boot along the body axis */
+.thrust {
+  position: absolute;
+  width: calc(var(--h) * 0.2);
+  height: var(--h);
+  transform: translateX(-50%) rotate(var(--tr, 0deg)) scaleY(var(--thrust));
+  transform-origin: 50% 0;
+  transition: transform 0.3s ease-out;
+  pointer-events: none;
+}
+
+.thrust svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.flame {
+  transform-box: fill-box;
+  transform-origin: 50% 0;
+  animation: flicker 0.18s steps(1, end) infinite;
+}
+
+@keyframes flicker {
+  0% { transform: scale(1, 1); }
+  25% { transform: scale(0.86, 1.14); }
+  50% { transform: scale(1.1, 0.9); }
+  75% { transform: scale(0.92, 1.08); }
+}
+
+/* Sparks jitter down the trail in steps, like falling embers */
+.trail {
+  animation: embers 0.42s steps(4, end) infinite;
+}
+
+@keyframes embers {
+  from { transform: translateY(0); opacity: 1; }
+  to { transform: translateY(12px); opacity: 0.75; }
+}

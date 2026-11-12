@@ -196,6 +196,127 @@ test.describe('Comic Book Resume - Web catch with reduced motion', () => {
   });
 });
 
+test.describe('Comic Book Resume - hero fly-by', () => {
+  test('appears after the book is held, ignores input, sits under the book, and the first pass rises from below then crosses', async ({ page }) => {
+    type Sample = { pass: string; kind: string; phase: string; dir: string; art: string; flourish: string; rot: number; x: number; y: number };
+    await page.addInitScript(() => {
+      const log: Sample[] = [];
+      (window as unknown as { __flybyLog: Sample[] }).__flybyLog = log;
+      const tick = (): void => {
+        const root = document.querySelector<HTMLElement>('[data-flyby]');
+        const el = document.querySelector<HTMLElement>('[data-flyby-sprite]');
+        if (root && el && getComputedStyle(el).visibility === 'visible') {
+          const r = el.getBoundingClientRect();
+          const d = root.dataset;
+          // Rotation of the prone art in the figure's own frame (degrees; the mirror is on the parent)
+          const m = new DOMMatrix(getComputedStyle(el.querySelector('[data-pose="fly"]')!).transform);
+          const rot = (Math.atan2(m.b, m.a) * 180) / Math.PI;
+          log.push({
+            pass: d.flybyPass ?? '',
+            kind: d.flybyKind ?? '',
+            phase: d.flybyPhase ?? '',
+            dir: d.flybyDir ?? '',
+            art: d.flybyArt ?? '',
+            flourish: d.flybyFlourish ?? '',
+            rot,
+            x: r.x + r.width / 2,
+            y: r.y + r.height / 2,
+          });
+        }
+        requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+    });
+    await page.goto('/?flyby=fast');
+    const app = page.locator('.app-container');
+    const flyby = page.locator('[data-flyby]');
+    // Not during the opening drop
+    await expect(flyby).toHaveCount(1);
+    expect(await flyby.getAttribute('data-flyby-pass')).toBeNull();
+    await expect(app).toHaveAttribute('data-web-state', 'held', { timeout: 10000 });
+    await expect(flyby).toHaveAttribute('aria-hidden', 'true');
+    expect(await flyby.evaluate((el) => getComputedStyle(el).pointerEvents)).toBe('none');
+    expect(await page.locator('[data-flyby-sprite]').evaluate((el) => getComputedStyle(el).pointerEvents)).toBe('none');
+    // The art is the real panel cut-outs: four decorative images, no alt text
+    const imgs = page.locator('[data-flyby-sprite] img');
+    await expect(imgs).toHaveCount(4);
+    for (const img of await imgs.all()) {
+      expect(await img.getAttribute('alt')).toBe('');
+      expect(await img.evaluate((el) => (el as HTMLImageElement).naturalWidth)).toBeGreaterThan(100);
+    }
+    // Layering: above the page background (z-index 0 like the back web canvas), below the book wrapper
+    const z = await page.evaluate(() => ({
+      flyby: Number(getComputedStyle(document.querySelector('[data-flyby]')!).zIndex),
+      book: Number(getComputedStyle(document.querySelector('.comic-wrapper')!).zIndex),
+    }));
+    expect(z.flyby).toBeLessThan(z.book);
+
+    const { width: vw, height: vh } = page.viewportSize()!;
+    // The in-page recorder (installed before load) logged every frame of every pass, so slow polling cannot miss anything
+    await expect(flyby).toHaveAttribute('data-flyby-pass', '3', { timeout: 40000 });
+    const log = await page.evaluate(() => (window as unknown as { __flybyLog: Sample[] }).__flybyLog);
+    const first = log.filter((s) => s.pass === '1');
+    expect(first.length).toBeGreaterThan(10);
+    // The first pass is a rise, left to right: he starts below the bottom edge, climbs to the lane, then crosses
+    expect(first.every((s) => s.kind === 'rise' && s.dir === 'ltr')).toBe(true);
+    expect(first[0].phase).toBe('rise');
+    expect(first[0].y).toBeGreaterThan(vh);
+    const phases = [...new Set(first.map((s) => s.phase))];
+    expect(phases).toEqual(['rise', 'hover', 'climb', 'cross']);
+    // The art follows the move: rise, hover, climb, then the level prone art
+    const arts = first.map((s) => s.art).filter((a, i, all) => i === 0 || a !== all[i - 1]);
+    expect(arts).toEqual(['rise', 'hover', 'climb', 'fly']);
+    const rising = first.filter((s) => s.phase === 'rise');
+    expect(rising[rising.length - 1].y).toBeLessThan(rising[0].y - 150);
+    for (let i = 1; i < rising.length; i++) expect(rising[i].y).toBeLessThanOrEqual(rising[i - 1].y + 0.5);
+    const hover = first.filter((s) => s.phase === 'hover');
+    expect(hover.length).toBeGreaterThan(0);
+    expect(Math.max(...hover.map((s) => s.y)) - Math.min(...hover.map((s) => s.y))).toBeLessThan(40);
+    const xs = first.map((s) => s.x);
+    expect(Math.min(...xs)).toBeLessThan(vw / 2);
+    expect(Math.max(...xs)).toBeGreaterThan(vw / 2);
+    expect(new Set(xs.map(Math.round)).size).toBeGreaterThan(10);
+    // Pass 2 started from the side he left, and pass 3 went back
+    expect(log.find((s) => s.pass === '2')!.dir).toBe('rtl');
+    expect(log.find((s) => s.pass === '3')!.dir).toBe('ltr');
+    // While crossing he is always the prone art, level but for the path bank
+    const crossing = log.filter((s) => s.phase === 'cross');
+    expect(crossing.length).toBeGreaterThan(20);
+    for (const sample of crossing) {
+      // A swoop may use the climb art and a steeper dive; everything else is level, prone and banked within the cap
+      if (sample.flourish === 'swoop') continue;
+      expect(sample.art).toBe('fly');
+      expect(Math.abs(sample.rot)).toBeLessThanOrEqual(18.5);
+    }
+        // The page itself is untouched: the cover is clickable through the layer
+    await page.locator('.comic-wrapper').click();
+    await expect(page.locator('.keyboard-hints')).toBeVisible({ timeout: 10000 });
+  });
+
+  test('keeps flying while the book is open and keys still turn pages', async ({ page }) => {
+    await page.goto('/?flyby=fast');
+    await expect(page.locator('.app-container')).toHaveAttribute('data-web-state', 'held', { timeout: 10000 });
+    await page.locator('.comic-wrapper').click();
+    await expect(page.locator('.page-indicator')).toHaveText('3 / 15', { timeout: 10000 });
+    await page.keyboard.press('ArrowRight');
+    await expect(page.locator('.page-indicator')).toHaveText('5 / 15', { timeout: 10000 });
+    await expect(page.locator('[data-flyby]')).toHaveAttribute('data-flyby-pass', /^[1-9]/, { timeout: 15000 });
+  });
+});
+
+test.describe('Comic Book Resume - hero fly-by with reduced motion', () => {
+  test.use({ contextOptions: { reducedMotion: 'reduce' } });
+
+  test('is not rendered at all', async ({ page }) => {
+    await page.goto('/?flyby=fast');
+    await expect(page.locator('.app-container')).toHaveAttribute('data-web-state', 'held', { timeout: 2000 });
+    for (let i = 0; i < 6; i++) {
+      await expect(page.locator('[data-flyby]')).toHaveCount(0);
+      await page.waitForTimeout(300);
+    }
+  });
+});
+
 /** Open the book and turn to the Powers & Abilities spread (page indicator 7 / 15). */
 async function goToPowers(page: Page): Promise<void> {
   await page.goto('/');

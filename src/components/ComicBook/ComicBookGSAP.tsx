@@ -478,6 +478,7 @@ const ComicBookGSAP = forwardRef<ComicBookGSAPRef, ComicBookGSAPProps>(
         <div ref={hangerRef} className={styles.hanger}>
           <div
             ref={bookRef}
+            data-book={currentSheet === 0 ? 'closed' : 'open'}
             className={`${styles.book} ${currentSheet === 0 ? styles.bookClosed : ''} ${flat ? styles.bookFlat : ''}`}
             style={{
               '--page-width': `${dimensions.width}px`,

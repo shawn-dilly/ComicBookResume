@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState, useRef, type MouseEvent } from 'react
 
 import { ComicBookGSAP, type ComicBookGSAPRef, type FlipDirection } from './components/ComicBook';
 import { ContactSidebar } from './components/ContactSidebar';
+import { HeroFlyby } from './components/HeroFlyby';
 import { WebCatch, type IntroState, type WebCatchRef } from './components/WebCatch';
 import {
   CoverPage,
@@ -265,6 +266,9 @@ function DesktopApp() {
           <BackCoverPage />
         </ComicBookGSAP>
       </div>
+
+      {/* The Iron Architect flies in the page background: under the book, and before the webs so their lines cross in front of him */}
+      <HeroFlyby active={isHeld} holoOn={holo.phase !== 'off'} />
 
       {/* Webs: lines and webs behind the book, plus a front layer above it */}
       <WebCatch
