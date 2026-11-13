@@ -77,8 +77,8 @@
   display: flex;
   align-items: flex-end;
   justify-content: center;
-  height: 150px;
-  margin-top: 16px;
+  height: 180px;
+  margin-top: 12px;
   border: 3px solid #231f20;
   background: #00aeef repeating-conic-gradient(from 0deg at 50% 80%, #fff 0 6deg, #00aeef 6deg 12deg);
   overflow: hidden;
@@ -86,23 +86,50 @@
 }
 
 .hero img {
-  height: 135%;
+  /* the whole figure inside the frame, feet on its bottom edge */
+  height: 100%;
   width: auto;
-  margin-bottom: -22px;
+  max-width: 100%;
+  object-fit: contain;
+  object-position: bottom;
   filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.5));
 }
 
 .bubble {
-  position: absolute;
-  left: 8px;
-  top: 8px;
-  max-width: 45%;
+  /* above the picture frame, tail pointing down at the hero: it never covers the figure */
+  position: relative;
+  display: table;
+  margin: 18px auto 0;
   background: #fff;
   border: 3px solid #231f20;
   border-radius: 14px;
   padding: 3px 10px;
   font: 900 15px/1.1 var(--m-body);
   box-shadow: 2px 2px 0 #231f20;
+}
+
+.bubble::before,
+.bubble::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  border-style: solid;
+  border-color: transparent;
+}
+
+.bubble::before {
+  bottom: -14px;
+  margin-left: -8px;
+  border-width: 12px 8px 0;
+  border-top-color: #231f20;
+}
+
+.bubble::after {
+  bottom: -9px;
+  margin-left: -5px;
+  border-width: 9px 5px 0;
+  border-top-color: #fff;
+  z-index: 1;
 }
 
 .burstBox {

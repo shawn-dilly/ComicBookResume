@@ -69,8 +69,8 @@ export default function MobileAdPage({ ref, boardOpen, onOpenBoard }: MobileAdPa
           <span className={styles.sub}>{AD_COPY.sub}</span>
         </div>
 
+        <div className={styles.bubble}>{AD_COPY.heroBubble}</div>
         <div className={styles.hero}>
-          <div className={styles.bubble}>{AD_COPY.heroBubble}</div>
           <img src={heroHover} alt="" />
           <div className={styles.burstBox} aria-hidden="true">
             <Burst className={styles.burstArt} rays={11} outer={49} inner={34} jitter={0.16} fill="#FFF200" />

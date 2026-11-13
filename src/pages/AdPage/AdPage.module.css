@@ -187,16 +187,22 @@
 /* ---- hero + mission boxes ---- */
 .main {
   position: relative;
-  flex: none;
+  /* takes the free height between the header and the coupon, so the picture and the cards grow together */
+  flex: 1 1 auto;
+  min-height: 0;
   display: grid;
   grid-template-columns: minmax(0, 0.32fr) minmax(0, 0.68fr);
   gap: 1.25em;
   align-items: stretch;
   margin-top: 0.4em;
+  /* room for the scissors icon and the card shadows above the coupon */
+  margin-bottom: 1.3em;
 }
 
 .hero {
   position: relative;
+  flex: 1;
+  min-height: 0;
   display: flex;
   align-items: flex-end;
   justify-content: center;
@@ -224,24 +230,30 @@
 }
 
 .hero img {
-  position: relative;
+  /* out of flow, so the figure never makes the row taller: it scales to the frame, feet on its bottom edge */
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
   z-index: 1;
-  /* the whole figure inside the frame, feet on its bottom edge: never cropped */
   width: auto;
-  max-width: 92%;
   height: auto;
+  max-width: 92%;
   max-height: 100%;
-  min-height: 0;
-  object-fit: contain;
-  object-position: bottom;
   filter: drop-shadow(0 0 0.3em rgba(0, 0, 0, 0.5));
 }
 
+.heroCol {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+/* The speech bubble sits above the picture frame, tail pointing down at the hero: it never covers the figure. */
 .bubble {
-  position: absolute;
-  left: 4%;
-  top: 4%;
-  right: 4%;
+  position: relative;
+  flex: none;
+  margin-bottom: 0.75em;
   z-index: 2;
   background: #fff;
   border: 0.2em solid #231f20;
@@ -251,6 +263,30 @@
   font-weight: 900;
   line-height: 1.05;
   box-shadow: 0.2em 0.2em 0 #231f20;
+}
+
+.bubble::before,
+.bubble::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  border-style: solid;
+  border-color: transparent;
+}
+
+.bubble::before {
+  bottom: -0.85em;
+  margin-left: -0.5em;
+  border-width: 0.75em 0.5em 0 0.5em;
+  border-top-color: #231f20;
+}
+
+.bubble::after {
+  bottom: -0.55em;
+  margin-left: -0.35em;
+  border-width: 0.55em 0.35em 0 0.35em;
+  border-top-color: #fff;
+  z-index: 1;
 }
 
 .boxes {

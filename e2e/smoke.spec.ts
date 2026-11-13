@@ -788,11 +788,23 @@ test.describe('Comic Book Resume - special projects spread and ad page', () => {
           min.right = Math.min(min.right, r.right - b.right);
           min.bottom = Math.min(min.bottom, r.bottom - b.bottom);
         });
+        // The speech bubble sits above the picture: clear of the figure's head (top 30%) and of the headline strip
+        const rect = (sel: string) => (root.querySelector(sel) as HTMLElement).getBoundingClientRect();
+        const bubble = rect('[class*="bubble"]');
+        const img = rect('[class*="hero"] img');
+        const strip = rect('[class*="sub"]');
+        const hit = (a: DOMRect, b: { left: number; right: number; top: number; bottom: number }) =>
+          a.left < b.right && a.right > b.left && a.top < b.bottom && a.bottom > b.top;
+        const head = { left: img.left, right: img.right, top: img.top, bottom: img.top + img.height * 0.3 };
         return {
+          bubbleOnHead: hit(bubble, head),
+          bubbleOnStrip: hit(bubble, strip),
           diff: [r.left - face.left, r.top - face.top, r.right - face.right, r.bottom - face.bottom].map((n) => Math.abs(n)),
           min,
         };
       });
+      expect(ad.bubbleOnHead, 'speech bubble covers the hero head').toBe(false);
+      expect(ad.bubbleOnStrip, 'speech bubble covers the headline strip').toBe(false);
       for (const d of ad.diff) expect(d, 'ad box vs page face').toBeLessThanOrEqual(1);
       for (const [side, v] of Object.entries(ad.min)) expect(v, `ad content clearance, ${side}`).toBeGreaterThanOrEqual(6);
       const rows = await measure(['[data-ad-page]']);

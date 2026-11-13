@@ -184,9 +184,11 @@ const AdPage = forwardRef<HTMLDivElement, AdPageProps>(({ isVisible, boardOpen, 
           </div>
 
           <div className={styles.main}>
-            <div className={styles.hero}>
+            <div className={styles.heroCol}>
               <div className={styles.bubble}>{AD_COPY.heroBubble}</div>
-              <img src={heroHover} alt="" />
+              <div className={styles.hero}>
+                <img src={heroHover} alt="" />
+              </div>
             </div>
             <div className={styles.boxes}>
               {MISSIONS.map((m, i) => (
