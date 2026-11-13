@@ -1,0 +1,492 @@
+/* ========== SPECIAL PROJECTS: THE CASE FILE SPREAD ========== */
+/* Two facing pages for Project Gridiron. Everything is sized in em from one base unit that follows the page width
+   (1em = 1/41.6 of the page: 10px on the smallest supported page, 416px wide), so the layout is the same at every
+   desktop size and fits whenever it fits once. Paper, ink and panel colours use the theme tokens (they flip in dark
+   mode like the other pages); the coloured print elements (stamps, stat boxes, tokens) are fixed. */
+
+.page {
+  position: absolute;
+  inset: 0;
+  container-type: size;
+}
+
+.fit {
+  width: 100%;
+  height: 100%;
+  font-size: calc(100cqw / 41.6);
+  display: flex;
+  flex-direction: column;
+  gap: 0.4em;
+  padding: 0.8em 0.9em 0.6em;
+  color: var(--comic-black);
+  font-family: var(--font-body);
+  font-weight: 700;
+  line-height: 1.2;
+  overflow: hidden;
+}
+
+.fit p {
+  margin: 0;
+}
+
+.pageHead {
+  font-size: 2.5em;
+  line-height: 1;
+  padding-bottom: 0.1em;
+  margin-bottom: 0.05em;
+  border-bottom-width: 0.1em;
+  text-shadow: 0.05em 0.05em 0 var(--comic-black);
+}
+
+/* ---- dossier ---- */
+.top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 0.8em;
+  flex: none;
+}
+
+.tab {
+  display: block;
+  font-family: var(--font-caption);
+  font-size: 0.9em;
+  letter-spacing: 0.14em;
+  color: var(--text-caption);
+}
+
+.title {
+  margin: 0.05em 0 0;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 2.4em;
+  line-height: 0.98;
+  letter-spacing: 0.03em;
+  text-shadow: 0.06em 0.06em 0 var(--comic-yellow);
+  max-width: 17em;
+}
+
+.codename {
+  flex: none;
+  font-family: var(--font-display);
+  font-size: 1.9em;
+  line-height: 1.05;
+  letter-spacing: 0.1em;
+  color: var(--comic-red);
+  border: 0.14em solid var(--comic-red);
+  padding: 0.05em 0.45em;
+  transform: rotate(-5deg);
+  background: rgba(237, 28, 36, 0.07);
+  margin-top: 0.3em;
+}
+
+.chip {
+  display: inline-block;
+  margin: 0 0 0.25em;
+  padding: 0 0.6em;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 1.45em;
+  line-height: 1.2;
+  letter-spacing: 0.1em;
+  color: var(--comic-yellow);
+  background: #231f20;
+  transform: rotate(-1deg);
+}
+
+.mission {
+  flex: none;
+  padding: 0.5em 0.7em 0.55em;
+  background: var(--comic-cream);
+  border: 0.2em solid var(--comic-black);
+  box-shadow: 0.25em 0.25em 0 var(--comic-black);
+  font-size: 1.04em;
+}
+
+.goals {
+  display: flex;
+  gap: 0.7em;
+  margin: 0.4em 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.goals li {
+  flex: 1;
+  padding: 0.1em 0.4em;
+  text-align: center;
+  font-family: var(--font-display);
+  font-size: 1.4em;
+  line-height: 1.05;
+  letter-spacing: 0.03em;
+  color: #231f20;
+  background: var(--comic-yellow);
+  border: 0.15em solid #231f20;
+  transform: rotate(-0.8deg);
+}
+
+.goals li:nth-child(2) {
+  background: var(--comic-cyan);
+  transform: rotate(0.8deg);
+}
+
+.block {
+  flex: none;
+  position: relative;
+  padding: 0.45em 0.7em 0.5em 0.85em;
+  background: var(--comic-cream);
+  border: 0.2em solid var(--comic-black);
+  box-shadow: 0.2em 0.2em 0 var(--comic-black);
+  font-size: 0.99em;
+}
+
+.block::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 0.4em;
+  background: var(--accent);
+}
+
+.runIn {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 1.35em;
+  letter-spacing: 0.06em;
+  line-height: 1;
+  color: var(--accent, var(--comic-red));
+}
+
+.verdict {
+  flex: none;
+  position: relative;
+  padding: 0.5em 0.8em 0.6em;
+  text-align: center;
+  background: var(--comic-cream);
+  border: 0.28em solid var(--comic-red);
+  box-shadow: 0.25em 0.25em 0 var(--comic-black);
+  font-size: 1.08em;
+}
+
+.stamp {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0.1em 0 0.35em;
+  padding: 0.08em 0.5em;
+  font-family: var(--font-display);
+  font-size: 2.3em;
+  line-height: 0.95;
+  letter-spacing: 0.06em;
+  color: var(--comic-red);
+  border: 0.1em solid var(--comic-red);
+  outline: 0.05em solid var(--comic-red);
+  outline-offset: 0.08em;
+  background: rgba(237, 28, 36, 0.07);
+  transform: rotate(-3deg);
+}
+
+.foot {
+  margin-top: auto;
+  flex: none;
+  padding-top: 0.3em;
+  text-align: center;
+  font-family: var(--font-caption);
+  font-weight: 700;
+  font-size: 0.95em;
+  letter-spacing: 0.12em;
+  border-top: 0.15em solid var(--comic-black);
+}
+
+/* ---- the loop ---- */
+.loop {
+  position: relative;
+  flex: none;
+  width: 38em;
+  height: 17.6em;
+  margin: 0 auto;
+  background: var(--comic-cream);
+  border: 0.2em solid var(--comic-black);
+  box-shadow: 0.25em 0.25em 0 var(--comic-black);
+  box-sizing: content-box;
+  max-width: 100%;
+}
+
+.loopArt {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.node {
+  position: absolute;
+  width: 10.4em;
+  min-height: 3.1em;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.2em 0.5em 0.2em 1em;
+  text-align: center;
+  font: inherit;
+  font-size: 1.02em;
+  line-height: 1.05;
+  color: #231f20;
+  background: #fff;
+  border: 0.2em solid #231f20;
+  border-radius: 0.3em;
+  box-shadow: 0.2em 0.2em 0 #231f20;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.15s;
+}
+
+.node:focus-visible {
+  outline: 0.2em solid var(--comic-cyan);
+  outline-offset: 0.2em;
+}
+
+.nodeNo {
+  position: absolute;
+  left: -0.7em;
+  top: -0.7em;
+  width: 1.6em;
+  height: 1.6em;
+  display: grid;
+  place-items: center;
+  font-family: var(--font-display);
+  font-size: 1em;
+  background: var(--comic-yellow);
+  border: 0.16em solid #231f20;
+  border-radius: 50%;
+}
+
+.nodePass {
+  background: #d6efff;
+}
+
+.nodeOn {
+  background: var(--comic-yellow);
+  border-color: var(--comic-red);
+  transform: translate(-50%, -50%) scale(1.07);
+}
+
+.loopCap {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 15.4em;
+  transform: translate(-50%, -48%);
+  text-align: center;
+  font-size: 0.98em;
+  line-height: 1.18;
+  pointer-events: none;
+}
+
+.loopCap b {
+  display: block;
+  margin-bottom: 0.15em;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 1.25em;
+  letter-spacing: 0.06em;
+  color: var(--comic-red);
+}
+
+/* ---- bake-off ---- */
+.bake {
+  flex: none;
+  padding: 0.45em 0.7em 0.5em;
+  background: var(--comic-cream);
+  border: 0.2em solid var(--comic-black);
+  box-shadow: 0.2em 0.2em 0 var(--comic-black);
+  --accent: var(--comic-red);
+}
+
+.bakeHead {
+  font-weight: 700;
+}
+
+.tokens {
+  display: flex;
+  justify-content: center;
+  gap: 0.5em;
+  margin-top: 0.35em;
+}
+
+.cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0.25em 0.35em 0.15em;
+  border: 0.14em dashed var(--comic-black);
+}
+
+.token {
+  width: 2.3em;
+  height: 2.3em;
+  display: grid;
+  place-items: center;
+  font-family: var(--font-display);
+  font-size: 1.3em;
+  color: #fff;
+  border: 0.16em solid #231f20;
+  border-radius: 50%;
+  box-shadow: 0.1em 0.1em 0 #231f20;
+}
+
+.ref {
+  background: #fff;
+  color: #231f20;
+  border-style: double;
+  border-width: 0.26em;
+  font-size: 1.05em;
+}
+
+.refCell small {
+  font-family: var(--font-caption);
+  font-size: 0.72em;
+  letter-spacing: 0.05em;
+}
+
+/* ---- numbers ---- */
+.stats {
+  flex: none;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5em;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.stats li {
+  display: flex;
+  align-items: center;
+  gap: 0.45em;
+  padding: 0.25em 0.5em 0.3em;
+  color: #fff;
+  border: 0.18em solid #231f20;
+  box-shadow: 0.18em 0.18em 0 #231f20;
+  line-height: 1.05;
+}
+
+.stats b {
+  flex: none;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 1.85em;
+  line-height: 1;
+  letter-spacing: 0.03em;
+  color: var(--comic-yellow);
+  text-shadow: 0.07em 0.07em 0 #231f20;
+}
+
+.stats span {
+  font-size: 0.92em;
+}
+
+.stat0 {
+  background: var(--comic-blue);
+}
+.stat1 {
+  background: var(--comic-red);
+}
+.stat2 {
+  background: var(--comic-purple);
+}
+.stat3 {
+  background: #0a7a40;
+}
+.stat4 {
+  background: #c25f00;
+}
+.stat5 {
+  background: #c4007a;
+}
+
+/* ---- findings ---- */
+.found {
+  flex: none;
+}
+
+.found ol {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35em;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.found li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5em;
+  padding: 0.3em 0.5em 0.35em 0.4em;
+  background: var(--comic-cream);
+  border: 0.18em solid var(--comic-black);
+  box-shadow: 0.15em 0.15em 0 var(--comic-black);
+  font-size: 0.97em;
+}
+
+.found b {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 1.25em;
+  letter-spacing: 0.05em;
+  color: var(--comic-red);
+}
+
+.findNo {
+  flex: none;
+  width: 1.7em;
+  height: 1.7em;
+  display: grid;
+  place-items: center;
+  font-family: var(--font-display);
+  color: #231f20;
+  background: var(--comic-yellow);
+  border: 0.16em solid #231f20;
+}
+
+/* ---- still in the lab: a forward-looking caption box, not a stamp ---- */
+.still {
+  flex: none;
+  position: relative;
+  padding: 0.4em 0.7em 0.45em 2.2em;
+  color: #231f20;
+  background: var(--comic-yellow);
+  border: 0.2em solid #231f20;
+  box-shadow: 0.22em 0.22em 0 #231f20;
+  font-size: 0.99em;
+  line-height: 1.2;
+}
+
+.still::before {
+  content: '>>';
+  position: absolute;
+  left: 0.45em;
+  top: 50%;
+  transform: translateY(-50%);
+  font-family: var(--font-display);
+  font-size: 1.6em;
+  letter-spacing: 0.02em;
+  color: var(--comic-red);
+}
+
+.still b {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 1.3em;
+  letter-spacing: 0.07em;
+  color: var(--comic-red);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .node {
+    transition: none;
+  }
+}

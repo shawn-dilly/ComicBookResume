@@ -3,10 +3,11 @@ import { useCallback, useEffect, useState, useRef, type MouseEvent } from 'react
 import { ComicBookGSAP, type ComicBookGSAPRef, type FlipDirection } from './components/ComicBook';
 import { ContactSidebar } from './components/ContactSidebar';
 import { HeroFlyby } from './components/HeroFlyby';
+import { HireBeacon } from './components/HireBeacon';
+import { useMissionBoard } from './components/MissionBoard';
 import { WebCatch, type IntroState, type WebCatchRef } from './components/WebCatch';
 import {
   CoverPage,
-  InsideFrontCoverPage,
   InsideCoverPage,
   OriginStoryPage1,
   OriginStoryPage2,
@@ -17,6 +18,9 @@ import {
   ExperienceEzlinks,
   ExperienceEarlyCareer,
   TestimonialsPage,
+  CaseFileDossierPage,
+  CaseFileLoopPage,
+  AdPage,
   BackCoverPage,
 } from './pages';
 import { useSoundEffects, usePageNavigation, useHoloSound, useHologramMode } from './hooks';
@@ -42,18 +46,21 @@ function DesktopApp() {
   const [webLines, setWebLines] = useState(0);
   // One click made during the drop is remembered and applied when the book is held
   const pendingOpenRef = useRef(false);
+  // The Mission Board behind the beacon (and the ad page coupon): lazy, opened on demand
+  const board = useMissionBoard();
   const soundEffects = useSoundEffects(true);
   const holoSound = useHoloSound(true);
   // Powers & Abilities hologram: the book lies flat and a projection rises out of the spread
   const holo = useHologramMode({ webCatchRef, comicBookRef, isHeld });
 
-  // Split testimonials: first 2 on one page, middle ones individual, last 2 on one page
+  // Testimonials: first 2 on one page, middle ones individual, last 2 on one page
   const firstTwoTestimonials = resumeData.testimonials.slice(0, 2);
   const middleTestimonials = resumeData.testimonials.slice(2, -2);
   const lastTwoTestimonials = resumeData.testimonials.slice(-2);
 
-  // Total child pages in the book
-  const totalPages = 14 + middleTestimonials.length;
+  // Total child pages in the book (odd: cover alone, spreads, back cover last): 11 up to the early career page,
+  // 2 case file pages, the testimonial pages, and the back cover
+  const totalPages = 11 + 2 + 2 + middleTestimonials.length + 1;
 
 
   const handlePageChange = useCallback((pageIndex: number) => {
@@ -132,7 +139,8 @@ function DesktopApp() {
   usePageNavigation({
     onNext: handleNext,
     onPrevious: handlePrevious,
-    enabled: true,
+    // While the Mission Board is open the arrow keys (and Space) belong to it
+    enabled: !board.isOpen,
   });
 
   // Escape closes the hologram
@@ -194,6 +202,7 @@ function DesktopApp() {
   return (
     <div className="app-container" data-layout="desktop" data-web-state={webState} data-web-lines={webLines} data-holo={holo.phase}>
       <ContactSidebar />
+      <HireBeacon visible={isHeld && !board.isOpen} onOpen={() => board.open()} />
       <div
         className={`comic-wrapper ${isBookOpen ? 'open' : 'closed'}${isHeld ? '' : ' intro'}`}
         onClickCapture={handleWrapperClickCapture}
@@ -213,7 +222,13 @@ function DesktopApp() {
           showCover={true}
         >
           <CoverPage />
-          <InsideFrontCoverPage />
+          {/* Inside front cover: the WANTED ad, facing the personnel file on the opening spread */}
+          <AdPage
+            key="ad-page"
+            isVisible={currentPage === 2}
+            boardOpen={board.isOpen}
+            onOpenBoard={(missions) => board.open(missions)}
+          />
           <InsideCoverPage />
           <OriginStoryPage1 />
           <OriginStoryPage2 />
@@ -240,10 +255,13 @@ function DesktopApp() {
             healthation={healthation}
             pageNumber={11}
           />
+          {/* Special Projects: the Project Gridiron case file, one facing spread (pages 12 and 13) */}
+          <CaseFileDossierPage key="case-file-dossier" pageNumber={12} />
+          <CaseFileLoopPage key="case-file-loop" pageNumber={13} isVisible={currentPage === 12} />
           {/* First page with 2 testimonials */}
           <TestimonialsPage
             key="testimonials-first"
-            pageNumber={12}
+            pageNumber={14}
             testimonials={firstTwoTestimonials}
             showHeader={true}
           />
@@ -251,7 +269,7 @@ function DesktopApp() {
           {middleTestimonials.map((testimonial, index) => (
             <TestimonialsPage
               key={`testimonial-${index + 2}`}
-              pageNumber={13 + index}
+              pageNumber={15 + index}
               testimonials={[testimonial]}
               showHeader={false}
             />
@@ -259,7 +277,7 @@ function DesktopApp() {
           {/* Last page with 2 testimonials */}
           <TestimonialsPage
             key="testimonials-last"
-            pageNumber={13 + middleTestimonials.length}
+            pageNumber={15 + middleTestimonials.length}
             testimonials={lastTwoTestimonials}
             showHeader={false}
           />
@@ -300,6 +318,7 @@ function DesktopApp() {
           )}
         </div>
       )}
+      {board.node}
     </div>
   );
 }

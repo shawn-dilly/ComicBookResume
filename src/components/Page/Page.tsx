@@ -9,6 +9,8 @@ interface PageProps {
   className?: string;
   variant?: 'cover' | 'inner' | 'back';
   showPageNumber?: boolean;
+  /** Full-bleed art: the content area is the whole page (no strip reserved for the page number). */
+  bleed?: boolean;
 }
 
 const Page = forwardRef<HTMLDivElement, PageProps>(
@@ -20,6 +22,7 @@ const Page = forwardRef<HTMLDivElement, PageProps>(
       className = '',
       variant = 'inner',
       showPageNumber = true,
+      bleed = false,
     },
     ref
   ) => {
@@ -28,7 +31,7 @@ const Page = forwardRef<HTMLDivElement, PageProps>(
     return (
       <div
         ref={ref}
-        className={`${styles.page} ${styles[variant]} ${className}`}
+        className={`${styles.page} ${styles[variant]} ${bleed ? styles.bleed : ''} ${className}`}
         data-density={density}
       >
         <div className={styles.pageContent}>

@@ -33,7 +33,7 @@
   left: 0;
   right: 0;
   top: 0;
-  bottom: var(--m-bar-height);
+  bottom: calc(var(--m-bar-height) + var(--m-hire-height, 0px));
   overflow: hidden;
   touch-action: pan-y;
 }

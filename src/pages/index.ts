@@ -1,9 +1,10 @@
 export { default as CoverPage } from './CoverPage';
-export { default as InsideFrontCoverPage } from './InsideFrontCoverPage';
 export { default as InsideCoverPage } from './InsideCoverPage';
 export { OriginStoryPage1, OriginStoryPage2 } from './OriginStory';
 export { SkillsPage1, SkillsPage2 } from './Skills';
 export { ExperienceGrodivo, ExperiencePeopleReady, ExperienceEzlinks, ExperienceEarlyCareer } from './Experience';
 export { EducationPage } from './Education';
+export { CaseFileDossierPage, CaseFileLoopPage } from './SpecialProjects';
+export { AdPage } from './AdPage';
 export { default as TestimonialsPage } from './TestimonialsPage';
 export { default as BackCoverPage } from './BackCoverPage';

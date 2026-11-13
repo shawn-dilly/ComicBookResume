@@ -8,6 +8,7 @@ export interface ResumeData {
   education: Education[];
   testimonials: Testimonial[];
   contact: ContactInfo;
+  specialProjects: SpecialProjects;
 }
 
 export interface PersonalInfo {
@@ -72,6 +73,47 @@ export interface ContactInfo {
   github?: string;
   website?: string;
   location?: string;
+}
+
+// Special Projects (the Secret Lab Projects case file)
+export interface CaseFileSection {
+  title: string;
+  text: string;
+}
+
+export interface CaseFileStat {
+  value: string;
+  label: string;
+}
+
+export interface CaseFileLoopNode {
+  label: string;
+  caption: string;
+}
+
+export interface CaseFile {
+  /** Small label above the title (the dossier tab). */
+  label: string;
+  codename: string;
+  title: string;
+  mission: { title: string; text: string; goals: string[] };
+  machine: CaseFileSection;
+  lab: CaseFileSection;
+  rules: CaseFileSection;
+  verdict: { stamp: string[]; text: string };
+  stillInTheLab: CaseFileSection;
+  loop: { title: string; hint: string; nodes: CaseFileLoopNode[] };
+  bakeOff: { title: string; headline: string; text: string; tokens: number; referee: string };
+  stats: CaseFileStat[];
+  findingsTitle: string;
+  findings: CaseFileSection[];
+}
+
+export interface SpecialProjects {
+  /** Heading of the chapter (the old page's title). */
+  title: string;
+  footer: string;
+  caseFile: CaseFile;
 }
 
 // Component Props Types

@@ -1,0 +1,369 @@
+/* Secret Lab Projects (phone): the Project Gridiron case file as two scrolling pages. Printed paper in fixed print colours. */
+
+.face {
+  background:
+    radial-gradient(circle, rgba(35, 31, 32, 0.07) 1px, transparent 1.6px) 0 0 / 7px 7px,
+    linear-gradient(180deg, #f6edc9, #ecdfb0) !important;
+  color: #231f20;
+}
+
+.face p {
+  margin: 0;
+}
+
+.tabRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.tab {
+  font: 700 13px/1 var(--m-mono);
+  letter-spacing: 0.16em;
+  color: #5b5444;
+}
+
+.codename {
+  font: 400 24px/0.95 var(--m-display);
+  letter-spacing: 0.05em;
+  color: #ed1c24;
+  border: 3px solid #ed1c24;
+  padding: 5px 9px 3px;
+  transform: rotate(3deg);
+  text-align: center;
+}
+
+.title {
+  margin: 8px 0 0;
+  font: 400 34px/1 var(--m-display);
+  letter-spacing: 0.03em;
+  text-shadow: 2px 2px 0 #fff200;
+}
+
+.sectionHead {
+  display: inline-block;
+  margin: 0 0 6px;
+  font: 400 21px/1 var(--m-display);
+  letter-spacing: 0.08em;
+}
+
+.mission,
+.block,
+.verdict,
+.bake,
+.still {
+  margin-top: 14px;
+  padding: 10px 12px 12px;
+  background: #fffbe6;
+  border: 3px solid #231f20;
+  box-shadow: 3px 3px 0 #231f20;
+  font: 700 16px/1.38 var(--m-body);
+}
+
+.mission .sectionHead {
+  background: #231f20;
+  color: #fff200;
+  padding: 4px 9px 2px;
+}
+
+.goals {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 10px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.goals li {
+  flex: 1 1 140px;
+  text-align: center;
+  font: 400 20px/1 var(--m-display);
+  letter-spacing: 0.05em;
+  padding: 7px 8px 4px;
+  border: 3px solid #231f20;
+  transform: rotate(-1deg);
+}
+
+.goalA {
+  background: #fff200;
+}
+
+.goalB {
+  background: #00aeef;
+  transform: rotate(1deg);
+}
+
+.block {
+  border-left-width: 9px;
+}
+
+.machine {
+  border-left-color: #0072bc;
+}
+
+.machine .sectionHead {
+  color: #0072bc;
+}
+
+.lab {
+  border-left-color: #662d91;
+}
+
+.lab .sectionHead {
+  color: #662d91;
+}
+
+.rules {
+  border-left-color: #00a651;
+}
+
+.rules .sectionHead {
+  color: #00a651;
+}
+
+.verdict {
+  border-color: #ed1c24;
+  box-shadow: 3px 3px 0 #ed1c24;
+  text-align: center;
+}
+
+.stamp {
+  display: inline-flex;
+  flex-direction: column;
+  margin: 6px 0 12px;
+  padding: 6px 14px 4px;
+  border: 4px solid #ed1c24;
+  color: #ed1c24;
+  font: 400 30px/0.95 var(--m-display);
+  letter-spacing: 0.04em;
+  transform: rotate(-3deg);
+  background: rgba(237, 28, 36, 0.08);
+}
+
+.foot {
+  margin-top: 16px !important;
+  text-align: center;
+  font: 700 12.5px/1.2 var(--m-mono);
+  letter-spacing: 0.14em;
+  color: #5b5444;
+}
+
+/* ---- page 2 ---- */
+.hint {
+  margin-top: 6px !important;
+  font: 700 15px/1.3 var(--m-body);
+  color: #4a4a4a;
+}
+
+.loopList {
+  margin: 12px 0 0;
+  padding: 0 0 0 4px;
+  list-style: none;
+  position: relative;
+}
+
+.loopList::before {
+  content: '';
+  position: absolute;
+  left: 22px;
+  top: 20px;
+  bottom: 20px;
+  border-left: 4px dotted #231f20;
+}
+
+.loopList li {
+  position: relative;
+  margin-top: 8px;
+}
+
+.loopList li:first-child {
+  margin-top: 0;
+}
+
+.step {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  min-height: var(--m-tap);
+  padding: 4px 10px 4px 0;
+  background: none;
+  border: 0;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+  font: 700 17px/1.2 var(--m-body);
+}
+
+.stepNo {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 3px solid #231f20;
+  background: #fff200;
+  font: 400 21px/1 var(--m-display);
+  position: relative;
+}
+
+.stepLabel {
+  flex: 1;
+  min-width: 0;
+  padding: 7px 10px 6px;
+  background: #fffbe6;
+  border: 3px solid #231f20;
+  box-shadow: 3px 3px 0 #231f20;
+}
+
+.stepOn .stepLabel {
+  background: #fff200;
+}
+
+.cap {
+  margin: 6px 0 4px 50px !important;
+  padding: 8px 10px;
+  background: #fff;
+  border: 3px solid #231f20;
+  border-radius: 10px;
+  font: 700 15.5px/1.35 var(--m-body);
+}
+
+.loopBack {
+  margin: 6px 0 0 4px;
+  width: 38px;
+  text-align: center;
+  font-size: 26px;
+  line-height: 1;
+}
+
+.bake p {
+  font: 700 16px/1.38 var(--m-body);
+}
+
+.runIn {
+  font: 400 19px/1 var(--m-display);
+  letter-spacing: 0.06em;
+  color: #ed1c24;
+}
+
+.tokens {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+  align-items: center;
+}
+
+.token {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 3px solid #231f20;
+  color: #fff;
+  font: 400 19px/1 var(--m-display);
+}
+
+.ref {
+  background: #fff;
+  color: #231f20;
+  font-size: 12px;
+  border-style: dashed;
+}
+
+.refLabel {
+  display: block;
+  margin: 3px 0 0 auto;
+  width: max-content;
+  font: 700 11px/1 var(--m-mono);
+  letter-spacing: 0.1em;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin: 14px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.stats li {
+  padding: 8px 8px 7px;
+  border: 3px solid #231f20;
+  box-shadow: 3px 3px 0 #231f20;
+  color: #fff;
+  text-align: center;
+}
+
+.stats b {
+  display: block;
+  font: 400 32px/1 var(--m-display);
+  letter-spacing: 0.03em;
+  color: #fff200;
+}
+
+.stats span {
+  display: block;
+  margin-top: 2px;
+  font: 700 14px/1.15 var(--m-body);
+}
+
+.found {
+  display: inline-block;
+  margin: 18px 0 0;
+  padding: 5px 10px 3px;
+  background: #231f20;
+  color: #fff200;
+  font: 400 22px/1 var(--m-display);
+  letter-spacing: 0.08em;
+}
+
+.findings {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.findings li {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  margin-top: 10px;
+  padding: 9px 10px 10px;
+  background: #fffbe6;
+  border: 3px solid #231f20;
+  box-shadow: 3px 3px 0 #231f20;
+  font: 700 16px/1.38 var(--m-body);
+}
+
+.findNo {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  background: #fff200;
+  border: 3px solid #231f20;
+  font: 400 18px/1 var(--m-display);
+}
+
+/* Forward-looking caption, not a stamp: an italic note under a dashed rule. */
+.still {
+  background: transparent;
+  border: 0;
+  border-top: 3px dashed #231f20;
+  box-shadow: none;
+  padding: 12px 2px 0;
+  font-style: italic;
+}
+
+.still .runIn {
+  font-style: normal;
+  color: #0072bc;
+}

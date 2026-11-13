@@ -153,6 +153,8 @@ export const HOLO = {
 export const LAYOUT = {
   /** Height of the bottom bar (px) before the safe-area inset. */
   barHeight: 60,
+  /** Height of the HIRE ME! bar above it (px); it is not shown on the contact page. */
+  hireHeight: 40,
   /** The SCROLL hint appears when more than this many px are hidden below. */
   moreThreshold: 40,
 } as const;

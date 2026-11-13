@@ -47,8 +47,8 @@ export const FLYBY = {
     thrust: { rise: 1.3, hover: 1.1, climb: 1.1, cross: 0.8 },
   },
 
-  /** Width (px) of the contact buttons at the right edge, which cover the background. */
-  sidebarInset: 90,
+  /** Width (px) of the contact buttons at the right edge, and of the HIRE ME beacon above them; both cover the background. */
+  sidebarInset: 140,
 
   /** Viewports at most this wide (px) get a smaller, calmer hero. */
   narrowMaxWidth: 900,

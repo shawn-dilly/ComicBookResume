@@ -214,6 +214,88 @@ export const resumeData: ResumeData = {
   // Testimonials loaded from LinkedIn Recommendations
   testimonials: linkedInTestimonials,
 
+  // Special Projects: the Project Gridiron case file (two facing pages)
+  specialProjects: {
+    title: 'Secret Lab Projects',
+    footer: 'CLASSIFIED // FOR AUTHORIZED EYES ONLY',
+    caseFile: {
+      label: 'CASE FILE',
+      codename: 'PROJECT GRIDIRON',
+      title: 'NFL Fantasy Prediction & AI Research Lab',
+      mission: {
+        title: 'THE MISSION',
+        text: 'Prove two things: one generalized strategy putting at least one of 20 lineups in the top 1% of a large tournament every week, and a 20-lineup portfolio cashing at least 75% of the time.',
+        goals: ['TOP 1% EVERY WEEK', '75% CASH RATE'],
+      },
+      machine: {
+        title: 'THE MACHINE',
+        text: 'An end-to-end Python system: about 299,000 lines across 660 source files, a 124-table PostgreSQL database and 10,311 test functions. Per-position LightGBM models (QB, RB, WR, TE) predict fantasy points, with floor/ceiling quantile models (conformal calibration) and an ownership model that forecasts how much of the field picks each player (0.744 to 0.869 per-week correlation in walk-forward testing). 753 engineered features, 703 active. Monte Carlo simulation with empirically measured player correlations feeds an integer-programming optimizer (PuLP/CBC) with salary, roster, stacking and exposure constraints.',
+      },
+      lab: {
+        title: 'THE LAB',
+        text: 'AI agents evolved lineup strategies against stored real contest fields. Three firewalled bake-offs, 187 agent-weeks in all, run by a neutral referee agent. Every portfolio frozen and SHA-256 hashed before scoring, against 5.9 million stored real contest entries. 12 specialist agent definitions (Claude Code subagents on Opus and Sonnet). One bake-off had five persona agents, each designing its own strategy on a shared engine. A separate lineage ran a GPT model through Codex.',
+      },
+      rules: {
+        title: 'THE RULES',
+        text: 'Walk-forward evaluation: models are scored only on weeks after their training data. A leak gate blocks training if same-week data leaks in. Generation code can only read pre-lock data. The evaluator refuses to score a portfolio whose bytes do not match its recorded hash. File-based memory with checkpoints, so long runs stop and resume. 255 pre-registered experiments, 54 of them recorded as negative results.',
+      },
+      verdict: {
+        stamp: ['VERDICT:', 'NO SILVER BULLET'],
+        text: 'Neither goal was met: 3 of 8 target weeks in-sample, 0 of 3 held out. The lab proved it with numbers instead of hoping.',
+      },
+      stillInTheLab: {
+        title: 'STILL IN THE LAB',
+        text: 'The work continues: the system is running on the 2026 season, and the focus has moved to better projections, the lever the lab showed matters most.',
+      },
+      loop: {
+        title: 'The Agent Loop',
+        hint: 'Hover or tap a step. The pulse travels the loop.',
+        nodes: [
+          { label: 'Pre-lock data', caption: 'Generation code can only read pre-lock data. Results stay out of reach.' },
+          { label: 'Strategy version', caption: "The agent's current strategy, evolved from the last round." },
+          { label: 'Generate lineups', caption: 'The strategy builds a portfolio of lineups.' },
+          { label: 'Freeze + hash', caption: 'Every portfolio is frozen and SHA-256 hashed before scoring.' },
+          {
+            label: 'Score against real field',
+            caption: 'Scored against 5.9 million stored real contest entries. The evaluator refuses a portfolio whose bytes do not match its hash.',
+          },
+          { label: 'Referee rules', caption: 'A neutral referee agent runs the bake-off and judges the result.' },
+          { label: 'Evolve', caption: 'The strategy is revised and the loop goes round again.' },
+        ],
+      },
+      bakeOff: {
+        title: 'BAKE-OFF',
+        headline: '3 bake-offs, 187 agent-weeks.',
+        text: 'Five persona agents, each designing its own strategy on a shared engine, under a neutral referee agent.',
+        tokens: 5,
+        referee: 'REFEREE',
+      },
+      stats: [
+        { value: '299K', label: 'lines of Python' },
+        { value: '124', label: 'table database' },
+        { value: '5.9M', label: 'real contest entries' },
+        { value: '255', label: 'experiments, 54 negative' },
+        { value: '10,311', label: 'tests' },
+        { value: '753', label: 'features' },
+      ],
+      findingsTitle: 'WHAT IT FOUND',
+      findings: [
+        {
+          title: 'FIXED THE SCORER',
+          text: "Found and fixed a root-cause scoring defect. Afterwards, agreement with the site's reported points was 95.8% to 100% on three checked weeks.",
+        },
+        {
+          title: 'LEAKS REMOVED',
+          text: 'Removing data leaks corrected skill-position rank correlation from a flattering 0.73 to 0.77 down to an honest 0.54 to 0.57. A "validation R-squared 0.79" claim was retracted.',
+        },
+        {
+          title: 'THE WEEK WINS',
+          text: 'Which week it was mattered 7.24 times more than which agent built the lineups: projection quality outweighs strategy choice.',
+        },
+      ],
+    },
+  },
+
   contact: {
     email: 'shawndillenbeck@gmail.com',
     phone: '(331) 454-0486',

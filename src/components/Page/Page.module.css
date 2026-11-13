@@ -65,6 +65,11 @@
   bottom: 24px;
 }
 
+/* Full-bleed art (the ad on the inside front cover): no page-number strip, the content runs to every edge */
+.inner.bleed .pageContent {
+  bottom: 0;
+}
+
 .pageNumberLeft {
   left: var(--spacing-md);
 }

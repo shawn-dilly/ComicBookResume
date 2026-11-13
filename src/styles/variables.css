@@ -1,5 +1,7 @@
 /* Silver Age Marvel Comic Color Palette (64-color CMYK inspired) */
 :root {
+  /* How often the HIRE ME! beacon (desktop) and bar star (phone) give their single pulse. */
+  --hire-pulse-every: 8s;
   /* Primary Colors */
   --comic-red: #ED1C24;
   --comic-blue: #0072BC;

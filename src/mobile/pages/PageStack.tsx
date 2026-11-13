@@ -3,9 +3,12 @@
  */
 
 import type { Ref } from 'react';
+import type { MissionId } from '../../data/hireMe';
 import { PAGES, pageIndex } from '../pages';
 import { AlliesPage } from './Allies';
 import { BattleEarlyCareer, BattleEzlinks, BattleGrodivo, BattlePeopleReady } from './Battles';
+import { MobileAdPage } from './AdPage';
+import { CaseFileDossier, CaseFileLoop } from './CaseFile';
 import { ContactPage } from './Contact';
 import { MobileCover } from './Cover';
 import { OriginStoryPage } from './OriginStory';
@@ -19,9 +22,11 @@ interface PageStackProps {
   originPanel: number;
   onOpenCover: () => void;
   onBackToCover: () => void;
+  boardOpen: boolean;
+  onOpenBoard: (missions: MissionId[]) => void;
 }
 
-export function PageStack({ setRef, current, originPanel, onOpenCover, onBackToCover }: PageStackProps) {
+export function PageStack({ setRef, current, originPanel, onOpenCover, onBackToCover, boardOpen, onOpenBoard }: PageStackProps) {
   const originAt = pageIndex('origin-story');
   const powersAt = pageIndex('powers-abilities');
   return (
@@ -53,8 +58,14 @@ export function PageStack({ setRef, current, originPanel, onOpenCover, onBackToC
             return <BattleEzlinks key={page.id} ref={ref} />;
           case 'battle-early-career':
             return <BattleEarlyCareer key={page.id} ref={ref} />;
+          case 'case-file-dossier':
+            return <CaseFileDossier key={page.id} ref={ref} />;
+          case 'case-file-loop':
+            return <CaseFileLoop key={page.id} ref={ref} />;
           case 'mighty-allies':
             return <AlliesPage key={page.id} ref={ref} />;
+          case 'ad-page':
+            return <MobileAdPage key={page.id} ref={ref} boardOpen={boardOpen} onOpenBoard={onOpenBoard} />;
           case 'contact':
             return <ContactPage key={page.id} ref={ref} onBackToCover={onBackToCover} />;
         }

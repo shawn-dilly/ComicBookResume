@@ -13,6 +13,7 @@ test.use({
 
 const PAGE_IDS = [
   'cover',
+  'ad-page',
   'personnel-file',
   'origin-story',
   'powers-abilities',
@@ -20,6 +21,8 @@ const PAGE_IDS = [
   'battle-peopleready',
   'battle-ezlinks',
   'battle-early-career',
+  'case-file-dossier',
+  'case-file-loop',
   'mighty-allies',
   'contact',
 ];
@@ -66,7 +69,7 @@ async function jump(page: Page, id: string): Promise<void> {
   await page.evaluate((h) => {
     window.location.hash = h;
   }, id);
-  await expect(count(page)).toHaveText(`${n}/10`);
+  await expect(count(page)).toHaveText(`${n}/${PAGE_IDS.length}`);
   await page.waitForTimeout(450);
 }
 
@@ -125,7 +128,7 @@ test.describe('Phone layout', () => {
     const root = page.locator('.app-container');
     await expect(root).toHaveAttribute('data-layout', 'mobile');
     await expect(root).not.toHaveAttribute('data-web-state', /.*/);
-    await expect(count(page)).toHaveText('1/10');
+    await expect(count(page)).toHaveText('1/13');
     await expect(page.locator('canvas')).toHaveCount(0);
     // The desktop background fly-by is never mounted on the phone layout
     await expect(page.locator('[data-flyby]')).toHaveCount(0);
@@ -138,29 +141,29 @@ test.describe('Phone layout', () => {
     // At rest: the cover is not mid-transform.
     expect(await page.locator('#pg-cover').evaluate((el) => getComputedStyle(el).transform)).toMatch(/^(none|matrix\(1, 0, 0, 1, 0, 0\))$/);
     await tap.click({ force: true });
-    await expect(count(page)).toHaveText('2/10');
+    await expect(count(page)).toHaveText('2/13');
   });
 
-  test('tapping the cover opens to the next page', async ({ page }) => {
+  test('tapping the cover opens to the next page (the ad page)', async ({ page }) => {
     await open(page);
     await page.touchscreen.tap(195, 300);
-    await expect(count(page)).toHaveText('2/10');
-    await expect(page.locator('#pg-personnel-file')).toHaveClass(/is-cur/);
+    await expect(count(page)).toHaveText('2/13');
+    await expect(page.locator('#pg-ad-page')).toHaveClass(/is-cur/);
   });
 
   test('next and back buttons, and a swipe, turn pages; a vertical swipe scrolls without turning', async ({ page }) => {
     await open(page, '#personnel-file');
-    await expect(count(page)).toHaveText('2/10');
+    await expect(count(page)).toHaveText('3/13');
     await page.getByRole('button', { name: 'Next page' }).click();
-    await expect(count(page)).toHaveText('3/10');
+    await expect(count(page)).toHaveText('4/13');
     await page.getByRole('button', { name: 'Previous page' }).click();
-    await expect(count(page)).toHaveText('2/10');
+    await expect(count(page)).toHaveText('3/13');
     // swipe left turns forward, swipe right turns back
     await swipe(page, [330, 420], [50, 430]);
-    await expect(count(page)).toHaveText('3/10');
+    await expect(count(page)).toHaveText('4/13');
     await page.waitForTimeout(800);
     await swipe(page, [60, 420], [340, 430]);
-    await expect(count(page)).toHaveText('2/10');
+    await expect(count(page)).toHaveText('3/13');
     await page.waitForTimeout(800);
     // a vertical swipe on a long page scrolls it and does not turn
     await jump(page, 'battle-grodivo');
@@ -168,7 +171,7 @@ test.describe('Phone layout', () => {
     expect(await scroller.evaluate((el) => el.scrollTop)).toBe(0);
     await swipe(page, [200, 600], [205, 200]);
     await expect.poll(() => scroller.evaluate((el) => el.scrollTop)).toBeGreaterThan(50);
-    await expect(count(page)).toHaveText('5/10');
+    await expect(count(page)).toHaveText('6/13');
   });
 
   test('contents sheet jumps to Powers; tabs are in data order; hologram shows four towers', async ({ page }) => {
@@ -178,7 +181,7 @@ test.describe('Phone layout', () => {
     await expect(dialog).toBeVisible();
     await expect(page.getByRole('button', { name: 'Close contents' })).toBeFocused();
     await dialog.getByRole('button', { name: 'Powers & Abilities' }).click();
-    await expect(count(page)).toHaveText('4/10');
+    await expect(count(page)).toHaveText('5/13');
     await expect(dialog).toBeHidden();
 
     const tabs = page.getByRole('tab');
@@ -250,6 +253,8 @@ test.describe('Phone layout', () => {
     let all = '';
     for (const id of PAGE_IDS) {
       await jump(page, id);
+      // The case file is Shawn's verified wording ("training data" is his); the removed strings are about the old pages.
+      if (id.startsWith('case-file')) continue;
       all += `\n${await page.locator('.app-container').evaluate((el) => (el as HTMLElement).innerText)}`;
       if (id === 'origin-story') {
         // step through the panels
@@ -330,9 +335,9 @@ test.describe('Phone layout with reduced motion', () => {
   test('a page turn still works', async ({ page }) => {
     await page.goto('/');
     await page.getByRole('button', { name: 'Next page' }).click();
-    await expect(count(page)).toHaveText('2/10');
+    await expect(count(page)).toHaveText('2/13');
     await swipe(page, [330, 420], [50, 430]);
-    await expect(count(page)).toHaveText('3/10');
+    await expect(count(page)).toHaveText('3/13');
   });
 });
 
@@ -456,4 +461,87 @@ test.describe('Phone layout: powers strip, hologram and contact fit', () => {
       }
     });
   }
+});
+
+test.describe('Phone layout - hire me, case file and ad page', () => {
+  test('the new pages sit in order and the contents sheet lists them', async ({ page }) => {
+    await open(page);
+    expect(PAGE_IDS.indexOf('case-file-loop')).toBe(PAGE_IDS.indexOf('case-file-dossier') + 1);
+    expect(PAGE_IDS.indexOf('mighty-allies')).toBe(PAGE_IDS.indexOf('case-file-loop') + 1);
+    expect(PAGE_IDS.indexOf('ad-page')).toBe(1);
+    const ids = await page.locator('section[data-page]').evaluateAll((els) => els.map((el) => (el as HTMLElement).dataset.page));
+    expect(ids).toEqual(PAGE_IDS);
+    await page.getByRole('button', { name: /^Contents/ }).click();
+    const dialog = page.getByRole('dialog', { name: 'Contents' });
+    await expect(dialog.getByRole('button', { name: 'Secret Lab Projects' })).toBeVisible();
+    await expect(dialog.locator('ol ol').nth(1).getByRole('button')).toHaveCount(2);
+    await expect(dialog.getByRole('button', { name: 'Wanted' })).toBeVisible();
+    await dialog.getByRole('button', { name: 'Secret Lab Projects' }).click();
+    await expect(count(page)).toHaveText(`${PAGE_IDS.indexOf('case-file-dossier') + 1}/${PAGE_IDS.length}`);
+  });
+
+  test('the bottom hire bar opens the Mission Board, and Esc closes it with focus back on the bar', async ({ page }) => {
+    await open(page, '#personnel-file');
+    const bar = page.locator('[data-hire-bar]');
+    await expect(bar).toBeVisible();
+    await bar.click();
+    const board = page.locator('[data-mission-board]');
+    await expect(board).toBeVisible();
+    await page.locator('[data-mission-card="project"]').click();
+    await expect(board).toHaveAttribute('data-board-step', '2', { timeout: 5000 });
+    await expect(page.locator('[data-board-chip="project"]')).toBeVisible();
+    await page.keyboard.press('Escape');
+    await expect(board).toHaveCount(0);
+    await expect(bar).toBeFocused();
+  });
+
+  test('the hire bar is not on the contact page', async ({ page }) => {
+    await open(page, '#contact');
+    await expect(page.locator('[data-hire-bar]')).toBeHidden();
+  });
+
+  test('the case file pages fit the width and the loop list opens captions', async ({ page }) => {
+    await open(page, '#case-file-loop');
+    await expect(page.locator('#pg-case-file-loop [data-loop-caption="4"]')).toBeHidden();
+    await page.locator('#pg-case-file-loop [data-loop-step="4"]').click();
+    await expect(page.locator('#pg-case-file-loop [data-loop-caption="4"]')).toContainText('5.9 million');
+    await expect(count(page)).toHaveText(`${PAGE_IDS.indexOf('case-file-loop') + 1}/${PAGE_IDS.length}`);
+    await expect(page.locator('#pg-case-file-loop [data-case-section="still-in-the-lab"]')).toContainText('STILL IN THE LAB');
+  });
+
+  test('the ad page coupon opens the board at step 2 with the ticked missions', async ({ page }) => {
+    await open(page, '#ad-page');
+    const pg = page.locator('#pg-ad-page');
+    await pg.locator('[data-ad-clip]').click();
+    await expect(pg.locator('[data-ad-hint]')).toHaveText(/\S/);
+    await pg.locator('[data-ad-check="assess"]').click();
+    await pg.locator('[data-ad-check="project"]').click();
+    await expect(count(page)).toHaveText(`${PAGE_IDS.indexOf('ad-page') + 1}/${PAGE_IDS.length}`);
+    await pg.locator('[data-ad-clip]').click();
+    const board = page.locator('[data-mission-board]');
+    await expect(board).toBeVisible({ timeout: 6000 });
+    await expect(board).toHaveAttribute('data-board-step', '2');
+    await expect(page.locator('[data-board-chip="assess"]')).toBeVisible();
+    await expect(page.locator('[data-board-chip="project"]')).toBeVisible();
+  });
+
+  test('swipes do not turn pages while the board is open', async ({ page }) => {
+    await open(page, '#personnel-file');
+    await page.locator('[data-hire-bar]').click();
+    await expect(page.locator('[data-mission-board]')).toBeVisible();
+    await swipe(page, [320, 420], [60, 420]);
+    await page.waitForTimeout(700);
+    await expect(count(page)).toHaveText(`3/${PAGE_IDS.length}`);
+  });
+
+  test('the ad page still fits above the hire bar: the coupon button scrolls clear of it', async ({ page }) => {
+    await open(page, '#ad-page');
+    const scroller = page.locator('#pg-ad-page [data-scroller]');
+    await scroller.evaluate((el) => (el.scrollTop = el.scrollHeight));
+    await page.waitForTimeout(300);
+    const clip = await page.locator('#pg-ad-page [data-ad-clip]').boundingBox();
+    const bar = await page.locator('[data-hire-bar]').boundingBox();
+    expect(clip && bar && clip.y + clip.height <= bar.y + 1).toBe(true);
+    await expect(page.locator('#pg-ad-page [data-ad-clip]')).toBeInViewport({ ratio: 1 });
+  });
 });

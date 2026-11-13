@@ -1,0 +1,194 @@
+/* The beacon is printed art in fixed colours (it does not flip in dark mode). It sits in the right margin, above the
+   contact buttons (a column 380px tall, centred on the middle of the viewport), with its speech bubble above it.
+   Clearance: at the peak of its pulse the burst grows 9% and the ring reaches about 0.2 x the burst size past its edge, so the
+   dock is lifted by that much (plus the drop shadow and 12px of air) above the top badge. When the viewport is too short for
+   bubble + burst + column, the burst shrinks (down to 84px) instead of overlapping. */
+.dock {
+  /* Half the height of the contact column (see ContactSidebar: its badge size and gap change with the viewport height). */
+  --half: 190px;
+  /* Burst size: as big as the room above the contact column allows, 84-132px. Room = viewport half minus the column half,
+     less the bubble (~53px), its gap, 18px of air and shadow and 8px at the top; the burst needs 1.22x its size (pulse ring). */
+  --size: clamp(84px, calc((50vh - var(--half) - 85px) / 1.22), 132px);
+
+  position: fixed;
+  right: 14px;
+  bottom: calc(50vh + var(--half) + 18px + var(--size) * 0.22);
+  z-index: 1500;
+  width: 172px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+  pointer-events: none;
+  visibility: hidden;
+  opacity: 0;
+  transform: scale(0.6);
+  transform-origin: 85% 100%;
+  transition: opacity 0.25s, transform 0.4s cubic-bezier(0.3, 1.6, 0.5, 1), visibility 0s 0.4s;
+}
+
+.dock.on {
+  visibility: visible;
+  opacity: 1;
+  transform: none;
+  transition: opacity 0.25s, transform 0.4s cubic-bezier(0.3, 1.6, 0.5, 1);
+}
+
+.bubble {
+  position: relative;
+  align-self: stretch;
+  margin-right: 6px;
+  padding: 6px 10px;
+  text-align: center;
+  font-family: var(--font-body), 'Comic Neue', 'Comic Sans MS', sans-serif;
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 1.15;
+  color: #231f20;
+  background: #fff;
+  border: 3px solid #231f20;
+  border-radius: 16px;
+  box-shadow: 3px 3px 0 #231f20;
+  animation: pop 0.35s ease-out;
+}
+
+/* Tail pointing down at the burst */
+.bubble::after {
+  content: '';
+  position: absolute;
+  right: 34px;
+  bottom: -14px;
+  border: 8px solid transparent;
+  border-top: 12px solid #231f20;
+}
+
+.bubble::before {
+  content: '';
+  position: absolute;
+  right: 36px;
+  bottom: -9px;
+  z-index: 1;
+  border: 6px solid transparent;
+  border-top: 9px solid #fff;
+}
+
+@media (max-height: 940px) {
+  .dock {
+    --half: 149px;
+  }
+}
+
+@media (max-height: 800px) {
+  .dock {
+    --half: 119px;
+  }
+}
+
+@keyframes pop {
+  0% {
+    transform: scale(0.6);
+    opacity: 0;
+  }
+  70% {
+    transform: scale(1.06);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.beacon {
+  position: relative;
+  width: var(--size);
+  height: var(--size);
+  flex: none;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  pointer-events: auto;
+  animation: pulse var(--hire-pulse-every) ease-in-out 1.5s infinite;
+}
+
+.beacon::before {
+  content: '';
+  position: absolute;
+  inset: 8%;
+  border-radius: 50%;
+  border: 4px solid #fff200;
+  opacity: 0;
+  animation: ring var(--hire-pulse-every) ease-out 1.5s infinite;
+}
+
+.beacon:hover {
+  transform: scale(1.1) rotate(-3deg);
+}
+
+.beacon:focus-visible {
+  outline: 3px solid #00aeef;
+  outline-offset: 4px;
+  border-radius: 50%;
+}
+
+.burst {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(4px 4px 0 rgba(0, 0, 0, 0.55));
+}
+
+.text {
+  position: relative;
+  max-width: 70%;
+  font-family: var(--font-display), Impact, 'Arial Narrow Bold', sans-serif;
+  font-size: calc(var(--size) * 0.23);
+  line-height: 0.92;
+  letter-spacing: 0.03em;
+  text-align: center;
+  color: #ed1c24;
+  text-shadow: 2px 2px 0 #231f20, -1px -1px 0 #231f20, 1px -1px 0 #231f20, -1px 1px 0 #231f20;
+  transform: rotate(-7deg);
+}
+
+/* At rest most of the time: one pulse (burst swell plus one ring) in the first 14% of each period. */
+@keyframes pulse {
+  0%,
+  12%,
+  100% {
+    scale: 1;
+    rotate: 0deg;
+  }
+  6% {
+    scale: 1.09;
+    rotate: 3deg;
+  }
+}
+
+@keyframes ring {
+  0% {
+    transform: scale(0.8);
+    opacity: 0.9;
+  }
+  14%,
+  100% {
+    transform: scale(1.55);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dock,
+  .dock.on {
+    transition-duration: 0.001s;
+  }
+
+  .bubble,
+  .beacon,
+  .beacon::before {
+    animation: none;
+  }
+}

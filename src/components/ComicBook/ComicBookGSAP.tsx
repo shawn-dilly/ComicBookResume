@@ -409,14 +409,61 @@ const ComicBookGSAP = forwardRef<ComicBookGSAPRef, ComicBookGSAPProps>(
       getCloseProgress: readCloseProgress,
     }));
 
-    // Click handlers
-    const handleLeftClick = useCallback(() => {
-      flipSheet('backward');
-    }, [flipSheet]);
+    /**
+     * The click zones cover both pages, so a control printed on a page (a diagram node, a checkbox, a button) sits under
+     * them. A page marks such controls `data-no-turn`; a click or hover that lands on one is handed to it (the click is
+     * forwarded, hover is sent as `book-enter` / `book-leave` events) and the page does not turn.
+     */
+    const hoveredControlRef = useRef<HTMLElement | null>(null);
+    const controlAt = useCallback((x: number, y: number): HTMLElement | null => {
+      for (const el of document.elementsFromPoint(x, y)) {
+        if (!(el instanceof HTMLElement) || el.dataset.clickZone !== undefined) continue;
+        return el.closest<HTMLElement>('[data-no-turn]');
+      }
+      return null;
+    }, []);
 
-    const handleRightClick = useCallback(() => {
-      flipSheet('forward');
-    }, [flipSheet]);
+    const handleZoneMove = useCallback(
+      (event: React.MouseEvent) => {
+        const control = controlAt(event.clientX, event.clientY);
+        const previous = hoveredControlRef.current;
+        if (control === previous) return;
+        previous?.dispatchEvent(new CustomEvent('book-leave'));
+        control?.dispatchEvent(new CustomEvent('book-enter'));
+        hoveredControlRef.current = control;
+      },
+      [controlAt]
+    );
+
+    const handleZoneLeave = useCallback(() => {
+      hoveredControlRef.current?.dispatchEvent(new CustomEvent('book-leave'));
+      hoveredControlRef.current = null;
+    }, []);
+
+    // Click handlers
+    const handleLeftClick = useCallback(
+      (event: React.MouseEvent) => {
+        const control = controlAt(event.clientX, event.clientY);
+        if (control) {
+          control.click();
+          return;
+        }
+        flipSheet('backward');
+      },
+      [controlAt, flipSheet]
+    );
+
+    const handleRightClick = useCallback(
+      (event: React.MouseEvent) => {
+        const control = controlAt(event.clientX, event.clientY);
+        if (control) {
+          control.click();
+          return;
+        }
+        flipSheet('forward');
+      },
+      [controlAt, flipSheet]
+    );
 
     /**
      * Render a sheet with front and back faces
@@ -491,14 +538,20 @@ const ComicBookGSAP = forwardRef<ComicBookGSAPRef, ComicBookGSAPProps>(
             {/* Click zones for navigation */}
             <button
               className={`${styles.clickZone} ${styles.clickZoneLeft}`}
+              data-click-zone=""
               onClick={handleLeftClick}
+              onMouseMove={handleZoneMove}
+              onMouseLeave={handleZoneLeave}
               disabled={currentSheet <= 0}
               aria-label="Previous page"
               tabIndex={-1}
             />
             <button
               className={`${styles.clickZone} ${styles.clickZoneRight}`}
+              data-click-zone=""
               onClick={handleRightClick}
+              onMouseMove={handleZoneMove}
+              onMouseLeave={handleZoneLeave}
               disabled={currentSheet >= totalSheets - 1}
               aria-label="Next page"
               tabIndex={-1}

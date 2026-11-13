@@ -1,8 +1,8 @@
 /**
- * BottomBar - back / next, the chapter name with the position, the contents button and HIRE ME.
+ * BottomBar - back / next, the chapter name with the position and the contents button.
  *
  * Buttons use aria-disabled (not `disabled`) so focus is not lost when the first or last page is reached.
- * HIRE ME is hidden on the contact page.
+ * (HIRE ME! is its own bar above this one, see HireBar.)
  */
 
 import { PAGES } from '../pages';
@@ -12,11 +12,9 @@ interface BottomBarProps {
   current: number;
   canGoBack: boolean;
   canGoNext: boolean;
-  hireHidden: boolean;
   onPrev: () => void;
   onNext: () => void;
   onContents: () => void;
-  onHire: () => void;
 }
 
 const Chevron = ({ d }: { d: string }) => (
@@ -29,11 +27,9 @@ export default function BottomBar({
   current,
   canGoBack,
   canGoNext,
-  hireHidden,
   onPrev,
   onNext,
   onContents,
-  onHire,
 }: BottomBarProps) {
   const total = PAGES.length;
   return (
@@ -74,16 +70,6 @@ export default function BottomBar({
         onClick={() => canGoNext && onNext()}
       >
         <Chevron d="m9 4 8 8-8 8" />
-      </button>
-      <button
-        type="button"
-        className={`${styles.hire} ${hireHidden ? styles.hireOff : ''}`}
-        aria-label="Hire me: jump to contact"
-        tabIndex={hireHidden ? -1 : 0}
-        aria-hidden={hireHidden}
-        onClick={onHire}
-      >
-        HIRE ME!
       </button>
     </nav>
   );

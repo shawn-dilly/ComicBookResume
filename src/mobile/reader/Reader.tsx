@@ -7,12 +7,14 @@
  */
 
 import { useCallback, useEffect, useLayoutEffect, useRef, useState, type CSSProperties } from 'react';
+import { useMissionBoard } from '../../components/MissionBoard';
 import { LAYOUT, READER } from '../mobileConfig';
-import { PAGES, pageFromHash, pageIndex } from '../pages';
+import { PAGES, pageFromHash } from '../pages';
 import { PageStack } from '../pages/PageStack';
 import { prefersReducedMotion } from '../hooks/useReducedMotion';
 import { ORIGIN_PANEL_COUNT } from '../pages/OriginStory';
 import BottomBar from './BottomBar';
+import HireBar from './HireBar';
 import ContentsSheet from './ContentsSheet';
 import useReaderGestures, { type ReaderApi, type TurnHandle } from './useReaderGestures';
 import { clearTurn, easeInOut, renderTurn, tween } from './pageTurn';
@@ -36,6 +38,11 @@ export default function Reader({ startIndex }: ReaderProps) {
   const [current, setCurrent] = useState(startIndex);
   const [originPanel, setOriginPanelState] = useState(0);
   const [sheetOpen, setSheetOpen] = useState(false);
+  const board = useMissionBoard();
+  const boardOpenRef = useRef(false);
+  useEffect(() => {
+    boardOpenRef.current = board.isOpen;
+  }, [board.isOpen]);
 
   const shellRef = useRef<HTMLDivElement>(null);
   const bookRef = useRef<HTMLElement>(null);
@@ -184,7 +191,7 @@ export default function Reader({ startIndex }: ReaderProps) {
         setSheetOpen(false);
         return;
       }
-      if (sheetOpen || e.altKey || e.ctrlKey || e.metaKey) return;
+      if (sheetOpen || boardOpenRef.current || e.altKey || e.ctrlKey || e.metaKey) return;
       if (e.key === 'ArrowRight' || e.key === 'PageDown') {
         e.preventDefault();
         next();
@@ -240,7 +247,12 @@ export default function Reader({ startIndex }: ReaderProps) {
   const onOrigin = PAGES[current].id === 'origin-story';
   const canGoBack = current > 0 || (onOrigin && originPanel > 0);
   const canGoNext = current < total - 1 || (onOrigin && originPanel < ORIGIN_PANEL_COUNT - 1);
-  const style = { '--m-bar-height': `calc(${LAYOUT.barHeight}px + env(safe-area-inset-bottom, 0px))` } as CSSProperties;
+  // The HIRE ME! bar sits above the bottom bar and takes room from the pages, except on the contact page.
+  const hireHidden = PAGES[current].id === 'contact';
+  const style = {
+    '--m-bar-height': `calc(${LAYOUT.barHeight}px + env(safe-area-inset-bottom, 0px))`,
+    '--m-hire-height': `${hireHidden ? 0 : LAYOUT.hireHeight}px`,
+  } as CSSProperties;
 
   return (
     <div ref={shellRef} className={styles.shell} style={style}>
@@ -258,6 +270,8 @@ export default function Reader({ startIndex }: ReaderProps) {
           originPanel={originPanel}
           onOpenCover={next}
           onBackToCover={() => jumpTo(0)}
+          boardOpen={board.isOpen}
+          onOpenBoard={board.open}
         />
       </main>
       <div className={styles.veil} aria-hidden="true" />
@@ -266,13 +280,13 @@ export default function Reader({ startIndex }: ReaderProps) {
           current={current}
           canGoBack={canGoBack}
           canGoNext={canGoNext}
-          hireHidden={PAGES[current].id === 'contact'}
           onPrev={prev}
           onNext={next}
           onContents={() => setSheetOpen(true)}
-          onHire={() => jumpTo(pageIndex('contact'))}
         />
+        <HireBar hidden={hireHidden} onOpen={() => board.open()} />
       </div>
+      {board.node}
       <ContentsSheet open={sheetOpen} current={current} onClose={() => setSheetOpen(false)} onGo={jumpTo} />
       <div className={styles.live} role="status" aria-live="polite">
         {`${PAGES[current].title}, page ${current + 1} of ${total}`}

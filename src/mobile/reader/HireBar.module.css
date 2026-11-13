@@ -1,0 +1,102 @@
+.bar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: var(--m-bar-height);
+  z-index: 39;
+  height: var(--m-hire-height);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 8px 0 12px;
+  border: 0;
+  border-top: 3px solid var(--m-ink);
+  background: var(--comic-red);
+  color: #fff;
+  text-align: left;
+  cursor: pointer;
+  overflow: visible;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.bar::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle, rgba(35, 31, 32, 0.3) 1.1px, transparent 1.6px);
+  background-size: 6px 6px;
+  pointer-events: none;
+}
+
+.prompt {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  font: 700 15px/1.1 var(--m-body);
+  text-shadow: 1px 1px 0 var(--m-ink);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  animation: pop 0.3s ease-out;
+}
+
+.burstBox {
+  position: relative;
+  flex: none;
+  width: 92px;
+  height: 100%;
+  display: grid;
+  place-items: center;
+  animation: pulse var(--hire-pulse-every, 8s) ease-in-out 1.5s infinite;
+}
+
+.burst {
+  position: absolute;
+  left: 50%;
+  top: -12px;
+  height: calc(100% + 20px);
+  width: auto;
+  aspect-ratio: 1;
+  /* a wide star: the label sits inside the yellow */
+  transform: translateX(-50%) scaleX(1.7);
+  filter: drop-shadow(2px 3px 0 rgba(0, 0, 0, 0.5));
+}
+
+.label {
+  position: relative;
+  font: 400 16px/1 var(--m-display);
+  letter-spacing: 0.03em;
+  color: var(--comic-red);
+  text-shadow: 1px 1px 0 var(--m-ink);
+  transform: rotate(-5deg);
+  white-space: nowrap;
+}
+
+.off {
+  display: none;
+}
+
+@keyframes pop {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+}
+
+/* At rest most of the time: a single swell in the first 12% of each period. */
+@keyframes pulse {
+  6% {
+    transform: scale(1.07) rotate(2deg);
+  }
+  12% {
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .prompt,
+  .burstBox {
+    animation: none;
+  }
+}
